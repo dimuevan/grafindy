@@ -20,7 +20,7 @@ function dimu_child_enqueue_style(): void {
 	$dir = get_stylesheet_directory();
 	$uri = get_stylesheet_directory_uri();
 
-	foreach ( array( 'dimu-vendor' => '/assets/css/vendor.css', 'dimu-bundle' => '/assets/css/bundle.css' ) as $handle => $rel ) {
+	foreach ( array( 'dimu-vendor' => '/assets/css/vendor.css', 'dimu-one' => '/assets/css/one.css' ) as $handle => $rel ) {
 		if ( file_exists( $dir . $rel ) ) {
 			wp_enqueue_style( $handle, $uri . $rel, array(), (string) filemtime( $dir . $rel ) );
 		}
