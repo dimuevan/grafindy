@@ -1,0 +1,2423 @@
+/* ==========================================================================
+   PSDGator SCSS Styles [VARIABLES]
+   Theme Settings
+   ========================================================================== */
+/* ========================================================== */
+/* 			            01. general                               */
+/* ========================================================== */
+/* ========================================================== */
+/* 			            02. grid                                  */
+/* ========================================================== */
+/* We can have extra column sizes */
+/* ========================================================== */
+/* 			            03. utils                                 */
+/* ========================================================== */
+/* ========================================================== */
+/* 			            04. breakpoints                           */
+/* ========================================================== */
+/* ========================================================== */
+/* 			            05. css variables                         */
+/* ========================================================== */
+:root {
+  /* html|body */
+  /* Fonts: self-hosted in /assets/public/fonts/ - @font-face rules in /assets/public/css/fonts/fonts.css */
+  --main-font-family: "Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif; /* Body & UI - Regular 400 */
+  --heading-font-family: "Literata", Georgia, "Times New Roman", serif; /* Headings - SemiBold 600 / Bold 700 */
+  --main-font-size: 16px;
+  --main-font-color: #000;
+  --body-background: #fff;
+  --hover-color: #f4692e;
+  /* layout */
+  --container-width: 1740px;
+  --container-pad: min(8vw, 100px);
+  /*--> Place custom settings here <--*/
+}
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+@media only screen and (max-width: 1366px) {
+  :root {
+    --container-pad: 20px;
+  }
+}
+/* ==========================================================================
+   PSDGator SCSS FUNCTIONS [TYPES]
+
+   A collection of function for advanced type checking
+   ========================================================================== */
+/* ==========================================================================
+   PSDGator SCSS FUNCTIONS [INTERNAL]
+   ========================================================================== */
+/**
+ * Replaces substring on a string variable
+ */
+/**
+ * Splits a string with a specific separator
+ */
+/* ==========================================================================
+   PSDGator SCSS FUNCTIONS [UNITS]
+   ========================================================================== */
+/**
+ * Removes unit from value
+ */
+/**
+ * Adds unit to a unitless value
+ */
+/**
+ * Converts to rem values
+ */
+/**
+ * Converts to vw values
+ */
+/* ==========================================================================
+   PSDGator SCSS MIXINS [VARIOUS]
+   ========================================================================== */
+/**
+ * Set placeholder color to inputs
+ * Usage:
+ * element{
+ *   @placeholder-color(#cccccc)
+ * }
+ */
+/**
+ * Gives size to an element
+ * Usage:
+ * @include box(150, 450);
+ */
+/**
+ * Truncates the text
+ * Usage:
+ * @include ellipsis-text();
+ */
+/**
+ * Support for retina background images
+ */
+/**
+ * CSS Opacity with fallback for IE8+.
+ * Usage:
+ * .opacity-box { @include opacity(.4); }
+ */
+/**
+ * Implementing font-size with rem units and pixel fallback.
+ */
+/**
+ * Adds a cover background to an element
+ * Usage:
+ * div {
+ *   background-image: url("banner.jpg");
+ *   @include cover-background;
+ * }
+ */
+/**
+ * A quick placeholder maker (with custom size/colors/text)
+ * Uses: https://placeholder.com/
+ * Usage:
+ * .thumb {
+ *   @include placeholder-image(400, 200);
+ *   width: 400px;
+ *   height: 200px;
+ * }
+ */
+/**
+ * Centering Elements
+ * A mixin for absolute centering an element in its parent..
+ */
+/**
+ * Hide Text
+ * A mixin to visually hide text (for screen readers).
+ */
+/**
+ * A mixin for defining CSS position properties.
+ *
+ */
+/**
+ * Flex properties
+ * A mixin for common flex properties.
+ */
+/**
+ * Prefixer
+ * In case that PostCSS unable to do it,
+ * add vendor prefixes to any CSS property.
+ */
+/**
+ * FONT-FACE RULE
+ * Auto creation of @font-face rule for custom fonts
+ */
+/**
+ * Triangle Arrow with 4 optional directions
+ * Create an arrow
+ */
+/**
+ * Background Gradient
+ * A simple SASS mixin to implement CSS linear gradients
+ */
+/**
+ * More Generic Placeholder Styles
+ * Usage:
+ * element{
+ *   @include placeholder {
+ *   color: #cccccc;
+ *   font-size: 16px;
+ *   font-weight: 400;
+ * }
+ */
+/* ==========================================================================
+   PSDGator SCSS Styles [UTILITIES]
+
+   A tiny utility-first CSS "framework"
+   ========================================================================== */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-visible {
+  overflow: visible;
+}
+
+.position-static {
+  position: static;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.d-block {
+  display: block;
+}
+
+.d-inline-block {
+  display: inline-block;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.d-inline-flex {
+  display: inline-flex;
+}
+
+.d-none {
+  display: none;
+}
+
+@media screen and (max-width: 1366px) {
+  .text-xl-center {
+    text-align: center;
+  }
+  .text-xl-left {
+    text-align: left;
+  }
+  .text-xl-right {
+    text-align: right;
+  }
+  .float-xl-left {
+    float: left;
+  }
+  .float-xl-right {
+    float: right;
+  }
+  .overflow-xl-hidden {
+    overflow: hidden;
+  }
+  .overflow-xl-visible {
+    overflow: visible;
+  }
+  .position-xl-static {
+    position: static;
+  }
+  .position-xl-relative {
+    position: relative;
+  }
+  .position-xl-absolute {
+    position: absolute;
+  }
+  .d-xl-block {
+    display: block;
+  }
+  .d-xl-inline-block {
+    display: inline-block;
+  }
+  .d-xl-flex {
+    display: flex;
+  }
+  .d-xl-inline-flex {
+    display: inline-flex;
+  }
+  .d-xl-none {
+    display: none;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .text-lg-center {
+    text-align: center;
+  }
+  .text-lg-left {
+    text-align: left;
+  }
+  .text-lg-right {
+    text-align: right;
+  }
+  .float-lg-left {
+    float: left;
+  }
+  .float-lg-right {
+    float: right;
+  }
+  .overflow-lg-hidden {
+    overflow: hidden;
+  }
+  .overflow-lg-visible {
+    overflow: visible;
+  }
+  .position-lg-static {
+    position: static;
+  }
+  .position-lg-relative {
+    position: relative;
+  }
+  .position-lg-absolute {
+    position: absolute;
+  }
+  .d-lg-block {
+    display: block;
+  }
+  .d-lg-inline-block {
+    display: inline-block;
+  }
+  .d-lg-flex {
+    display: flex;
+  }
+  .d-lg-inline-flex {
+    display: inline-flex;
+  }
+  .d-lg-none {
+    display: none;
+  }
+}
+@media screen and (max-width: 768px) {
+  .text-md-center {
+    text-align: center;
+  }
+  .text-md-left {
+    text-align: left;
+  }
+  .text-md-right {
+    text-align: right;
+  }
+  .float-md-left {
+    float: left;
+  }
+  .float-md-right {
+    float: right;
+  }
+  .overflow-md-hidden {
+    overflow: hidden;
+  }
+  .overflow-md-visible {
+    overflow: visible;
+  }
+  .position-md-static {
+    position: static;
+  }
+  .position-md-relative {
+    position: relative;
+  }
+  .position-md-absolute {
+    position: absolute;
+  }
+  .d-md-block {
+    display: block;
+  }
+  .d-md-inline-block {
+    display: inline-block;
+  }
+  .d-md-flex {
+    display: flex;
+  }
+  .d-md-inline-flex {
+    display: inline-flex;
+  }
+  .d-md-none {
+    display: none;
+  }
+}
+@media screen and (max-width: 500px) {
+  .text-sm-center {
+    text-align: center;
+  }
+  .text-sm-left {
+    text-align: left;
+  }
+  .text-sm-right {
+    text-align: right;
+  }
+  .float-sm-left {
+    float: left;
+  }
+  .float-sm-right {
+    float: right;
+  }
+  .overflow-sm-hidden {
+    overflow: hidden;
+  }
+  .overflow-sm-visible {
+    overflow: visible;
+  }
+  .position-sm-static {
+    position: static;
+  }
+  .position-sm-relative {
+    position: relative;
+  }
+  .position-sm-absolute {
+    position: absolute;
+  }
+  .d-sm-block {
+    display: block;
+  }
+  .d-sm-inline-block {
+    display: inline-block;
+  }
+  .d-sm-flex {
+    display: flex;
+  }
+  .d-sm-inline-flex {
+    display: inline-flex;
+  }
+  .d-sm-none {
+    display: none;
+  }
+}
+/* ==========================================================================
+   PSDGator SCSS Styles [GRID]
+   ========================================================================== */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+.row--hcenter {
+  justify-content: center;
+}
+.row--vcenter {
+  align-items: center;
+}
+
+/**
+ * A small hack so we don't have to include max-width
+ * with the appropriate percentage everywhere (less file size)
+ *
+ * Generally it works but it seems to fail when a col is
+ * alone in its row (it will expand to 100%)
+ */
+/**
+ * Builders
+ */
+/**
+ * Generate everything
+ */
+.col {
+  flex: 1;
+  max-width: 100%;
+}
+
+.col-auto {
+  flex: auto;
+  max-width: 100%;
+  width: auto;
+}
+
+/* Generate all column/offset classes */
+.col-1 {
+  flex: 8.3333333333%;
+  max-width: 8.3333333333%;
+}
+
+.off-1 {
+  margin-left: 8.3333333333%;
+}
+
+.col-2 {
+  flex: 16.6666666667%;
+  max-width: 16.6666666667%;
+}
+
+.off-2 {
+  margin-left: 16.6666666667%;
+}
+
+.col-3 {
+  flex: 25%;
+  max-width: 25%;
+}
+
+.off-3 {
+  margin-left: 25%;
+}
+
+.col-4 {
+  flex: 33.3333333333%;
+  max-width: 33.3333333333%;
+}
+
+.off-4 {
+  margin-left: 33.3333333333%;
+}
+
+.col-5 {
+  flex: 41.6666666667%;
+  max-width: 41.6666666667%;
+}
+
+.off-5 {
+  margin-left: 41.6666666667%;
+}
+
+.col-6 {
+  flex: 50%;
+  max-width: 50%;
+}
+
+.off-6 {
+  margin-left: 50%;
+}
+
+.col-7 {
+  flex: 58.3333333333%;
+  max-width: 58.3333333333%;
+}
+
+.off-7 {
+  margin-left: 58.3333333333%;
+}
+
+.col-8 {
+  flex: 66.6666666667%;
+  max-width: 66.6666666667%;
+}
+
+.off-8 {
+  margin-left: 66.6666666667%;
+}
+
+.col-9 {
+  flex: 75%;
+  max-width: 75%;
+}
+
+.off-9 {
+  margin-left: 75%;
+}
+
+.col-10 {
+  flex: 83.3333333333%;
+  max-width: 83.3333333333%;
+}
+
+.off-10 {
+  margin-left: 83.3333333333%;
+}
+
+.col-11 {
+  flex: 91.6666666667%;
+  max-width: 91.6666666667%;
+}
+
+.off-11 {
+  margin-left: 91.6666666667%;
+}
+
+.col-12 {
+  flex: 100%;
+  max-width: 100%;
+}
+
+.off-12 {
+  margin-left: 100%;
+}
+
+/* Generate the extra classes */
+.col-20 {
+  flex: 20%;
+  max-width: 20%;
+}
+
+/* Generate all gap classes */
+.gap-0,
+.gap-0-x {
+  margin-left: 0;
+}
+.gap-0 > *,
+.gap-0-x > * {
+  padding-left: 0;
+}
+
+.gap-0,
+.gap-0-y {
+  margin-top: 0;
+}
+.gap-0 > *,
+.gap-0-y > * {
+  padding-top: 0;
+}
+
+.gap-12,
+.gap-12-x {
+  margin-left: -12px;
+}
+.gap-12 > *,
+.gap-12-x > * {
+  padding-left: 12px;
+}
+
+.gap-12,
+.gap-12-y {
+  margin-top: -12px;
+}
+.gap-12 > *,
+.gap-12-y > * {
+  padding-top: 12px;
+}
+
+.gap-24,
+.gap-24-x {
+  margin-left: -24px;
+}
+.gap-24 > *,
+.gap-24-x > * {
+  padding-left: 24px;
+}
+
+.gap-24,
+.gap-24-y {
+  margin-top: -24px;
+}
+.gap-24 > *,
+.gap-24-y > * {
+  padding-top: 24px;
+}
+
+.gap-32,
+.gap-32-x {
+  margin-left: -32px;
+}
+.gap-32 > *,
+.gap-32-x > * {
+  padding-left: 32px;
+}
+
+.gap-32,
+.gap-32-y {
+  margin-top: -32px;
+}
+.gap-32 > *,
+.gap-32-y > * {
+  padding-top: 32px;
+}
+
+.gap-36,
+.gap-36-x {
+  margin-left: -36px;
+}
+.gap-36 > *,
+.gap-36-x > * {
+  padding-left: 36px;
+}
+
+.gap-36,
+.gap-36-y {
+  margin-top: -36px;
+}
+.gap-36 > *,
+.gap-36-y > * {
+  padding-top: 36px;
+}
+
+.gap-40,
+.gap-40-x {
+  margin-left: -40px;
+}
+.gap-40 > *,
+.gap-40-x > * {
+  padding-left: 40px;
+}
+
+.gap-40,
+.gap-40-y {
+  margin-top: -40px;
+}
+.gap-40 > *,
+.gap-40-y > * {
+  padding-top: 40px;
+}
+
+.gap-44,
+.gap-44-x {
+  margin-left: -44px;
+}
+.gap-44 > *,
+.gap-44-x > * {
+  padding-left: 44px;
+}
+
+.gap-44,
+.gap-44-y {
+  margin-top: -44px;
+}
+.gap-44 > *,
+.gap-44-y > * {
+  padding-top: 44px;
+}
+
+.gap-48,
+.gap-48-x {
+  margin-left: -48px;
+}
+.gap-48 > *,
+.gap-48-x > * {
+  padding-left: 48px;
+}
+
+.gap-48,
+.gap-48-y {
+  margin-top: -48px;
+}
+.gap-48 > *,
+.gap-48-y > * {
+  padding-top: 48px;
+}
+
+.gap-60,
+.gap-60-x {
+  margin-left: -60px;
+}
+.gap-60 > *,
+.gap-60-x > * {
+  padding-left: 60px;
+}
+
+.gap-60,
+.gap-60-y {
+  margin-top: -60px;
+}
+.gap-60 > *,
+.gap-60-y > * {
+  padding-top: 60px;
+}
+
+.gap-72,
+.gap-72-x {
+  margin-left: -72px;
+}
+.gap-72 > *,
+.gap-72-x > * {
+  padding-left: 72px;
+}
+
+.gap-72,
+.gap-72-y {
+  margin-top: -72px;
+}
+.gap-72 > *,
+.gap-72-y > * {
+  padding-top: 72px;
+}
+
+.gap-84,
+.gap-84-x {
+  margin-left: -84px;
+}
+.gap-84 > *,
+.gap-84-x > * {
+  padding-left: 84px;
+}
+
+.gap-84,
+.gap-84-y {
+  margin-top: -84px;
+}
+.gap-84 > *,
+.gap-84-y > * {
+  padding-top: 84px;
+}
+
+.gap-96,
+.gap-96-x {
+  margin-left: -96px;
+}
+.gap-96 > *,
+.gap-96-x > * {
+  padding-left: 96px;
+}
+
+.gap-96,
+.gap-96-y {
+  margin-top: -96px;
+}
+.gap-96 > *,
+.gap-96-y > * {
+  padding-top: 96px;
+}
+
+/* Generate all responsive steps */
+@media screen and (max-width: 1366px) {
+  .col-xl {
+    flex: 1;
+    max-width: 100%;
+  }
+  .col-xl-auto {
+    flex: auto;
+    max-width: 100%;
+    width: auto;
+  }
+  /* Generate all column/offset classes */
+  .col-xl-1 {
+    flex: 8.3333333333%;
+    max-width: 8.3333333333%;
+  }
+  .off-xl-1 {
+    margin-left: 8.3333333333%;
+  }
+  .col-xl-2 {
+    flex: 16.6666666667%;
+    max-width: 16.6666666667%;
+  }
+  .off-xl-2 {
+    margin-left: 16.6666666667%;
+  }
+  .col-xl-3 {
+    flex: 25%;
+    max-width: 25%;
+  }
+  .off-xl-3 {
+    margin-left: 25%;
+  }
+  .col-xl-4 {
+    flex: 33.3333333333%;
+    max-width: 33.3333333333%;
+  }
+  .off-xl-4 {
+    margin-left: 33.3333333333%;
+  }
+  .col-xl-5 {
+    flex: 41.6666666667%;
+    max-width: 41.6666666667%;
+  }
+  .off-xl-5 {
+    margin-left: 41.6666666667%;
+  }
+  .col-xl-6 {
+    flex: 50%;
+    max-width: 50%;
+  }
+  .off-xl-6 {
+    margin-left: 50%;
+  }
+  .col-xl-7 {
+    flex: 58.3333333333%;
+    max-width: 58.3333333333%;
+  }
+  .off-xl-7 {
+    margin-left: 58.3333333333%;
+  }
+  .col-xl-8 {
+    flex: 66.6666666667%;
+    max-width: 66.6666666667%;
+  }
+  .off-xl-8 {
+    margin-left: 66.6666666667%;
+  }
+  .col-xl-9 {
+    flex: 75%;
+    max-width: 75%;
+  }
+  .off-xl-9 {
+    margin-left: 75%;
+  }
+  .col-xl-10 {
+    flex: 83.3333333333%;
+    max-width: 83.3333333333%;
+  }
+  .off-xl-10 {
+    margin-left: 83.3333333333%;
+  }
+  .col-xl-11 {
+    flex: 91.6666666667%;
+    max-width: 91.6666666667%;
+  }
+  .off-xl-11 {
+    margin-left: 91.6666666667%;
+  }
+  .col-xl-12 {
+    flex: 100%;
+    max-width: 100%;
+  }
+  .off-xl-12 {
+    margin-left: 100%;
+  }
+  /* Generate the extra classes */
+  .col-xl-20 {
+    flex: 20%;
+    max-width: 20%;
+  }
+  /* Generate all gap classes */
+  .gap-xl-0,
+  .gap-xl-0-x {
+    margin-left: 0;
+  }
+  .gap-xl-0 > *,
+  .gap-xl-0-x > * {
+    padding-left: 0;
+  }
+  .gap-xl-0,
+  .gap-xl-0-y {
+    margin-top: 0;
+  }
+  .gap-xl-0 > *,
+  .gap-xl-0-y > * {
+    padding-top: 0;
+  }
+  .gap-xl-12,
+  .gap-xl-12-x {
+    margin-left: -12px;
+  }
+  .gap-xl-12 > *,
+  .gap-xl-12-x > * {
+    padding-left: 12px;
+  }
+  .gap-xl-12,
+  .gap-xl-12-y {
+    margin-top: -12px;
+  }
+  .gap-xl-12 > *,
+  .gap-xl-12-y > * {
+    padding-top: 12px;
+  }
+  .gap-xl-24,
+  .gap-xl-24-x {
+    margin-left: -24px;
+  }
+  .gap-xl-24 > *,
+  .gap-xl-24-x > * {
+    padding-left: 24px;
+  }
+  .gap-xl-24,
+  .gap-xl-24-y {
+    margin-top: -24px;
+  }
+  .gap-xl-24 > *,
+  .gap-xl-24-y > * {
+    padding-top: 24px;
+  }
+  .gap-xl-32,
+  .gap-xl-32-x {
+    margin-left: -32px;
+  }
+  .gap-xl-32 > *,
+  .gap-xl-32-x > * {
+    padding-left: 32px;
+  }
+  .gap-xl-32,
+  .gap-xl-32-y {
+    margin-top: -32px;
+  }
+  .gap-xl-32 > *,
+  .gap-xl-32-y > * {
+    padding-top: 32px;
+  }
+  .gap-xl-36,
+  .gap-xl-36-x {
+    margin-left: -36px;
+  }
+  .gap-xl-36 > *,
+  .gap-xl-36-x > * {
+    padding-left: 36px;
+  }
+  .gap-xl-36,
+  .gap-xl-36-y {
+    margin-top: -36px;
+  }
+  .gap-xl-36 > *,
+  .gap-xl-36-y > * {
+    padding-top: 36px;
+  }
+  .gap-xl-40,
+  .gap-xl-40-x {
+    margin-left: -40px;
+  }
+  .gap-xl-40 > *,
+  .gap-xl-40-x > * {
+    padding-left: 40px;
+  }
+  .gap-xl-40,
+  .gap-xl-40-y {
+    margin-top: -40px;
+  }
+  .gap-xl-40 > *,
+  .gap-xl-40-y > * {
+    padding-top: 40px;
+  }
+  .gap-xl-44,
+  .gap-xl-44-x {
+    margin-left: -44px;
+  }
+  .gap-xl-44 > *,
+  .gap-xl-44-x > * {
+    padding-left: 44px;
+  }
+  .gap-xl-44,
+  .gap-xl-44-y {
+    margin-top: -44px;
+  }
+  .gap-xl-44 > *,
+  .gap-xl-44-y > * {
+    padding-top: 44px;
+  }
+  .gap-xl-48,
+  .gap-xl-48-x {
+    margin-left: -48px;
+  }
+  .gap-xl-48 > *,
+  .gap-xl-48-x > * {
+    padding-left: 48px;
+  }
+  .gap-xl-48,
+  .gap-xl-48-y {
+    margin-top: -48px;
+  }
+  .gap-xl-48 > *,
+  .gap-xl-48-y > * {
+    padding-top: 48px;
+  }
+  .gap-xl-60,
+  .gap-xl-60-x {
+    margin-left: -60px;
+  }
+  .gap-xl-60 > *,
+  .gap-xl-60-x > * {
+    padding-left: 60px;
+  }
+  .gap-xl-60,
+  .gap-xl-60-y {
+    margin-top: -60px;
+  }
+  .gap-xl-60 > *,
+  .gap-xl-60-y > * {
+    padding-top: 60px;
+  }
+  .gap-xl-72,
+  .gap-xl-72-x {
+    margin-left: -72px;
+  }
+  .gap-xl-72 > *,
+  .gap-xl-72-x > * {
+    padding-left: 72px;
+  }
+  .gap-xl-72,
+  .gap-xl-72-y {
+    margin-top: -72px;
+  }
+  .gap-xl-72 > *,
+  .gap-xl-72-y > * {
+    padding-top: 72px;
+  }
+  .gap-xl-84,
+  .gap-xl-84-x {
+    margin-left: -84px;
+  }
+  .gap-xl-84 > *,
+  .gap-xl-84-x > * {
+    padding-left: 84px;
+  }
+  .gap-xl-84,
+  .gap-xl-84-y {
+    margin-top: -84px;
+  }
+  .gap-xl-84 > *,
+  .gap-xl-84-y > * {
+    padding-top: 84px;
+  }
+  .gap-xl-96,
+  .gap-xl-96-x {
+    margin-left: -96px;
+  }
+  .gap-xl-96 > *,
+  .gap-xl-96-x > * {
+    padding-left: 96px;
+  }
+  .gap-xl-96,
+  .gap-xl-96-y {
+    margin-top: -96px;
+  }
+  .gap-xl-96 > *,
+  .gap-xl-96-y > * {
+    padding-top: 96px;
+  }
+  .reset-xl {
+    margin-left: 0;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .col-lg {
+    flex: 1;
+    max-width: 100%;
+  }
+  .col-lg-auto {
+    flex: auto;
+    max-width: 100%;
+    width: auto;
+  }
+  /* Generate all column/offset classes */
+  .col-lg-1 {
+    flex: 8.3333333333%;
+    max-width: 8.3333333333%;
+  }
+  .off-lg-1 {
+    margin-left: 8.3333333333%;
+  }
+  .col-lg-2 {
+    flex: 16.6666666667%;
+    max-width: 16.6666666667%;
+  }
+  .off-lg-2 {
+    margin-left: 16.6666666667%;
+  }
+  .col-lg-3 {
+    flex: 25%;
+    max-width: 25%;
+  }
+  .off-lg-3 {
+    margin-left: 25%;
+  }
+  .col-lg-4 {
+    flex: 33.3333333333%;
+    max-width: 33.3333333333%;
+  }
+  .off-lg-4 {
+    margin-left: 33.3333333333%;
+  }
+  .col-lg-5 {
+    flex: 41.6666666667%;
+    max-width: 41.6666666667%;
+  }
+  .off-lg-5 {
+    margin-left: 41.6666666667%;
+  }
+  .col-lg-6 {
+    flex: 50%;
+    max-width: 50%;
+  }
+  .off-lg-6 {
+    margin-left: 50%;
+  }
+  .col-lg-7 {
+    flex: 58.3333333333%;
+    max-width: 58.3333333333%;
+  }
+  .off-lg-7 {
+    margin-left: 58.3333333333%;
+  }
+  .col-lg-8 {
+    flex: 66.6666666667%;
+    max-width: 66.6666666667%;
+  }
+  .off-lg-8 {
+    margin-left: 66.6666666667%;
+  }
+  .col-lg-9 {
+    flex: 75%;
+    max-width: 75%;
+  }
+  .off-lg-9 {
+    margin-left: 75%;
+  }
+  .col-lg-10 {
+    flex: 83.3333333333%;
+    max-width: 83.3333333333%;
+  }
+  .off-lg-10 {
+    margin-left: 83.3333333333%;
+  }
+  .col-lg-11 {
+    flex: 91.6666666667%;
+    max-width: 91.6666666667%;
+  }
+  .off-lg-11 {
+    margin-left: 91.6666666667%;
+  }
+  .col-lg-12 {
+    flex: 100%;
+    max-width: 100%;
+  }
+  .off-lg-12 {
+    margin-left: 100%;
+  }
+  /* Generate the extra classes */
+  .col-lg-20 {
+    flex: 20%;
+    max-width: 20%;
+  }
+  /* Generate all gap classes */
+  .gap-lg-0,
+  .gap-lg-0-x {
+    margin-left: 0;
+  }
+  .gap-lg-0 > *,
+  .gap-lg-0-x > * {
+    padding-left: 0;
+  }
+  .gap-lg-0,
+  .gap-lg-0-y {
+    margin-top: 0;
+  }
+  .gap-lg-0 > *,
+  .gap-lg-0-y > * {
+    padding-top: 0;
+  }
+  .gap-lg-12,
+  .gap-lg-12-x {
+    margin-left: -12px;
+  }
+  .gap-lg-12 > *,
+  .gap-lg-12-x > * {
+    padding-left: 12px;
+  }
+  .gap-lg-12,
+  .gap-lg-12-y {
+    margin-top: -12px;
+  }
+  .gap-lg-12 > *,
+  .gap-lg-12-y > * {
+    padding-top: 12px;
+  }
+  .gap-lg-24,
+  .gap-lg-24-x {
+    margin-left: -24px;
+  }
+  .gap-lg-24 > *,
+  .gap-lg-24-x > * {
+    padding-left: 24px;
+  }
+  .gap-lg-24,
+  .gap-lg-24-y {
+    margin-top: -24px;
+  }
+  .gap-lg-24 > *,
+  .gap-lg-24-y > * {
+    padding-top: 24px;
+  }
+  .gap-lg-32,
+  .gap-lg-32-x {
+    margin-left: -32px;
+  }
+  .gap-lg-32 > *,
+  .gap-lg-32-x > * {
+    padding-left: 32px;
+  }
+  .gap-lg-32,
+  .gap-lg-32-y {
+    margin-top: -32px;
+  }
+  .gap-lg-32 > *,
+  .gap-lg-32-y > * {
+    padding-top: 32px;
+  }
+  .gap-lg-36,
+  .gap-lg-36-x {
+    margin-left: -36px;
+  }
+  .gap-lg-36 > *,
+  .gap-lg-36-x > * {
+    padding-left: 36px;
+  }
+  .gap-lg-36,
+  .gap-lg-36-y {
+    margin-top: -36px;
+  }
+  .gap-lg-36 > *,
+  .gap-lg-36-y > * {
+    padding-top: 36px;
+  }
+  .gap-lg-40,
+  .gap-lg-40-x {
+    margin-left: -40px;
+  }
+  .gap-lg-40 > *,
+  .gap-lg-40-x > * {
+    padding-left: 40px;
+  }
+  .gap-lg-40,
+  .gap-lg-40-y {
+    margin-top: -40px;
+  }
+  .gap-lg-40 > *,
+  .gap-lg-40-y > * {
+    padding-top: 40px;
+  }
+  .gap-lg-44,
+  .gap-lg-44-x {
+    margin-left: -44px;
+  }
+  .gap-lg-44 > *,
+  .gap-lg-44-x > * {
+    padding-left: 44px;
+  }
+  .gap-lg-44,
+  .gap-lg-44-y {
+    margin-top: -44px;
+  }
+  .gap-lg-44 > *,
+  .gap-lg-44-y > * {
+    padding-top: 44px;
+  }
+  .gap-lg-48,
+  .gap-lg-48-x {
+    margin-left: -48px;
+  }
+  .gap-lg-48 > *,
+  .gap-lg-48-x > * {
+    padding-left: 48px;
+  }
+  .gap-lg-48,
+  .gap-lg-48-y {
+    margin-top: -48px;
+  }
+  .gap-lg-48 > *,
+  .gap-lg-48-y > * {
+    padding-top: 48px;
+  }
+  .gap-lg-60,
+  .gap-lg-60-x {
+    margin-left: -60px;
+  }
+  .gap-lg-60 > *,
+  .gap-lg-60-x > * {
+    padding-left: 60px;
+  }
+  .gap-lg-60,
+  .gap-lg-60-y {
+    margin-top: -60px;
+  }
+  .gap-lg-60 > *,
+  .gap-lg-60-y > * {
+    padding-top: 60px;
+  }
+  .gap-lg-72,
+  .gap-lg-72-x {
+    margin-left: -72px;
+  }
+  .gap-lg-72 > *,
+  .gap-lg-72-x > * {
+    padding-left: 72px;
+  }
+  .gap-lg-72,
+  .gap-lg-72-y {
+    margin-top: -72px;
+  }
+  .gap-lg-72 > *,
+  .gap-lg-72-y > * {
+    padding-top: 72px;
+  }
+  .gap-lg-84,
+  .gap-lg-84-x {
+    margin-left: -84px;
+  }
+  .gap-lg-84 > *,
+  .gap-lg-84-x > * {
+    padding-left: 84px;
+  }
+  .gap-lg-84,
+  .gap-lg-84-y {
+    margin-top: -84px;
+  }
+  .gap-lg-84 > *,
+  .gap-lg-84-y > * {
+    padding-top: 84px;
+  }
+  .gap-lg-96,
+  .gap-lg-96-x {
+    margin-left: -96px;
+  }
+  .gap-lg-96 > *,
+  .gap-lg-96-x > * {
+    padding-left: 96px;
+  }
+  .gap-lg-96,
+  .gap-lg-96-y {
+    margin-top: -96px;
+  }
+  .gap-lg-96 > *,
+  .gap-lg-96-y > * {
+    padding-top: 96px;
+  }
+  .reset-lg {
+    margin-left: 0;
+  }
+}
+@media screen and (max-width: 768px) {
+  .col-md {
+    flex: 1;
+    max-width: 100%;
+  }
+  .col-md-auto {
+    flex: auto;
+    max-width: 100%;
+    width: auto;
+  }
+  /* Generate all column/offset classes */
+  .col-md-1 {
+    flex: 8.3333333333%;
+    max-width: 8.3333333333%;
+  }
+  .off-md-1 {
+    margin-left: 8.3333333333%;
+  }
+  .col-md-2 {
+    flex: 16.6666666667%;
+    max-width: 16.6666666667%;
+  }
+  .off-md-2 {
+    margin-left: 16.6666666667%;
+  }
+  .col-md-3 {
+    flex: 25%;
+    max-width: 25%;
+  }
+  .off-md-3 {
+    margin-left: 25%;
+  }
+  .col-md-4 {
+    flex: 33.3333333333%;
+    max-width: 33.3333333333%;
+  }
+  .off-md-4 {
+    margin-left: 33.3333333333%;
+  }
+  .col-md-5 {
+    flex: 41.6666666667%;
+    max-width: 41.6666666667%;
+  }
+  .off-md-5 {
+    margin-left: 41.6666666667%;
+  }
+  .col-md-6 {
+    flex: 50%;
+    max-width: 50%;
+  }
+  .off-md-6 {
+    margin-left: 50%;
+  }
+  .col-md-7 {
+    flex: 58.3333333333%;
+    max-width: 58.3333333333%;
+  }
+  .off-md-7 {
+    margin-left: 58.3333333333%;
+  }
+  .col-md-8 {
+    flex: 66.6666666667%;
+    max-width: 66.6666666667%;
+  }
+  .off-md-8 {
+    margin-left: 66.6666666667%;
+  }
+  .col-md-9 {
+    flex: 75%;
+    max-width: 75%;
+  }
+  .off-md-9 {
+    margin-left: 75%;
+  }
+  .col-md-10 {
+    flex: 83.3333333333%;
+    max-width: 83.3333333333%;
+  }
+  .off-md-10 {
+    margin-left: 83.3333333333%;
+  }
+  .col-md-11 {
+    flex: 91.6666666667%;
+    max-width: 91.6666666667%;
+  }
+  .off-md-11 {
+    margin-left: 91.6666666667%;
+  }
+  .col-md-12 {
+    flex: 100%;
+    max-width: 100%;
+  }
+  .off-md-12 {
+    margin-left: 100%;
+  }
+  /* Generate the extra classes */
+  .col-md-20 {
+    flex: 20%;
+    max-width: 20%;
+  }
+  /* Generate all gap classes */
+  .gap-md-0,
+  .gap-md-0-x {
+    margin-left: 0;
+  }
+  .gap-md-0 > *,
+  .gap-md-0-x > * {
+    padding-left: 0;
+  }
+  .gap-md-0,
+  .gap-md-0-y {
+    margin-top: 0;
+  }
+  .gap-md-0 > *,
+  .gap-md-0-y > * {
+    padding-top: 0;
+  }
+  .gap-md-12,
+  .gap-md-12-x {
+    margin-left: -12px;
+  }
+  .gap-md-12 > *,
+  .gap-md-12-x > * {
+    padding-left: 12px;
+  }
+  .gap-md-12,
+  .gap-md-12-y {
+    margin-top: -12px;
+  }
+  .gap-md-12 > *,
+  .gap-md-12-y > * {
+    padding-top: 12px;
+  }
+  .gap-md-24,
+  .gap-md-24-x {
+    margin-left: -24px;
+  }
+  .gap-md-24 > *,
+  .gap-md-24-x > * {
+    padding-left: 24px;
+  }
+  .gap-md-24,
+  .gap-md-24-y {
+    margin-top: -24px;
+  }
+  .gap-md-24 > *,
+  .gap-md-24-y > * {
+    padding-top: 24px;
+  }
+  .gap-md-32,
+  .gap-md-32-x {
+    margin-left: -32px;
+  }
+  .gap-md-32 > *,
+  .gap-md-32-x > * {
+    padding-left: 32px;
+  }
+  .gap-md-32,
+  .gap-md-32-y {
+    margin-top: -32px;
+  }
+  .gap-md-32 > *,
+  .gap-md-32-y > * {
+    padding-top: 32px;
+  }
+  .gap-md-36,
+  .gap-md-36-x {
+    margin-left: -36px;
+  }
+  .gap-md-36 > *,
+  .gap-md-36-x > * {
+    padding-left: 36px;
+  }
+  .gap-md-36,
+  .gap-md-36-y {
+    margin-top: -36px;
+  }
+  .gap-md-36 > *,
+  .gap-md-36-y > * {
+    padding-top: 36px;
+  }
+  .gap-md-40,
+  .gap-md-40-x {
+    margin-left: -40px;
+  }
+  .gap-md-40 > *,
+  .gap-md-40-x > * {
+    padding-left: 40px;
+  }
+  .gap-md-40,
+  .gap-md-40-y {
+    margin-top: -40px;
+  }
+  .gap-md-40 > *,
+  .gap-md-40-y > * {
+    padding-top: 40px;
+  }
+  .gap-md-44,
+  .gap-md-44-x {
+    margin-left: -44px;
+  }
+  .gap-md-44 > *,
+  .gap-md-44-x > * {
+    padding-left: 44px;
+  }
+  .gap-md-44,
+  .gap-md-44-y {
+    margin-top: -44px;
+  }
+  .gap-md-44 > *,
+  .gap-md-44-y > * {
+    padding-top: 44px;
+  }
+  .gap-md-48,
+  .gap-md-48-x {
+    margin-left: -48px;
+  }
+  .gap-md-48 > *,
+  .gap-md-48-x > * {
+    padding-left: 48px;
+  }
+  .gap-md-48,
+  .gap-md-48-y {
+    margin-top: -48px;
+  }
+  .gap-md-48 > *,
+  .gap-md-48-y > * {
+    padding-top: 48px;
+  }
+  .gap-md-60,
+  .gap-md-60-x {
+    margin-left: -60px;
+  }
+  .gap-md-60 > *,
+  .gap-md-60-x > * {
+    padding-left: 60px;
+  }
+  .gap-md-60,
+  .gap-md-60-y {
+    margin-top: -60px;
+  }
+  .gap-md-60 > *,
+  .gap-md-60-y > * {
+    padding-top: 60px;
+  }
+  .gap-md-72,
+  .gap-md-72-x {
+    margin-left: -72px;
+  }
+  .gap-md-72 > *,
+  .gap-md-72-x > * {
+    padding-left: 72px;
+  }
+  .gap-md-72,
+  .gap-md-72-y {
+    margin-top: -72px;
+  }
+  .gap-md-72 > *,
+  .gap-md-72-y > * {
+    padding-top: 72px;
+  }
+  .gap-md-84,
+  .gap-md-84-x {
+    margin-left: -84px;
+  }
+  .gap-md-84 > *,
+  .gap-md-84-x > * {
+    padding-left: 84px;
+  }
+  .gap-md-84,
+  .gap-md-84-y {
+    margin-top: -84px;
+  }
+  .gap-md-84 > *,
+  .gap-md-84-y > * {
+    padding-top: 84px;
+  }
+  .gap-md-96,
+  .gap-md-96-x {
+    margin-left: -96px;
+  }
+  .gap-md-96 > *,
+  .gap-md-96-x > * {
+    padding-left: 96px;
+  }
+  .gap-md-96,
+  .gap-md-96-y {
+    margin-top: -96px;
+  }
+  .gap-md-96 > *,
+  .gap-md-96-y > * {
+    padding-top: 96px;
+  }
+  .reset-md {
+    margin-left: 0;
+  }
+}
+@media screen and (max-width: 500px) {
+  .col-sm {
+    flex: 1;
+    max-width: 100%;
+  }
+  .col-sm-auto {
+    flex: auto;
+    max-width: 100%;
+    width: auto;
+  }
+  /* Generate all column/offset classes */
+  .col-sm-1 {
+    flex: 8.3333333333%;
+    max-width: 8.3333333333%;
+  }
+  .off-sm-1 {
+    margin-left: 8.3333333333%;
+  }
+  .col-sm-2 {
+    flex: 16.6666666667%;
+    max-width: 16.6666666667%;
+  }
+  .off-sm-2 {
+    margin-left: 16.6666666667%;
+  }
+  .col-sm-3 {
+    flex: 25%;
+    max-width: 25%;
+  }
+  .off-sm-3 {
+    margin-left: 25%;
+  }
+  .col-sm-4 {
+    flex: 33.3333333333%;
+    max-width: 33.3333333333%;
+  }
+  .off-sm-4 {
+    margin-left: 33.3333333333%;
+  }
+  .col-sm-5 {
+    flex: 41.6666666667%;
+    max-width: 41.6666666667%;
+  }
+  .off-sm-5 {
+    margin-left: 41.6666666667%;
+  }
+  .col-sm-6 {
+    flex: 50%;
+    max-width: 50%;
+  }
+  .off-sm-6 {
+    margin-left: 50%;
+  }
+  .col-sm-7 {
+    flex: 58.3333333333%;
+    max-width: 58.3333333333%;
+  }
+  .off-sm-7 {
+    margin-left: 58.3333333333%;
+  }
+  .col-sm-8 {
+    flex: 66.6666666667%;
+    max-width: 66.6666666667%;
+  }
+  .off-sm-8 {
+    margin-left: 66.6666666667%;
+  }
+  .col-sm-9 {
+    flex: 75%;
+    max-width: 75%;
+  }
+  .off-sm-9 {
+    margin-left: 75%;
+  }
+  .col-sm-10 {
+    flex: 83.3333333333%;
+    max-width: 83.3333333333%;
+  }
+  .off-sm-10 {
+    margin-left: 83.3333333333%;
+  }
+  .col-sm-11 {
+    flex: 91.6666666667%;
+    max-width: 91.6666666667%;
+  }
+  .off-sm-11 {
+    margin-left: 91.6666666667%;
+  }
+  .col-sm-12 {
+    flex: 100%;
+    max-width: 100%;
+  }
+  .off-sm-12 {
+    margin-left: 100%;
+  }
+  /* Generate the extra classes */
+  .col-sm-20 {
+    flex: 20%;
+    max-width: 20%;
+  }
+  /* Generate all gap classes */
+  .gap-sm-0,
+  .gap-sm-0-x {
+    margin-left: 0;
+  }
+  .gap-sm-0 > *,
+  .gap-sm-0-x > * {
+    padding-left: 0;
+  }
+  .gap-sm-0,
+  .gap-sm-0-y {
+    margin-top: 0;
+  }
+  .gap-sm-0 > *,
+  .gap-sm-0-y > * {
+    padding-top: 0;
+  }
+  .gap-sm-12,
+  .gap-sm-12-x {
+    margin-left: -12px;
+  }
+  .gap-sm-12 > *,
+  .gap-sm-12-x > * {
+    padding-left: 12px;
+  }
+  .gap-sm-12,
+  .gap-sm-12-y {
+    margin-top: -12px;
+  }
+  .gap-sm-12 > *,
+  .gap-sm-12-y > * {
+    padding-top: 12px;
+  }
+  .gap-sm-24,
+  .gap-sm-24-x {
+    margin-left: -24px;
+  }
+  .gap-sm-24 > *,
+  .gap-sm-24-x > * {
+    padding-left: 24px;
+  }
+  .gap-sm-24,
+  .gap-sm-24-y {
+    margin-top: -24px;
+  }
+  .gap-sm-24 > *,
+  .gap-sm-24-y > * {
+    padding-top: 24px;
+  }
+  .gap-sm-32,
+  .gap-sm-32-x {
+    margin-left: -32px;
+  }
+  .gap-sm-32 > *,
+  .gap-sm-32-x > * {
+    padding-left: 32px;
+  }
+  .gap-sm-32,
+  .gap-sm-32-y {
+    margin-top: -32px;
+  }
+  .gap-sm-32 > *,
+  .gap-sm-32-y > * {
+    padding-top: 32px;
+  }
+  .gap-sm-36,
+  .gap-sm-36-x {
+    margin-left: -36px;
+  }
+  .gap-sm-36 > *,
+  .gap-sm-36-x > * {
+    padding-left: 36px;
+  }
+  .gap-sm-36,
+  .gap-sm-36-y {
+    margin-top: -36px;
+  }
+  .gap-sm-36 > *,
+  .gap-sm-36-y > * {
+    padding-top: 36px;
+  }
+  .gap-sm-40,
+  .gap-sm-40-x {
+    margin-left: -40px;
+  }
+  .gap-sm-40 > *,
+  .gap-sm-40-x > * {
+    padding-left: 40px;
+  }
+  .gap-sm-40,
+  .gap-sm-40-y {
+    margin-top: -40px;
+  }
+  .gap-sm-40 > *,
+  .gap-sm-40-y > * {
+    padding-top: 40px;
+  }
+  .gap-sm-44,
+  .gap-sm-44-x {
+    margin-left: -44px;
+  }
+  .gap-sm-44 > *,
+  .gap-sm-44-x > * {
+    padding-left: 44px;
+  }
+  .gap-sm-44,
+  .gap-sm-44-y {
+    margin-top: -44px;
+  }
+  .gap-sm-44 > *,
+  .gap-sm-44-y > * {
+    padding-top: 44px;
+  }
+  .gap-sm-48,
+  .gap-sm-48-x {
+    margin-left: -48px;
+  }
+  .gap-sm-48 > *,
+  .gap-sm-48-x > * {
+    padding-left: 48px;
+  }
+  .gap-sm-48,
+  .gap-sm-48-y {
+    margin-top: -48px;
+  }
+  .gap-sm-48 > *,
+  .gap-sm-48-y > * {
+    padding-top: 48px;
+  }
+  .gap-sm-60,
+  .gap-sm-60-x {
+    margin-left: -60px;
+  }
+  .gap-sm-60 > *,
+  .gap-sm-60-x > * {
+    padding-left: 60px;
+  }
+  .gap-sm-60,
+  .gap-sm-60-y {
+    margin-top: -60px;
+  }
+  .gap-sm-60 > *,
+  .gap-sm-60-y > * {
+    padding-top: 60px;
+  }
+  .gap-sm-72,
+  .gap-sm-72-x {
+    margin-left: -72px;
+  }
+  .gap-sm-72 > *,
+  .gap-sm-72-x > * {
+    padding-left: 72px;
+  }
+  .gap-sm-72,
+  .gap-sm-72-y {
+    margin-top: -72px;
+  }
+  .gap-sm-72 > *,
+  .gap-sm-72-y > * {
+    padding-top: 72px;
+  }
+  .gap-sm-84,
+  .gap-sm-84-x {
+    margin-left: -84px;
+  }
+  .gap-sm-84 > *,
+  .gap-sm-84-x > * {
+    padding-left: 84px;
+  }
+  .gap-sm-84,
+  .gap-sm-84-y {
+    margin-top: -84px;
+  }
+  .gap-sm-84 > *,
+  .gap-sm-84-y > * {
+    padding-top: 84px;
+  }
+  .gap-sm-96,
+  .gap-sm-96-x {
+    margin-left: -96px;
+  }
+  .gap-sm-96 > *,
+  .gap-sm-96-x > * {
+    padding-left: 96px;
+  }
+  .gap-sm-96,
+  .gap-sm-96-y {
+    margin-top: -96px;
+  }
+  .gap-sm-96 > *,
+  .gap-sm-96-y > * {
+    padding-top: 96px;
+  }
+  .reset-sm {
+    margin-left: 0;
+  }
+}
+/* ==========================================================================
+   PSDGator SCSS Styles [BASE]
+   ========================================================================== */
+::-moz-selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+::selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+  vertical-align: middle;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+textarea {
+  resize: vertical;
+}
+
+picture,
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/**
+ * Helpers
+ */
+.clearfix::before,
+.clearfix::after {
+  content: " ";
+  display: table;
+}
+
+.clearfix::after {
+  clear: both;
+}
+
+/**
+ * The Container
+ */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  padding: 0 var(--container-pad);
+  margin: 0 auto;
+}
+.container--fluid {
+  max-width: 100%;
+}
+
+/**
+ * Global styles
+ */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html {
+  color: var(--main-font-color);
+  font-family: var(--main-font-family);
+  font-size: var(--main-font-size);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+body {
+  font-size: 1rem;
+  line-height: 1.5;
+  background-color: var(--body-background);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 1rem 0;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.17rem;
+}
+
+h4 {
+  font-size: 1rem;
+}
+
+h5 {
+  font-size: 0.83rem;
+}
+
+h6 {
+  font-size: 0.67rem;
+}
+
+p {
+  margin: 1rem 0;
+}
+
+ul, ol {
+  margin: 1rem;
+}
+
+ul li, ol li {
+  margin: 0.5rem 0;
+}
+
+a {
+  color: #007bff;
+}
+
+a:hover {
+  color: var(--hover-color);
+  text-decoration: underline;
+}
+
+blockquote {
+  margin: 1rem 0;
+  padding: 0 1rem;
+  color: #6c757d;
+  border-left: 0.25rem solid #dee2e6;
+}
+
+code {
+  font-family: "Courier New", Courier, monospace;
+}
+
+pre {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  overflow: auto;
+}
+
+/* ==========================================================================
+   PSDGator SCSS Styles [PARTIALS:HEADER]
+   ========================================================================== */
+.site-header {
+  /* Continue .site-header bellow */
+}
+
+/* ==========================================================================
+   PSDGator SCSS Styles [PARTIALS:MAIN]
+   ========================================================================== */
+.vanished {
+  display: none;
+}
+
+.unlist {
+  margin: 0;
+  list-style: none;
+}
+
+.section {
+  padding: clamp(2rem, 1.5rem + 3vw, 4rem) 0 !important;
+  padding-block: clamp(2rem, 1.5rem + 3vw, 4rem) !important;
+  position: relative;
+}
+
+.slider-example {
+  margin-bottom: 60px;
+}
+.slider-example .slick-slide {
+  padding: 240px 60px;
+  font-size: 30px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid rgba(35, 35, 35, 0.1);
+  border-radius: 3px;
+}
+
+.slick-prev::before, .slick-next::before {
+  color: #000;
+}
+
+.slick-next {
+  right: 25px;
+  z-index: 1;
+}
+
+.slick-prev {
+  left: 25px;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   PSDGator SCSS Styles [PARTIALS:FOOTER]
+   ========================================================================== */
+.site-footer {
+  /* Continue .site-footer bellow */
+}
+
+/* ==========================================================================
+   PSDGator SCSS Styles [PARTIALS:404]
+   ========================================================================== */
+.section--404 {
+  min-height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.section--404 .s404-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.section--404 .s404-title {
+  font-size: 8rem;
+}
+.section--404 .s404-subtitle {
+  font-size: 3rem;
+}
+.section--404 .s404-image {
+  max-height: 250px;
+}
+.section--404 .s404-link {
+  color: #fff !important;
+  padding: 10px 20px;
+  background: #39ac31;
+  margin: 20px 0;
+  display: inline-block;
+}
+
+/* ==========================================================================
+   PSDGator SCSS Styles [PARTIALS:Pagination]
+   ========================================================================== */
+.pagination ul {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+}
+.pagination ul .page-numbers {
+  color: #000000;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color 0.5s;
+  border: 1px solid #DDD;
+  margin: 0 4px;
+  font-size: 20px;
+}
+.pagination ul .page-numbers.current {
+  background-color: #39ac31;
+  color: #FFFFFF;
+  border: 1px solid #39ac31;
+}
+
+/* ==========================================================================
+   PSDGator SCSS Styles [PARTIALS:POSTCARD]
+   ========================================================================== */
+.post-card {
+  background: #fafafa;
+  border-radius: 5px;
+  border: 1px solid #c5c5c5;
+  overflow: hidden;
+}
+.post-card-content {
+  padding: 10px;
+}
+
+/* ==========================================================================
+   PSDGator SCSS Styles [PARTIALS:POST]
+   ========================================================================== */
+.single-post .featured-img-wrapper img {
+  width: 100%;
+  border-radius: 15px;
+}
+.single-post .post-info {
+  padding: 20px;
+  border-radius: 5px;
+  background: #fafafa;
+  margin-top: 20px;
+}
+.single-post .post-content-wrap {
+  padding: 20px;
+  border-radius: 5px;
+  background: #fafafa;
+}
+.single-post .toc {
+  padding: 20px;
+  border-radius: 5px;
+  position: sticky;
+  top: 50px;
+  background: #fafafa;
+}
+.single-post .toc ul {
+  list-style: none;
+  margin: 10px 0 0;
+}
+@media (max-width: 768px) {
+  .single-post .post-top {
+    order: 1;
+  }
+  .single-post .post-content {
+    order: 3;
+  }
+  .single-post .post-toc {
+    order: 2;
+  }
+}
+
+.section--example {
+  background: #2f2f2f;
+  text-align: center;
+}
+.section--example h2 {
+  color: #39ac31;
+  font-size: 22px;
+}
+.section--example p {
+  color: #fff;
+}
+
+/* ==========================================================================
+   Print styles.
+   https://www.phpied.com/delay-loading-your-print-css/
+   ========================================================================== */
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: #fff !important;
+    color: #000 !important;
+    /* Black prints faster */
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+  abbr[title]::after {
+    content: " (" attr(title) ")";
+  }
+  /*
+      * Don't show links that are fragment identifiers,
+      * or use the `javascript:` pseudo protocol
+      */
+  a[href^="#"]::after,
+  a[href^="javascript:"]::after {
+    content: "";
+  }
+  pre {
+    white-space: pre-wrap !important;
+  }
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+  /*
+      * Printing Tables:
+      * https://web.archive.org/web/20180815150934/http://css-discuss.incutio.com/wiki/Printing_Tables
+      */
+  thead {
+    display: table-header-group;
+  }
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}
+/* ==========================================================================
+   PSDGator SCSS Styles [PARTIALS:FOOTER]
+   ========================================================================== */
+/**
+ *
+ * Search form block
+ *
+ */
+.search-form {
+  padding: 20px;
+}
+.search-form__input {
+  margin-right: 10px;
+}
+
+/*# sourceMappingURL=bundle.css.map */

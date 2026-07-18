@@ -1,18 +1,20 @@
 <?php
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Collection of various helper functions
  */
 
 /**
- * Returns an image url inside the theme
+ * Returns an image url inside the child theme
  *
  * @param [string] $img The image filename
  * @return string The image full path
  */
 function get_local_img_url( $img ) {
 
-	return get_template_directory_uri() . "/assets/public/img/{$img}";
+	return get_stylesheet_directory_uri() . "/assets/img/{$img}";
 
 }
 
@@ -55,11 +57,12 @@ function get_taxonomy_field( $field, $term, $taxonomy = '' ) {
  */
 function has_content( $post_id = null ) {
 
-	if ( is_null( $event_id ) ) {
+	if ( is_null( $post_id ) ) {
 		$post_id = get_the_ID();
 	}
 
-	// phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
-	return trim( str_replace( '&nbsp;', '', strip_tags( get_the_content( $post_id ) ) ) ) !== '';
+	$content = (string) get_post_field( 'post_content', $post_id );
+
+	return trim( str_replace( '&nbsp;', '', wp_strip_all_tags( $content ) ) ) !== '';
 
 }

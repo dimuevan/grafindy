@@ -136,19 +136,15 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-unused');
 	grunt.registerTask("default", ["watch"]);
 
+	// Scripts pipeline (copy/eslint/babel/browserify/uglify/clean) removed with
+	// the JS boilerplate — re-add the task configs before wiring it back in.
 	grunt.registerTask("prod", "Production Builder", function (styles = "css") {
-		// Templates
-		grunt.task.run("copy:main");
-
 		// Styles
 		if (styles === "css") {
 			grunt.task.run("concat_css");
 		} else {
 			grunt.task.run("sass");
 		}
-		grunt.task.run("postcss", "cssmin:dist2");
-
-		// Scripts
-		grunt.task.run("eslint", "babel", "browserify", "uglify", "clean");
+		grunt.task.run("postcss");
 	});
 };

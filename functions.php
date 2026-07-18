@@ -12,17 +12,30 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Child stylesheet, after the parent's global assets.
+ * Child styles, after the parent's global assets: the Grunt build outputs
+ * (vendor = normalize, bundle = the site styles) when built, then style.css.
+ * dimu-* handles so the parent Asset_Optimizer combines/minifies them.
  */
 function dimu_child_enqueue_style(): void {
+	$dir = get_stylesheet_directory();
+	$uri = get_stylesheet_directory_uri();
+
+	foreach ( array( 'dimu-vendor' => '/assets/css/vendor.css', 'dimu-bundle' => '/assets/css/bundle.css' ) as $handle => $rel ) {
+		if ( file_exists( $dir . $rel ) ) {
+			wp_enqueue_style( $handle, $uri . $rel, array(), (string) filemtime( $dir . $rel ) );
+		}
+	}
+
 	wp_enqueue_style(
 		'dimu-child',
 		get_stylesheet_uri(),
 		array(),
-		(string) filemtime( get_stylesheet_directory() . '/style.css' )
+		(string) filemtime( $dir . '/style.css' )
 	);
 }
 add_action( 'wp_enqueue_scripts', 'dimu_child_enqueue_style', 20 );
+
+require_once get_stylesheet_directory() . '/inc/child-helpers.php';
 
 // Site templates system: CPT, ACF options, resolver/render, admin preview.
 require_once get_stylesheet_directory() . '/inc/cpt/templates.php';

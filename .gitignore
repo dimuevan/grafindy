@@ -49,6 +49,11 @@ Temporary Items
 # Various for any project
 node_modules
 dist
-vendor
+/vendor/
 .cache
 .sass-cache/
+
+# Build byproducts (bundle/vendor css ARE committed; maps are not)
+assets/css/maps/
+assets/css/*.map
+unused.json
