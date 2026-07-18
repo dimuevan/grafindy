@@ -1,6 +1,11 @@
 <?php
 /**
- * Footer template partial.
+ * Footer template partial — GRAPHINDY landing footer.
+ *
+ * Layout (top to bottom): nav sections (menu name + link grid, external links
+ * get an arrow), socials row, copyright/credit row, small-print about text,
+ * giant brand mark clipped by the rounded bottom edge, then the subscribe
+ * band (CTA title + form shortcode + note) on the form background color.
  *
  * Rendered by dimu_child_render_template() and the preview endpoint inside
  * <footer class="site-footer">. Reads ACF fields from $args['template_id'].
@@ -38,68 +43,46 @@ $color_vars = sprintf(
 );
 
 $cta_link = (array) ( $cta['button_link'] ?? array() );
-$has_cta  = ! empty( $cta['title'] ) || ! empty( $cta['text'] ) || ! empty( $cta_link['url'] );
+$has_band = $form || ! empty( $cta['title'] ) || ! empty( $cta_link['url'] );
+
+// Flag off-site menu links so CSS can append the ↗ arrow.
+$dimu_child_flag_external = static function ( $atts ) {
+	$host = wp_parse_url( (string) ( $atts['href'] ?? '' ), PHP_URL_HOST );
+	if ( $host && wp_parse_url( home_url(), PHP_URL_HOST ) !== $host ) {
+		$atts['class']  = trim( ( $atts['class'] ?? '' ) . ' is-external' );
+		$atts['target'] = '_blank';
+		$atts['rel']    = 'noopener';
+	}
+	return $atts;
+};
 ?>
 <div class="footer footer--<?php echo esc_attr( $style ); ?>" style="<?php echo esc_attr( $color_vars ); ?>">
 
-	<?php if ( $has_cta ) : ?>
-	<div class="footer__cta">
-		<?php if ( ! empty( $cta['title'] ) ) : ?>
-			<h2 class="footer__cta-title"><?php echo esc_html( $cta['title'] ); ?></h2>
-		<?php endif; ?>
-		<?php if ( ! empty( $cta['text'] ) ) : ?>
-			<div class="footer__cta-text"><?php echo wp_kses_post( $cta['text'] ); ?></div>
-		<?php endif; ?>
-		<?php if ( ! empty( $cta_link['url'] ) ) : ?>
-			<a class="footer__cta-button"
-				href="<?php echo esc_url( $cta_link['url'] ); ?>"
-				<?php if ( ! empty( $cta_link['target'] ) ) : ?>target="<?php echo esc_attr( $cta_link['target'] ); ?>" rel="noopener"<?php endif; ?>>
-				<?php echo esc_html( $cta_link['title'] ?: __( 'Learn more', 'dimuone-child' ) ); ?>
-			</a>
-		<?php endif; ?>
-	</div>
-	<?php endif; ?>
+	<div class="footer__top">
+		<div class="footer__inner">
 
-	<div class="footer__main">
-
-		<?php if ( $logo_id || $about ) : ?>
-		<div class="footer__about">
 			<?php
-			if ( $logo_id ) {
-				echo wp_get_attachment_image( $logo_id, 'medium', false, array(
-					'class'   => 'footer__logo',
-					'loading' => 'lazy',
+			foreach ( $menu_ids as $menu_id ) :
+				$menu = wp_get_nav_menu_object( $menu_id );
+				if ( ! $menu ) {
+					continue;
+				}
+				?>
+			<nav class="footer__nav" aria-label="<?php echo esc_attr( $menu->name ); ?>">
+				<h3 class="footer__nav-title"><?php echo esc_html( $menu->name ); ?></h3>
+				<?php
+				add_filter( 'nav_menu_link_attributes', $dimu_child_flag_external );
+				wp_nav_menu( array(
+					'menu'        => $menu_id,
+					'container'   => false,
+					'fallback_cb' => false,
+					'depth'       => 1,
 				) );
-			}
-			if ( $about ) {
-				echo '<div class="footer__about-text">' . wp_kses_post( $about ) . '</div>';
-			}
-			?>
-		</div>
-		<?php endif; ?>
+				remove_filter( 'nav_menu_link_attributes', $dimu_child_flag_external );
+				?>
+			</nav>
+			<?php endforeach; ?>
 
-		<?php
-		foreach ( $menu_ids as $menu_id ) :
-			$menu = wp_get_nav_menu_object( $menu_id );
-			if ( ! $menu ) {
-				continue;
-			}
-			?>
-		<nav class="footer__nav" aria-label="<?php echo esc_attr( $menu->name ); ?>">
-			<h3 class="footer__nav-title"><?php echo esc_html( $menu->name ); ?></h3>
-			<?php
-			wp_nav_menu( array(
-				'menu'        => $menu_id,
-				'container'   => false,
-				'fallback_cb' => false,
-				'depth'       => 1,
-			) );
-			?>
-		</nav>
-		<?php endforeach; ?>
-
-		<?php if ( $social_rows || $form ) : ?>
-		<div class="footer__aside">
 			<?php if ( $social_rows ) : ?>
 			<ul class="footer__socials">
 				<?php
@@ -129,16 +112,55 @@ $has_cta  = ! empty( $cta['title'] ) || ! empty( $cta['text'] ) || ! empty( $cta
 			</ul>
 			<?php endif; ?>
 
-			<?php if ( $form ) : ?>
-			<div class="footer__form"><?php echo do_shortcode( $form ); ?></div>
-			<?php endif; ?>
-		</div>
-		<?php endif; ?>
+			<div class="footer__meta">
+				<?php if ( $copyright ) : ?>
+				<p class="footer__copyright"><?php echo wp_kses_post( nl2br( $copyright ) ); ?></p>
+				<?php endif; ?>
+				<p class="footer__credit">
+					<?php esc_html_e( 'Designed & Developed by', 'dimuone-child' ); ?>
+					<a href="https://dimu.studio" target="_blank" rel="noopener">DIMU.STUDIO</a>
+				</p>
+			</div>
 
+			<?php if ( $about ) : ?>
+			<div class="footer__about"><?php echo wp_kses_post( $about ); ?></div>
+			<?php endif; ?>
+
+			<?php if ( $logo_id ) : ?>
+			<div class="footer__brand">
+				<?php
+				echo wp_get_attachment_image( $logo_id, 'large', false, array(
+					'class'   => 'footer__brand-mark',
+					'loading' => 'lazy',
+					'alt'     => '',
+				) );
+				?>
+			</div>
+			<?php endif; ?>
+
+		</div>
 	</div>
 
-	<?php if ( $copyright ) : ?>
-	<div class="footer__bottom"><?php echo wp_kses_post( nl2br( $copyright ) ); ?></div>
+	<?php if ( $has_band ) : ?>
+	<div class="footer__subscribe">
+		<?php if ( ! empty( $cta['title'] ) ) : ?>
+		<h2 class="footer__subscribe-title"><?php echo esc_html( $cta['title'] ); ?></h2>
+		<?php endif; ?>
+
+		<?php if ( $form ) : ?>
+		<div class="footer__form"><?php echo do_shortcode( $form ); ?></div>
+		<?php elseif ( ! empty( $cta_link['url'] ) ) : ?>
+		<a class="footer__subscribe-button"
+			href="<?php echo esc_url( $cta_link['url'] ); ?>"
+			<?php if ( ! empty( $cta_link['target'] ) ) : ?>target="<?php echo esc_attr( $cta_link['target'] ); ?>" rel="noopener"<?php endif; ?>>
+			<?php echo esc_html( $cta_link['title'] ?: __( 'Subscribe', 'dimuone-child' ) ); ?>
+		</a>
+		<?php endif; ?>
+
+		<?php if ( ! empty( $cta['text'] ) ) : ?>
+		<div class="footer__subscribe-note"><?php echo wp_kses_post( $cta['text'] ); ?></div>
+		<?php endif; ?>
+	</div>
 	<?php endif; ?>
 
 </div>

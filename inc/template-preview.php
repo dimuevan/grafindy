@@ -80,7 +80,7 @@ function dimu_child_render_preview_metabox( WP_Post $post ): void {
 		'dimu_template_preview_' . $post->ID
 	);
 	printf(
-		'<iframe src="%s" style="width:100%%;height:420px;border:0;background:#fff;" loading="lazy" title="%s"></iframe>',
+		'<iframe src="%s" style="width:100%%;height:75vh;min-height:480px;border:0;background:#fff;" loading="lazy" title="%s"></iframe>',
 		esc_url( $url ),
 		esc_attr__( 'Template preview', 'dimuone-child' )
 	);

@@ -1,38 +1,63 @@
-/* Footer site-template part. Colors come from the template's Styles tab
-   (CSS vars set inline on .footer). Inlined at render by Asset_Loader. */
+/* GRAPHINDY landing footer. Colors come from the template's Styles tab
+   (CSS vars set inline on .footer). Inlined at render by Asset_Loader.
+   The light top section gets rounded bottom corners over the subscribe
+   band's background; the brand mark bleeds past and is clipped. */
 
-.footer{background:var(--footer-bg,#f2f1f3);color:var(--footer-text,#111);padding:3rem 1.5rem 0;font-size:.9375rem;line-height:1.6}
-.footer a{color:inherit}
+.footer{background:var(--footer-form-bg,#000)}
+.footer a{color:inherit;text-decoration:none}
 
-.footer__cta{max-width:72rem;margin:0 auto 3rem;display:flex;flex-wrap:wrap;align-items:center;gap:1rem 2rem;padding-bottom:2.5rem;border-bottom:1px solid color-mix(in srgb,currentColor 15%,transparent)}
-.footer__cta-title{margin:0;font-size:1.75rem;line-height:1.2}
-.footer__cta-text{flex:1 1 20rem;margin:0}
-.footer__cta-text p{margin:0}
-.footer__cta-button{display:inline-block;padding:.75rem 1.5rem;background:var(--footer-text,#111);color:var(--footer-bg,#f2f1f3);text-decoration:none;border-radius:.25rem;white-space:nowrap}
-.footer__cta-button:hover{opacity:.85}
+.footer__top{background:var(--footer-bg,#f2f1f3);color:var(--footer-text,#111);border-radius:0 0 1.75rem 1.75rem;overflow:hidden;padding:6rem 1.5rem 0}
+.footer__inner{max-width:72rem;margin:0 auto}
 
-.footer__main{max-width:72rem;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:2.5rem;padding-bottom:2.5rem}
-
-.footer__logo{max-width:10rem;height:auto;display:block;margin-bottom:1rem}
-.footer__about-text p{margin:0 0 .75em}
-.footer__about-text p:last-child{margin-bottom:0}
-
-.footer__nav-title{margin:0 0 .75rem;font-size:1rem}
-.footer__nav ul{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
-.footer__nav a{text-decoration:none}
+/* Nav sections: menu name + link grid; off-site links get the arrow. */
+.footer__nav{margin-bottom:3.5rem}
+.footer__nav-title{margin:0 0 1.5rem;font-size:1rem;font-weight:600}
+.footer__nav ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(8rem,1fr));gap:1.25rem 1.5rem;font-size:.875rem}
 .footer__nav a:hover{text-decoration:underline}
+.footer__nav a.is-external::after{content:"\2197";display:inline-block;margin-left:.35em;font-size:.75em;opacity:.65}
 
-.footer__socials{list-style:none;display:flex;flex-wrap:wrap;gap:.75rem;margin:0 0 1.5rem;padding:0}
-.footer__socials li:last-child{margin-right:0}
+/* Socials: monochrome icons spread across the full row. */
+.footer__socials{list-style:none;display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.25rem;margin:4.5rem 0;padding:0}
 .footer__socials a{display:block}
-.footer__social-icon{width:1.5rem;height:1.5rem;object-fit:contain;display:block}
+.footer__socials a:hover{opacity:.55}
+.footer__social-icon{width:1.75rem;height:1.75rem;object-fit:contain;display:block}
 
-.footer__form{background:var(--footer-form-bg,#000);padding:1.25rem;border-radius:.375rem}
+/* Copyright left, studio credit right. */
+.footer__meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.75rem 2rem;margin:5rem 0 1.25rem;font-size:.8125rem}
+.footer__meta p{margin:0}
+.footer__credit a{font-weight:700}
+.footer__credit a:hover{text-decoration:underline}
 
-.footer__bottom{max-width:72rem;margin:0 auto;padding:1.25rem 0 1.75rem;border-top:1px solid color-mix(in srgb,currentColor 15%,transparent);font-size:.8125rem}
+/* Small-print / disclaimer. */
+.footer__about{font-size:.75rem;line-height:1.6;opacity:.75;margin-bottom:2rem}
+.footer__about p{margin:0 0 .5em}
+.footer__about p:last-child{margin-bottom:0}
 
-/* Landing style: single centered column. */
-.footer--two .footer__cta{flex-direction:column;text-align:center;justify-content:center}
-.footer--two .footer__main{grid-template-columns:1fr;justify-items:center;text-align:center}
-.footer--two .footer__socials{justify-content:center}
-.footer--two .footer__bottom{text-align:center}
+/* Giant brand mark, clipped by the section's rounded bottom edge. */
+.footer__brand{display:flex;justify-content:center;margin-top:3rem}
+.footer__brand-mark{width:min(24rem,70%);height:auto;display:block;margin-bottom:-10%}
+
+/* Subscribe band. */
+.footer__subscribe{background:var(--footer-form-bg,#000);color:#fff;text-align:center;padding:5.5rem 1.5rem 4.5rem}
+.footer__subscribe-title{margin:0 auto 2.5rem;max-width:46rem;font-family:var(--footer-serif,Georgia,"Times New Roman",serif);font-weight:500;font-size:clamp(1.875rem,4.5vw,3rem);line-height:1.15}
+.footer__subscribe-note{margin:1.5rem auto 0;max-width:32rem;font-size:.75rem;color:#8a8a8a}
+.footer__subscribe-note a{text-decoration:underline}
+.footer__subscribe-note p{margin:0}
+.footer__subscribe-button{display:inline-block;background:#fff;color:#111;border-radius:999px;padding:.875rem 2rem;font-weight:600}
+.footer__subscribe-button:hover{opacity:.85}
+
+/* Best-effort styling for the embedded form shortcode: dark pill input,
+   white pill submit. Adjust per form plugin markup if needed. */
+.footer__form{max-width:26rem;margin:0 auto}
+.footer__form form{display:flex;align-items:center;gap:.5rem;background:#161616;border:1px solid #2a2a2a;border-radius:999px;padding:.25rem .25rem .25rem 1.25rem}
+.footer__form input[type=email],.footer__form input[type=text]{flex:1;min-width:0;background:transparent;border:0;outline:none;color:#fff;font-size:.9375rem}
+.footer__form ::placeholder{color:#8a8a8a}
+.footer__form button,.footer__form input[type=submit]{background:#fff;color:#111;border:0;border-radius:999px;padding:.75rem 1.75rem;font-weight:600;cursor:pointer}
+.footer__form button:hover,.footer__form input[type=submit]:hover{opacity:.85}
+
+@media (max-width:40rem){
+	.footer__top{padding-top:4rem;border-radius:0 0 1.25rem 1.25rem}
+	.footer__socials{justify-content:flex-start;margin:3rem 0}
+	.footer__meta{margin-top:3rem}
+	.footer__brand-mark{width:min(16rem,80%)}
+}
