@@ -1882,9 +1882,198 @@ pre {
 
 /* ==========================================================================
    PSDGator SCSS Styles [PARTIALS:FOOTER]
+
+   GRAPHINDY landing footer. ACF colors arrive as inline CSS vars on
+   .footer (--footer-bg / --footer-text / --footer-form-bg); everything
+   else uses the framework's fluid tokens.
    ========================================================================== */
 .site-footer {
+  /* Light top section: rounded bottom corners over the subscribe band;
+     overflow clips the brand mark bleeding past the edge. */
+  /* Nav sections: menu name + link grid; off-site links get the arrow. */
+  /* Socials: monochrome icons spread across the full row. */
+  /* Copyright left, studio credit right. */
+  /* Small-print / disclaimer. */
+  /* Giant brand mark, clipped by the section's rounded bottom edge. */
+  /* Subscribe band. */
   /* Continue .site-footer bellow */
+}
+.site-footer .footer {
+  background: var(--footer-form-bg, #000);
+}
+.site-footer .footer__top {
+  background: var(--footer-bg, #f2f1f3);
+  color: var(--footer-text, #111);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  overflow: hidden;
+  padding-top: var(--sp-6);
+}
+.site-footer .footer__nav {
+  margin-bottom: var(--sp-5);
+}
+.site-footer .footer__nav .footer__nav-title {
+  margin-bottom: var(--sp-3);
+  font-size: var(--fs-h6);
+  font-weight: 600;
+}
+.site-footer .footer__nav ul {
+  margin: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(110px, 99.44px + 2.11vw, 140px), 1fr));
+  gap: clamp(12px, 9.18px + 0.56vw, 20px) clamp(14px, 10.48px + 0.7vw, 24px);
+  font-size: var(--fs-small);
+}
+.site-footer .footer__nav a:hover {
+  color: var(--hover-color);
+}
+.site-footer .footer__nav a.is-external::after {
+  content: "↗";
+  display: inline-block;
+  margin-left: 0.35em;
+  font-size: 0.75em;
+  opacity: 0.65;
+}
+.site-footer .footer__socials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: clamp(12px, 9.18px + 0.56vw, 20px);
+  margin: var(--sp-5) 0;
+}
+.site-footer .footer__socials a {
+  display: block;
+}
+.site-footer .footer__socials a:hover {
+  opacity: 0.55;
+}
+.site-footer .footer__socials .footer__social-icon {
+  width: clamp(22px, 19.89px + 0.42vw, 28px);
+  height: clamp(22px, 19.89px + 0.42vw, 28px);
+  object-fit: contain;
+  display: block;
+}
+.site-footer .footer__meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sp-1) var(--sp-4);
+  margin: var(--sp-6) 0 var(--sp-2);
+  font-size: var(--fs-small);
+}
+.site-footer .footer__meta p {
+  margin: 0;
+}
+.site-footer .footer__meta .footer__credit a {
+  font-weight: 700;
+}
+.site-footer .footer__meta .footer__credit a:hover {
+  color: var(--hover-color);
+}
+.site-footer .footer__about {
+  font-size: clamp(0.688rem, 0.666rem + 0.07vw, 0.75rem);
+  line-height: 1.6;
+  opacity: 0.75;
+}
+.site-footer .footer__about p {
+  margin: 0 0 0.5em;
+}
+.site-footer .footer__about p:last-child {
+  margin-bottom: 0;
+}
+.site-footer .footer__brand {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--sp-5);
+}
+.site-footer .footer__brand .footer__brand-mark {
+  width: min(24rem, 70%);
+  height: auto;
+  display: block;
+  margin-bottom: -10%;
+}
+.site-footer .footer__subscribe {
+  background: var(--footer-form-bg, #000);
+  color: #fff;
+  padding: var(--sp-6) 0 var(--sp-5);
+  /* Best-effort styling for the embedded form shortcode: dark pill
+     input, white pill submit. Adjust per form plugin markup. */
+}
+.site-footer .footer__subscribe .footer__subscribe-title {
+  max-width: 46rem;
+  margin: 0 auto var(--sp-4);
+  font-family: var(--heading-font-family);
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: 1.15;
+}
+.site-footer .footer__subscribe .footer__subscribe-note {
+  max-width: 32rem;
+  margin: var(--sp-3) auto 0;
+  font-size: clamp(0.688rem, 0.666rem + 0.07vw, 0.75rem);
+  color: #8a8a8a;
+}
+.site-footer .footer__subscribe .footer__subscribe-note a {
+  text-decoration: underline;
+}
+.site-footer .footer__subscribe .footer__subscribe-note p {
+  margin: 0;
+}
+.site-footer .footer__subscribe .footer__subscribe-button {
+  display: inline-block;
+  background: #fff;
+  color: #111;
+  border-radius: 999px;
+  padding: clamp(12px, 11.3px + 0.14vw, 14px) clamp(24px, 21.18px + 0.56vw, 32px);
+  font-weight: 600;
+}
+.site-footer .footer__subscribe .footer__subscribe-button:hover {
+  opacity: 0.85;
+}
+.site-footer .footer__subscribe .footer__form {
+  max-width: 26rem;
+  margin: 0 auto;
+}
+.site-footer .footer__subscribe .footer__form form {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 999px;
+  padding: 4px 4px 4px clamp(16px, 14.59px + 0.28vw, 20px);
+}
+.site-footer .footer__subscribe .footer__form input[type=email],
+.site-footer .footer__subscribe .footer__form input[type=text] {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: #fff;
+  font-size: var(--fs-small);
+}
+.site-footer .footer__subscribe .footer__form ::placeholder {
+  color: #8a8a8a;
+}
+.site-footer .footer__subscribe .footer__form button,
+.site-footer .footer__subscribe .footer__form input[type=submit] {
+  background: #fff;
+  color: #111;
+  border: 0;
+  border-radius: 999px;
+  padding: clamp(10px, 9.3px + 0.14vw, 12px) clamp(20px, 17.18px + 0.56vw, 28px);
+  font-weight: 600;
+  cursor: pointer;
+}
+.site-footer .footer__subscribe .footer__form button:hover,
+.site-footer .footer__subscribe .footer__form input[type=submit]:hover {
+  opacity: 0.85;
+}
+@media (max-width: 768px) {
+  .site-footer .footer__socials {
+    justify-content: flex-start;
+  }
 }
 
 /* ==========================================================================

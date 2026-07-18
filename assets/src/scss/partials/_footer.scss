@@ -1,9 +1,230 @@
 /* ==========================================================================
    PSDGator SCSS Styles [PARTIALS:FOOTER]
+
+   GRAPHINDY landing footer. ACF colors arrive as inline CSS vars on
+   .footer (--footer-bg / --footer-text / --footer-form-bg); everything
+   else uses the framework's fluid tokens.
    ========================================================================== */
 
 .site-footer {
 
+	.footer {
+		background: var(--footer-form-bg, #000);
+	}
+
+	/* Light top section: rounded bottom corners over the subscribe band;
+	   overflow clips the brand mark bleeding past the edge. */
+	.footer__top {
+		background: var(--footer-bg, #f2f1f3);
+		color: var(--footer-text, #111);
+		border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+		overflow: hidden;
+		padding-top: var(--sp-6);
+	}
+
+	/* Nav sections: menu name + link grid; off-site links get the arrow. */
+	.footer__nav {
+		margin-bottom: var(--sp-5);
+
+		.footer__nav-title {
+			margin-bottom: var(--sp-3);
+			font-size: var(--fs-h6);
+			font-weight: 600;
+		}
+
+		ul {
+			margin: 0;
+			list-style: none;
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(#{fluid(140px, 110px)}, 1fr));
+			gap: fluid(20px) fluid(24px);
+			font-size: var(--fs-small);
+		}
+
+		a:hover {
+			color: var(--hover-color);
+		}
+
+		a.is-external::after {
+			content: "\2197";
+			display: inline-block;
+			margin-left: 0.35em;
+			font-size: 0.75em;
+			opacity: 0.65;
+		}
+	}
+
+	/* Socials: monochrome icons spread across the full row. */
+	.footer__socials {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: fluid(20px);
+		margin: var(--sp-5) 0;
+
+		a {
+			display: block;
+
+			&:hover {
+				opacity: 0.55;
+			}
+		}
+
+		.footer__social-icon {
+			width: fluid(28px, 22px);
+			height: fluid(28px, 22px);
+			object-fit: contain;
+			display: block;
+		}
+	}
+
+	/* Copyright left, studio credit right. */
+	.footer__meta {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: var(--sp-1) var(--sp-4);
+		margin: var(--sp-6) 0 var(--sp-2);
+		font-size: var(--fs-small);
+
+		p {
+			margin: 0;
+		}
+
+		.footer__credit a {
+			font-weight: 700;
+
+			&:hover {
+				color: var(--hover-color);
+			}
+		}
+	}
+
+	/* Small-print / disclaimer. */
+	.footer__about {
+		font-size: #{fluid-type(12px, 11px)};
+		line-height: 1.6;
+		opacity: 0.75;
+
+		p {
+			margin: 0 0 0.5em;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	/* Giant brand mark, clipped by the section's rounded bottom edge. */
+	.footer__brand {
+		display: flex;
+		justify-content: center;
+		margin-top: var(--sp-5);
+
+		.footer__brand-mark {
+			width: min(24rem, 70%);
+			height: auto;
+			display: block;
+			margin-bottom: -10%;
+		}
+	}
+
+	/* Subscribe band. */
+	.footer__subscribe {
+		background: var(--footer-form-bg, #000);
+		color: #fff;
+		padding: var(--sp-6) 0 var(--sp-5);
+
+		.footer__subscribe-title {
+			max-width: 46rem;
+			margin: 0 auto var(--sp-4);
+			font-family: var(--heading-font-family);
+			font-size: var(--fs-h2);
+			font-weight: 600;
+			line-height: 1.15;
+		}
+
+		.footer__subscribe-note {
+			max-width: 32rem;
+			margin: var(--sp-3) auto 0;
+			font-size: #{fluid-type(12px, 11px)};
+			color: #8a8a8a;
+
+			a {
+				text-decoration: underline;
+			}
+
+			p {
+				margin: 0;
+			}
+		}
+
+		.footer__subscribe-button {
+			display: inline-block;
+			background: #fff;
+			color: #111;
+			border-radius: 999px;
+			padding: fluid(14px, 12px) fluid(32px, 24px);
+			font-weight: 600;
+
+			&:hover {
+				opacity: 0.85;
+			}
+		}
+
+		/* Best-effort styling for the embedded form shortcode: dark pill
+		   input, white pill submit. Adjust per form plugin markup. */
+		.footer__form {
+			max-width: 26rem;
+			margin: 0 auto;
+
+			form {
+				display: flex;
+				align-items: center;
+				gap: var(--sp-1);
+				background: #161616;
+				border: 1px solid #2a2a2a;
+				border-radius: 999px;
+				padding: 4px 4px 4px fluid(20px, 16px);
+			}
+
+			input[type="email"],
+			input[type="text"] {
+				flex: 1;
+				min-width: 0;
+				background: transparent;
+				border: 0;
+				outline: none;
+				color: #fff;
+				font-size: var(--fs-small);
+			}
+
+			::placeholder {
+				color: #8a8a8a;
+			}
+
+			button,
+			input[type="submit"] {
+				background: #fff;
+				color: #111;
+				border: 0;
+				border-radius: 999px;
+				padding: fluid(12px, 10px) fluid(28px, 20px);
+				font-weight: 600;
+				cursor: pointer;
+
+				&:hover {
+					opacity: 0.85;
+				}
+			}
+		}
+	}
+
+	@include media("<=md") {
+		.footer__socials {
+			justify-content: flex-start;
+		}
+	}
 
 	/* Continue .site-footer bellow */
 

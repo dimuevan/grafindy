@@ -73,7 +73,7 @@ function dimu_child_render_template( string $type ): void {
 		esc_attr( $role )
 	);
 
-	// Asset_Loader auto-enqueues parts/site-template--{type}.css for this part.
+	// Styles live in the scss pipeline (partials/_{type}.scss -> one.css).
 	get_template_part( 'template-parts/site-template', $type, array( 'template_id' => $id ) );
 
 	printf( '</%s>', $tag ); // phpcs:ignore WordPress.Security.EscapeOutput

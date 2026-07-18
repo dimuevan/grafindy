@@ -9,7 +9,7 @@
  *
  * Rendered by dimu_child_render_template() and the preview endpoint inside
  * <footer class="site-footer">. Reads ACF fields from $args['template_id'].
- * CSS: assets/css/parts/site-template--footer.css (auto via Asset_Loader).
+ * Styles: assets/src/scss/partials/_footer.scss (compiled into one.css).
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -59,7 +59,7 @@ $dimu_child_flag_external = static function ( $atts ) {
 <div class="footer footer--<?php echo esc_attr( $style ); ?>" style="<?php echo esc_attr( $color_vars ); ?>">
 
 	<div class="footer__top">
-		<div class="footer__inner">
+		<div class="container">
 
 			<?php
 			foreach ( $menu_ids as $menu_id ) :
@@ -84,7 +84,7 @@ $dimu_child_flag_external = static function ( $atts ) {
 			<?php endforeach; ?>
 
 			<?php if ( $social_rows ) : ?>
-			<ul class="footer__socials">
+			<ul class="footer__socials unlist">
 				<?php
 				foreach ( $social_rows as $row ) :
 					$icon_id = (int) ( $row['icon'] ?? 0 );
@@ -143,23 +143,25 @@ $dimu_child_flag_external = static function ( $atts ) {
 
 	<?php if ( $has_band ) : ?>
 	<div class="footer__subscribe">
-		<?php if ( ! empty( $cta['title'] ) ) : ?>
-		<h2 class="footer__subscribe-title"><?php echo esc_html( $cta['title'] ); ?></h2>
-		<?php endif; ?>
+		<div class="container text-center">
+			<?php if ( ! empty( $cta['title'] ) ) : ?>
+			<h2 class="footer__subscribe-title"><?php echo esc_html( $cta['title'] ); ?></h2>
+			<?php endif; ?>
 
-		<?php if ( $form ) : ?>
-		<div class="footer__form"><?php echo do_shortcode( $form ); ?></div>
-		<?php elseif ( ! empty( $cta_link['url'] ) ) : ?>
-		<a class="footer__subscribe-button"
-			href="<?php echo esc_url( $cta_link['url'] ); ?>"
-			<?php if ( ! empty( $cta_link['target'] ) ) : ?>target="<?php echo esc_attr( $cta_link['target'] ); ?>" rel="noopener"<?php endif; ?>>
-			<?php echo esc_html( $cta_link['title'] ?: __( 'Subscribe', 'dimuone-child' ) ); ?>
-		</a>
-		<?php endif; ?>
+			<?php if ( $form ) : ?>
+			<div class="footer__form"><?php echo do_shortcode( $form ); ?></div>
+			<?php elseif ( ! empty( $cta_link['url'] ) ) : ?>
+			<a class="footer__subscribe-button"
+				href="<?php echo esc_url( $cta_link['url'] ); ?>"
+				<?php if ( ! empty( $cta_link['target'] ) ) : ?>target="<?php echo esc_attr( $cta_link['target'] ); ?>" rel="noopener"<?php endif; ?>>
+				<?php echo esc_html( $cta_link['title'] ?: __( 'Subscribe', 'dimuone-child' ) ); ?>
+			</a>
+			<?php endif; ?>
 
-		<?php if ( ! empty( $cta['text'] ) ) : ?>
-		<div class="footer__subscribe-note"><?php echo wp_kses_post( $cta['text'] ); ?></div>
-		<?php endif; ?>
+			<?php if ( ! empty( $cta['text'] ) ) : ?>
+			<div class="footer__subscribe-note"><?php echo wp_kses_post( $cta['text'] ); ?></div>
+			<?php endif; ?>
+		</div>
 	</div>
 	<?php endif; ?>
 
