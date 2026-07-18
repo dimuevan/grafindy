@@ -1,0 +1,25 @@
+/* ==========================================================================
+   PSDGator SCSS Styles [UTILITIES]
+
+   A tiny utility-first CSS "framework"
+   ========================================================================== */
+
+@if $enable-utils {
+  @each $utilName, $utilProperty in $utils {
+    .#{str-replace($utilName, "{-}", "-")} {
+      #{nth($utilProperty, 1)}: nth($utilProperty, 2);
+    }
+  }
+
+  @if $enable-responsive-utils {
+    @each $bname, $bvalue in $breakpoints {
+      @media screen and (#{$media-var}-width: $bvalue) {
+        @each $utilName, $utilProperty in $utils {
+          .#{str-replace($utilName, "{-}", "-#{$bname}-")} {
+            #{nth($utilProperty, 1)}: nth($utilProperty, 2);
+          }
+        }
+      }
+    }
+  }
+}

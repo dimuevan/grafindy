@@ -1,0 +1,75 @@
+/* ==========================================================================
+   PSDGator SCSS MIXINS [MEDIA]
+   ========================================================================== */
+
+@use "sass:map";
+@use "sass:list";
+
+/**
+ * A powerful shorthand for media queries
+ */
+@mixin screen($size, $type: $media-var) {
+	@if map-has-key($breakpoints, $size) {
+		@media screen and (#{$type}-width: map-get($breakpoints, $size)) {
+			@content;
+		}
+	} @else if is-em($size) {
+		@media screen and (#{$type}-width: $size) {
+			@content;
+		}
+	} @else {
+		@content;
+	}
+}
+
+/**
+ * A quick-&-dirty shorthand for responsive properties
+ *
+ * Usage:
+ *
+ * .test {
+ *   @include resp(
+ *     (padding, 25px, (md: 20px 15px, 1440px: 36px)),
+ *     (margin, 25px, (md: 20px 15px, 1440px: 36px))
+ *   );
+ * }
+ */
+@mixin resp($rules...) {
+	$mediabacket: ();
+
+	@for $i from 1 to length($rules) + 1 {
+		$prop: list.nth(list.nth($rules, $i), 1);
+		$value: list.nth(list.nth($rules, $i), 2);
+
+		#{$prop}: $value;
+
+		@if length(list.nth($rules, $i)) > 2 {
+			$media: list.nth(list.nth($rules, $i), 3);
+			@each $mname, $mval in $media {
+				@if map.has-key($mediabacket, $mname) {
+					$tmp: map.get($mediabacket, $mname);
+					$mediabacket: map.set(
+						$mediabacket,
+						$mname,
+						list.append($tmp, "#{$prop}:#{$mval}")
+					);
+				} @else {
+					$mediabacket: map.set($mediabacket, $mname, ("#{$prop}:#{$mval}"));
+				}
+			}
+		}
+	}
+
+	@each $key, $value in $mediabacket {
+		@if map.has-key($breakpoints, $key) {
+			$key: map.get($breakpoints, $key);
+		}
+		@media screen and (max-width: $key) {
+			@each $prop in $value {
+				#{list.nth(str-split($prop, ":"), 1)}: unquote(
+					list.nth(str-split($prop, ":"), 2)
+				);
+			}
+		}
+	}
+}

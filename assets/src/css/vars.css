@@ -1,0 +1,54 @@
+/* ==========================================================================
+   PSDGator CSS Styles [VARIABLES]
+   Theme Settings
+   ========================================================================== */
+
+:root {
+
+  /* html|body */
+  --main-font-family: sans-serif;
+  --main-font-size: 16px;
+  --main-font-color: #323335;
+  --body-background: #f2f3f5;
+
+  /* layout */
+  --container-width: 1440px;
+  --container-pad: min(8vw, 100px);
+
+  /* grid */
+  --grid-gap-0: 0;
+  --grid-gap-1: 12px;
+  --grid-gap-2: 24px;
+  --grid-gap-3: 36px;
+  --grid-gap-4: 48px;
+  --grid-gap-5: 60px;
+
+  /*--> Place custom settings here <--*/
+
+}
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+/* Extra large devices ( laptops ) */
+@media only screen and (max-width: 1366px) {
+  :root {}
+}
+
+/* Large devices ( tablets ) */
+@media only screen and (max-width: 1024px) {
+  :root {}
+}
+
+/* Medium devices ( landscape phones ) */
+@media only screen and (max-width: 768px) {
+  :root {}
+}
+
+/* Small devices ( portrait phones ) */
+@media only screen and (max-width: 500px) {
+  :root {
+    --container-pad: 20px;
+  }
+}

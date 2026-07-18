@@ -1,0 +1,329 @@
+/* ==========================================================================
+   PSDGator CSS Styles [UTILITIES]
+
+   A tiny utility-first CSS "framework"
+   ========================================================================== */
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-visible {
+  overflow: visible;
+}
+
+.position-static {
+  position: static;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.d-block {
+  display: block;
+}
+
+.d-inline-block {
+  display: inline-block;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.d-inline-flex {
+  display: inline-flex;
+}
+
+.d-none {
+  display: none;
+}
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+/* Extra large devices ( laptops ) */
+@media only screen and (max-width: 1366px) {
+
+  .text-xl-center {
+    text-align: center;
+  }
+
+  .text-xl-left {
+    text-align: left;
+  }
+
+  .text-xl-right {
+    text-align: right;
+  }
+
+  .float-xl-left {
+    float: left;
+  }
+
+  .float-xl-right {
+    float: right;
+  }
+
+  .overflow-xl-hidden {
+    overflow: hidden;
+  }
+
+  .overflow-xl-visible {
+    overflow: visible;
+  }
+
+  .position-xl-static {
+    position: static;
+  }
+
+  .position-xl-relative {
+    position: relative;
+  }
+
+  .position-xl-absolute {
+    position: absolute;
+  }
+
+  .d-xl-block {
+    display: block;
+  }
+
+  .d-xl-inline-block {
+    display: inline-block;
+  }
+
+  .d-xl-flex {
+    display: flex;
+  }
+
+  .d-xl-inline-flex {
+    display: inline-flex;
+  }
+
+  .d-xl-none {
+    display: none;
+  }
+
+}
+
+/* Large devices ( tablets ) */
+@media only screen and (max-width: 1024px) {
+
+  .text-lg-center {
+    text-align: center;
+  }
+
+  .text-lg-left {
+    text-align: left;
+  }
+
+  .text-lg-right {
+    text-align: right;
+  }
+
+  .float-lg-left {
+    float: left;
+  }
+
+  .float-lg-right {
+    float: right;
+  }
+
+  .overflow-lg-hidden {
+    overflow: hidden;
+  }
+
+  .overflow-lg-visible {
+    overflow: visible;
+  }
+
+  .position-lg-static {
+    position: static;
+  }
+
+  .position-lg-relative {
+    position: relative;
+  }
+
+  .position-lg-absolute {
+    position: absolute;
+  }
+
+  .d-lg-block {
+    display: block;
+  }
+
+  .d-lg-inline-block {
+    display: inline-block;
+  }
+
+  .d-lg-flex {
+    display: flex;
+  }
+
+  .d-lg-inline-flex {
+    display: inline-flex;
+  }
+
+  .d-lg-none {
+    display: none;
+  }
+
+}
+
+/* Medium devices ( landscape phones ) */
+@media only screen and (max-width: 768px) {
+
+  .text-md-center {
+    text-align: center;
+  }
+
+  .text-md-left {
+    text-align: left;
+  }
+
+  .text-md-right {
+    text-align: right;
+  }
+
+  .float-md-left {
+    float: left;
+  }
+
+  .float-md-right {
+    float: right;
+  }
+
+  .overflow-md-hidden {
+    overflow: hidden;
+  }
+
+  .overflow-md-visible {
+    overflow: visible;
+  }
+
+  .position-md-static {
+    position: static;
+  }
+
+  .position-md-relative {
+    position: relative;
+  }
+
+  .position-md-absolute {
+    position: absolute;
+  }
+
+  .d-md-block {
+    display: block;
+  }
+
+  .d-md-inline-block {
+    display: inline-block;
+  }
+
+  .d-md-flex {
+    display: flex;
+  }
+
+  .d-md-inline-flex {
+    display: inline-flex;
+  }
+
+  .d-md-none {
+    display: none;
+  }
+
+}
+
+/* Small devices ( portrait phones ) */
+@media only screen and (max-width: 500px) {
+
+  .text-sm-center {
+    text-align: center;
+  }
+
+  .text-sm-left {
+    text-align: left;
+  }
+
+  .text-sm-right {
+    text-align: right;
+  }
+
+  .float-sm-left {
+    float: left;
+  }
+
+  .float-sm-right {
+    float: right;
+  }
+
+  .overflow-sm-hidden {
+    overflow: hidden;
+  }
+
+  .overflow-sm-visible {
+    overflow: visible;
+  }
+
+  .position-sm-static {
+    position: static;
+  }
+
+  .position-sm-relative {
+    position: relative;
+  }
+
+  .position-sm-absolute {
+    position: absolute;
+  }
+
+  .d-sm-block {
+    display: block;
+  }
+
+  .d-sm-inline-block {
+    display: inline-block;
+  }
+
+  .d-sm-flex {
+    display: flex;
+  }
+
+  .d-sm-inline-flex {
+    display: inline-flex;
+  }
+
+  .d-sm-none {
+    display: none;
+  }
+
+}

@@ -1,0 +1,13 @@
+/* ==========================================================================
+   PSDGator SCSS Styles [PARTIALS:POSTCARD]
+   ========================================================================== */
+
+.post-card {
+	background: #fafafa;
+	border-radius: 5px;
+	border: 1px solid #c5c5c5;
+	overflow: hidden;
+	&-content {
+    padding: 10px;
+	}
+}

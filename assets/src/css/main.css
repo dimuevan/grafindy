@@ -1,0 +1,32 @@
+/* ==========================================================================
+   PSDGator CSS Styles [MAIN]
+   ========================================================================== */
+
+.site-header {
+}
+
+.main-content {
+}
+
+.site-footer {
+}
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+/* Extra large devices ( laptops ) */
+@media only screen and (max-width: 1366px) {
+}
+
+/* Large devices ( tablets ) */
+@media only screen and (max-width: 1024px) {
+}
+
+/* Medium devices ( landscape phones ) */
+@media only screen and (max-width: 768px) {
+}
+
+/* Small devices ( portrait phones ) */
+@media only screen and (max-width: 500px) {
+}

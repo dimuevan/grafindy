@@ -1,0 +1,24 @@
+{
+  "extends": "stylelint-config-sass-guidelines",
+  "ignoreFiles": [
+    "src/scss/vendor/**",
+    "node_modules/**",
+    "**/*/vendor.scss",
+    "src/scss/mixins/**",
+    "src/scss/functions/**",
+    "src/scss/modules/**"
+  ],
+  "plugins": [
+    "stylelint-scss"
+  ],
+  "rules": {
+    "block-no-empty": null,
+    "no-descending-specificity": null,
+    "max-nesting-depth": null,
+    "selector-max-compound-selectors": null,
+    "no-duplicate-selectors": null,
+    "scss/at-rule-no-unknown": [true, {
+      "ignoreAtRules": ["function", "if", "each", "include", "for"]
+    }]
+  }
+}

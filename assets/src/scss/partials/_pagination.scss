@@ -1,0 +1,28 @@
+/* ==========================================================================
+   PSDGator SCSS Styles [PARTIALS:Pagination]
+   ========================================================================== */
+
+	 .pagination{
+		ul{
+			display: flex;
+			list-style: none;
+			justify-content: center;
+			gap: 10px;
+			align-items: center;
+			.page-numbers {
+				color: #000000;
+				float: left;
+				padding: 8px 16px;
+				text-decoration: none;
+				transition: background-color .5s;
+				border: 1px solid #DDD;
+				margin: 0 4px;
+				font-size: 20px;
+				&.current{
+					background-color: #39ac31;
+					color: #FFFFFF;
+					border: 1px solid #39ac31;
+				}
+			}
+		}
+	 }

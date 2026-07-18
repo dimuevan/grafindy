@@ -1,0 +1,283 @@
+/* ==========================================================================
+   PSDGator SCSS MIXINS [VARIOUS]
+   ========================================================================== */
+
+/**
+ * Set placeholder color to inputs
+ * Usage:
+ * element{
+ *   @placeholder-color(#cccccc)
+ * }
+ */
+@mixin placeholder-color($color) {
+	/* Chrome/Opera/Safari */
+	&::-webkit-input-placeholder {
+		color: $color;
+	}
+
+	/* Firefox 19+ */
+	&::-moz-placeholder {
+		color: $color;
+	}
+
+	/* IE 10+ */
+	&:-ms-input-placeholder {
+		color: $color;
+	}
+
+	/* Firefox 18- */
+	&:-moz-placeholder {
+		color: $color;
+	}
+
+	::placeholder {
+		color: $color;
+	}
+}
+
+/**
+ * Gives size to an element
+ * Usage:
+ * @include box(150, 450);
+ */
+@mixin box($width, $height: $width) {
+	width: $width;
+	height: $height;
+}
+
+/**
+ * Truncates the text
+ * Usage:
+ * @include ellipsis-text();
+ */
+@mixin ellipsis-text() {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/**
+ * Support for retina background images
+ */
+@mixin retina-image($image, $width, $height) {
+	@media (min--moz-device-pixel-ratio: 1.3),
+		(-o-min-device-pixel-ratio: 2.6/2),
+		(-webkit-min-device-pixel-ratio: 1.3),
+		(min-device-pixel-ratio: 1.3),
+		(min-resolution: 1.3dppx) {
+		background-image: url($image);
+		background-size: $width $height;
+	}
+}
+
+/**
+ * CSS Opacity with fallback for IE8+.
+ * Usage:
+ * .opacity-box { @include opacity(.4); }
+ */
+@mixin opacity($opacity) {
+	opacity: $opacity;
+	$opacity-ie: $opacity * 100;
+	filter: alpha(opacity = $opacity-ie); //IE8
+}
+
+/**
+ * Implementing font-size with rem units and pixel fallback.
+ */
+@mixin font-size($size, $base: $root-font-size) {
+	font-size: $size; // fallback for old browsers
+	font-size: ($size / $base) * 1rem;
+}
+
+/**
+ * Adds a cover background to an element
+ * Usage:
+ * div {
+ *   background-image: url("banner.jpg");
+ *   @include cover-background;
+ * }
+ */
+@mixin cover-background {
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+
+/**
+ * A quick placeholder maker (with custom size/colors/text)
+ * Uses: https://placeholder.com/
+ * Usage:
+ * .thumb {
+ *   @include placeholder-image(400, 200);
+ *   width: 400px;
+ *   height: 200px;
+ * }
+ */
+@mixin placeholder-image(
+	$width,
+	$height: $width,
+	$background-color: "d2d2d2",
+	$color: "323232",
+	$text: "placeholder"
+) {
+	background-image: url(https://via.placeholder.com/#{$width}x#{$height}/#{$background-color}/#{$color}.png?text=#{$text});
+}
+
+/**
+ * Centering Elements
+ * A mixin for absolute centering an element in its parent..
+ */
+@mixin center-element {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/**
+ * Hide Text
+ * A mixin to visually hide text (for screen readers).
+ */
+@mixin hide-text {
+  text-indent: 101%;
+  white-space: nowrap;
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+/**
+ * A mixin for defining CSS position properties.
+ *
+ */
+@mixin position($position: absolute, $top: null, $right: null, $bottom: null, $left: null, $z-index: initial) {
+  position: $position;
+
+  @if $top != null {
+    top: $top;
+  }
+
+  @if $right != null {
+    right: $right;
+  }
+
+  @if $bottom != null {
+    bottom: $bottom;
+  }
+
+  @if $left != null {
+    left: $left;
+  }
+
+  z-index: $z-index;
+}
+
+/**
+ * Flex properties
+ * A mixin for common flex properties.
+ */
+@mixin flex($justify-content: flex-start, $align-items: stretch, $flex-direction: row, $flex-wrap: nowrap) {
+  display: flex;
+  justify-content: $justify-content;
+  align-items: $align-items;
+  flex-direction: $flex-direction;
+  flex-wrap: $flex-wrap;
+}
+
+/**
+ * Prefixer
+ * In case that PostCSS unable to do it,
+ * add vendor prefixes to any CSS property.
+ */
+@mixin prefixer($prop, $value) {
+	-webkit-#{$prop}: #{$value};
+	-moz-#{$prop}: #{$value};
+	-ms-#{$prop}: #{$value};
+	-o-#{$prop}: #{$value};
+	#{$prop}: #{$value};
+}
+
+/**
+ * FONT-FACE RULE
+ * Auto creation of @font-face rule for custom fonts
+ */
+@mixin font-face($name, $file) {
+	@font-face {
+		font-family: "#{$name}";
+		src: url("../fonts/#{$file}.eot");
+		src: url("../fonts/#{$file}.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/#{$file}.woff") format("woff"),
+		url("../fonts/#{$file}.ttf") format("truetype"),
+		url("../fonts/#{$file}.svg?#webfont") format("svg");
+	}
+}
+
+/**
+ * Triangle Arrow with 4 optional directions
+ * Create an arrow
+ */
+@mixin arrow($direction: down, $size: 5px, $color: #555) {
+	width: 0;
+	height: 0;
+	@if ($direction == left) {
+		 border-top: $size solid transparent;
+		 border-bottom: $size solid transparent;
+		 border-right: $size solid $color;
+	}
+	@else if ($direction == right) {
+		 border-top: $size solid transparent;
+		 border-bottom: $size solid transparent;
+		 border-left: $size solid $color;
+	}
+	@else if ($direction == down) {
+		 border-left: $size solid transparent;
+		 border-right: $size solid transparent;
+		 border-top: $size solid $color;
+	}
+	@else {
+		 border-left: $size solid transparent;
+		 border-right: $size solid transparent;
+		 border-bottom: $size solid $color;
+	}
+}
+
+/**
+ * Background Gradient
+ * A simple SASS mixin to implement CSS linear gradients
+ */
+@mixin gradient($start-color, $end-color, $orientation) {
+  background: $start-color;
+  @if $orientation == 'vertical' {
+    background: -webkit-linear-gradient(top, $start-color, $end-color);
+    background: linear-gradient(to bottom, $start-color, $end-color);
+  } @else if $orientation == 'horizontal' {
+    background: -webkit-linear-gradient(left, $start-color, $end-color);
+    background: linear-gradient(to right, $start-color, $end-color);
+  } @else {
+    background: -webkit-radial-gradient(center, ellipse cover, $start-color, $end-color);
+    background: radial-gradient(ellipse at center, $start-color, $end-color);
+  }
+}
+
+/**
+ * More Generic Placeholder Styles
+ * Usage:
+ * element{
+ *   @include placeholder {
+ *   color: #cccccc;
+ *   font-size: 16px;
+ *   font-weight: 400;
+ * }
+ */
+@mixin placeholder {
+  &::placeholder { @content; }      // Standard CSS
+  &::-webkit-input-placeholder { @content; }  // Chrome/Opera/Safari
+  &::-moz-placeholder { @content; } // Firefox 19+
+  &:-ms-input-placeholder { @content; }  // IE 10+
+  &:-moz-placeholder { @content; } // Firefox 18-
+}

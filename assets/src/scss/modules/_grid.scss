@@ -1,0 +1,115 @@
+/* ==========================================================================
+   PSDGator SCSS Styles [GRID]
+   ========================================================================== */
+@use 'sass:math';
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+
+	&--hcenter {
+		justify-content: center;
+	}
+
+	&--vcenter {
+		align-items: center;
+	}
+}
+
+/**
+ * A small hack so we don't have to include max-width
+ * with the appropriate percentage everywhere (less file size)
+ *
+ * Generally it works but it seems to fail when a col is
+ * alone in its row (it will expand to 100%)
+ */
+// [class^="col"] {
+//   min-width: 0;
+// }
+
+/**
+ * Builders
+ */
+
+@mixin columnsBuilder($media: "") {
+	@if $media != "" {
+		$media: "-#{$media}";
+	}
+
+	.col#{$media} {
+		flex: 1;
+		max-width: 100%;
+	}
+
+	.col#{$media}-auto {
+		flex: auto;
+		max-width: 100%;
+		width: auto;
+	}
+
+	/* Generate all column/offset classes */
+	@for $i from 1 through $grid-columns {
+		.col#{$media}-#{$i} {
+			flex: math.percentage(math.div($i, $grid-columns));
+			max-width: math.percentage(math.div($i, $grid-columns));
+		}
+
+		@if $grid-offsets {
+			.off#{$media}-#{$i} {
+				margin-left: math.percentage(math.div($i, $grid-columns));
+			}
+		}
+	}
+
+	/* Generate the extra classes */
+	@each $cname, $cper in $columns-extra {
+		.col#{$media}-#{$cname} {
+			flex: $cper;
+			max-width: $cper;
+		}
+	}
+}
+
+@mixin gapsBuilder($media: "") {
+	@if $media != "" {
+		$media: "-#{$media}";
+	}
+
+	/* Generate all gap classes */
+	@each $gName, $gValue in $grid-gaps {
+		.gap#{$media}-#{$gName},
+		.gap#{$media}-#{$gName}-x {
+			margin-left: -$gValue;
+			& > * {
+				padding-left: $gValue;
+			}
+		}
+
+		.gap#{$media}-#{$gName},
+		.gap#{$media}-#{$gName}-y {
+			margin-top: -$gValue;
+			& > * {
+				padding-top: $gValue;
+			}
+		}
+	}
+}
+
+/**
+ * Generate everything
+ */
+
+@include columnsBuilder;
+@include gapsBuilder;
+
+/* Generate all responsive steps */
+@each $bname, $bvalue in $breakpoints {
+	@media screen and (#{$media-var}-width: $bvalue) {
+		@include columnsBuilder($bname);
+		@include gapsBuilder($bname);
+
+		.reset-#{$bname} {
+			margin-left: 0;
+		}
+	}
+}

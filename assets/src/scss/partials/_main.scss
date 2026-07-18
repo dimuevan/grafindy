@@ -1,0 +1,23 @@
+/* ==========================================================================
+   PSDGator SCSS Styles [PARTIALS:MAIN]
+   ========================================================================== */
+
+//.vanished Used to hide elements with the @@include variations
+.vanished {
+  display: none;
+}
+
+//.unlist Used to unlist an UL Element
+.unlist {
+	margin: 0;
+	list-style: none;
+}
+
+.main-content {
+}
+
+.section{
+	padding: clamp(2rem, 1.5rem + 3vw, 4rem) 0!important;
+    padding-block: clamp(2rem, 1.5rem + 3vw, 4rem)!important;
+	position: relative;
+}

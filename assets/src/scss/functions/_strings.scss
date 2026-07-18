@@ -1,0 +1,50 @@
+/* ==========================================================================
+   PSDGator SCSS FUNCTIONS [INTERNAL]
+   ========================================================================== */
+
+@use 'sass:string';
+@use 'sass:list';
+
+/**
+ * Replaces substring on a string variable
+ */
+@function str-replace($p-string, $p-search, $p-replace: "") {
+	$p-index: string.index($p-string, $p-search);
+
+	@if $p-index {
+			$p-search-string: $p-string;
+			$p-new-string: "";
+			$p-end: "";
+
+			@while $p-index {
+					$p-start: string.slice($p-search-string, 1, $p-index - 1);
+					$p-end: string.slice($p-search-string, $p-index + string.length($p-search));
+					$p-search-string: $p-end;
+					$p-index: string.index($p-search-string, $p-search);
+					$p-new-string: $p-new-string + $p-start + $p-replace;
+			}
+
+			@return $p-new-string + $p-end;
+	}
+
+	@return $p-string;
+}
+
+/**
+ * Splits a string with a specific separator
+ */
+@function str-split($p-string, $p-separator) {
+	$p-split-arr: ();
+	$p-index: string.index($p-string, $p-separator);
+
+	@while $p-index != null {
+			$p-item: string.slice($p-string, 1, $p-index - 1);
+			$p-split-arr: list.append($p-split-arr, $p-item);
+			$p-string: string.slice($p-string, $p-index + 1);
+			$p-index: string.index($p-string, $p-separator);
+	}
+
+	$p-split-arr: list.append($p-split-arr, $p-string);
+
+	@return $p-split-arr;
+}

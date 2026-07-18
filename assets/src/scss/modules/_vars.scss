@@ -1,0 +1,123 @@
+/* ==========================================================================
+   PSDGator SCSS Styles [VARIABLES]
+   Theme Settings
+   ========================================================================== */
+
+/* ========================================================== */
+/* 			            01. general                               */
+/* ========================================================== */
+$mobile-first: false !default;
+$media-var: if($mobile-first, "min", "max");
+$root-font-size: 16px !default;
+
+// This is the width of the initial designs - usually 1920px (used by vw() function)
+$root-viewport-width: 1920px !default;
+
+/* ========================================================== */
+/* 			            02. grid                                  */
+/* ========================================================== */
+$grid-columns: 12 !default;
+$grid-offsets: true !default;
+$grid-gaps: (
+	"0": 0,
+	"12": 12px,
+	"24": 24px,
+	"32": 32px,
+	"36": 36px,
+	"40": 40px,
+	"44": 44px,
+	"48": 48px,
+	"60": 60px,
+	"72": 72px,
+	"84": 84px,
+	"96": 96px,
+) !default;
+
+/* We can have extra column sizes */
+$columns-extra: (
+	"20": 20%
+) !default;
+
+/* ========================================================== */
+/* 			            03. utils                                 */
+/* ========================================================== */
+$enable-utils: true !default;
+$enable-responsive-utils: true !default;
+$utils: (
+	// prettier-ignore
+	"text{-}center": ("text-align", center),
+	"text{-}left": ("text-align", left),
+	"text{-}right": ("text-align", right),
+	"float{-}left": ("float", left),
+	"float{-}right": ("float", right),
+	"overflow{-}hidden": ("overflow", hidden),
+	"overflow{-}visible": ("overflow", visible),
+	"position{-}static": ("position", static),
+	"position{-}relative": ("position", relative),
+	"position{-}absolute": ("position", absolute),
+	"d{-}block": ("display", block),
+	"d{-}inline-block": ("display", inline-block),
+	"d{-}flex": ("display", flex),
+	"d{-}inline-flex": ("display", inline-flex),
+	"d{-}none": ("display", none)
+) !default;
+
+/* ========================================================== */
+/* 			            04. breakpoints                           */
+/* ========================================================== */
+$max-sm: 500px !default;
+$max-md: 768px !default;
+$max-lg: 1024px !default;
+$max-xl: 1366px !default;
+
+$min-sm: 500.01px !default;
+$min-md: 768.01px !default;
+$min-lg: 1024.01px !default;
+$min-xl: 1366.01px !default;
+
+$breakpoints: (
+	"xl": $max-xl,
+	"lg": $max-lg,
+	"md": $max-md,
+	"sm": $max-sm
+) !default;
+
+@if $mobile-first {
+	$breakpoints: (
+		"sm": $min-sm,
+		"md": $min-md,
+		"lg": $min-lg,
+		"xl": $min-xl
+	);
+}
+
+/* ========================================================== */
+/* 			            05. css variables                         */
+/* ========================================================== */
+
+:root {
+	/* html|body */
+	/* Fonts: self-hosted in /assets/public/fonts/ - @font-face rules in /assets/public/css/fonts/fonts.css */
+	--main-font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif; /* Body & UI - Regular 400 */
+	--heading-font-family: 'Literata', Georgia, 'Times New Roman', serif; /* Headings - SemiBold 600 / Bold 700 */
+	--main-font-size: #{$root-font-size};
+	--main-font-color: #000;
+	--body-background: #fff;
+	--hover-color: #f4692e;
+
+	/* layout */
+	--container-width: 1740px;
+	--container-pad: min(8vw, 100px);
+
+	/*--> Place custom settings here <--*/
+}
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+@media only screen and (max-width: $max-xl) {
+	:root {
+		--container-pad: 20px;
+	}
+}

@@ -1,0 +1,33 @@
+/* ==========================================================================
+   PSDGator SCSS FUNCTIONS [UNITS]
+   ========================================================================== */
+@use 'sass:math';
+
+/**
+ * Removes unit from value
+ */
+@function strip-units($number) {
+	@return math.div($number, ($number * 0 + 1));
+}
+
+/**
+ * Adds unit to a unitless value
+ */
+@function setUnit($val) {
+	@return if(unitless($val), $val * 1px, $val);
+}
+
+/**
+ * Converts to rem values
+ */
+@function rem($target, $context: $root-font-size) {
+	@return strip-units(math.div($target, $context)) * 1rem;
+}
+
+/**
+ * Converts to vw values
+ */
+@function vw($val) {
+	$vw-context: $root-viewport-width * 0.01 * 1px;
+	@return (math.div(setUnit($val), $vw-context)) * 1vw;
+}
