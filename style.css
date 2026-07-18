@@ -1,0 +1,13 @@
+/*
+Theme Name: DimuOne Child
+Theme URI: https://dimu.studio
+Author: Evan Dimu
+Description: Child theme of DimuOne — build sites here; the parent stays untouched and updatable.
+Template: dimuone
+Version: 1.0.0
+Requires at least: 6.0
+Requires PHP: 8.1
+Text Domain: dimuone-child
+*/
+
+/* Site-specific styles. Loaded after the parent stylesheet. */
