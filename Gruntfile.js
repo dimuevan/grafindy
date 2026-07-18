@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 		sass: {
 			dist: {
 				files: {
-					[`${SCSS_DIST}/bundle.css`]: `${SCSS_SRC}/core.scss`,
+					[`${SCSS_DIST}/one.css`]: `${SCSS_SRC}/core.scss`,
 					[`${SCSS_DIST}/vendor.css`]: `${SCSS_SRC}/vendor.scss`
 				}
 			}
@@ -25,7 +25,7 @@ module.exports = function (grunt) {
 		concat_css: {
 			dist: {
 				files: {
-					[`${CSS_DIST}/bundle.css`]: [
+					[`${CSS_DIST}/one.css`]: [
 						`${CSS_SRC}/vars.css`,
 						`${CSS_SRC}/utils.css`,
 						`${CSS_SRC}/grid.css`,
@@ -40,7 +40,7 @@ module.exports = function (grunt) {
 		cssmin: {
 			dist: {
 				files: {
-					[`${CSS_DIST}/bundle.css`]: [
+					[`${CSS_DIST}/one.css`]: [
 						`${CSS_SRC}/vars.css`,
 						`${CSS_SRC}/utils.css`,
 						`${CSS_SRC}/grid.css`,
@@ -54,7 +54,7 @@ module.exports = function (grunt) {
 			dist2: {
 				files: {
 					[`${CSS_DIST}/vendor.min.css`]: [`${CSS_DIST}/vendor.css`],
-					[`${CSS_DIST}/bundle.min.css`]: [`${CSS_DIST}/bundle.css`]
+					[`${CSS_DIST}/one.min.css`]: [`${CSS_DIST}/one.css`]
 				}
 			}
 		},
@@ -71,7 +71,7 @@ module.exports = function (grunt) {
 				]
 			},
 			dist: {
-				src: `${CSS_DIST}/bundle.css`
+				src: `${CSS_DIST}/one.css`
 			}
 		},
 		watch: {
