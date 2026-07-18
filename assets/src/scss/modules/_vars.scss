@@ -3,6 +3,7 @@
    Theme Settings
    ========================================================================== */
 
+@use "sass:math";
 /* ========================================================== */
 /* 			            01. general                               */
 /* ========================================================== */
@@ -18,19 +19,95 @@ $root-viewport-width: 1920px !default;
 /* ========================================================== */
 $grid-columns: 12 !default;
 $grid-offsets: true !default;
+
+// Fluid gaps: value interpolates from ~60% at 500px viewport up to 100% at
+// the design width. Keys stay the same (they are the design-size px), so all
+// existing .gap-24 markup keeps working — it just breathes with the viewport.
+$grid-gap-fluid: true !default;
+$grid-gap-min-ratio: 0.6 !default;   // gap size at the smallest viewport
+$grid-fluid-from: 500px !default;    // viewport where scaling starts
+$grid-fluid-to: $root-viewport-width !default; // viewport where design size is reached
+
+/* ========================================================== */
+/*                UNIVERSAL FLUID FUNCTION                    */
+/*  Use for ANY px value: font-size, padding, margin, radius, */
+/*  gaps. Linear interpolation between the two viewports.     */
+/*                                                            */
+/*  fluid(24px)              -> clamp(14px, ...vw, 24px)      */
+/*  fluid(24px, 18px)        -> explicit min                  */
+/*  fluid(32px, $rem: true)  -> rem-based clamp. USE FOR      */
+/*     FONTS: keeps user zoom / font-size prefs working (a11y)*/
+/*  fluid-type(32px)         -> shorthand for the above       */
+/*                                                            */
+/*  Values <= $fluid-static-under stay static: a 1-2px border */
+/*  must never shrink to sub-pixel.                           */
+/* ========================================================== */
+$fluid-static-under: 4px !default;
+
+@function fluid($max, $min: null, $rem: false, $from: $grid-fluid-from, $to: $grid-fluid-to) {
+	// tiny values: never scale
+	@if $max <= $fluid-static-under and $max >= (-1 * $fluid-static-under) {
+		@return $max;
+	}
+	// negative values (e.g. negative margins): flip, compute, flip back
+	$neg: $max < 0;
+	@if $neg {
+		$max: -1 * $max;
+		@if $min != null { $min: -1 * $min; }
+	}
+
+	$max-n: math.div($max, 1px);
+	$min-n: if($min == null, math.round($max-n * $grid-gap-min-ratio), math.div($min, 1px));
+	$from-n: math.div($from, 1px);
+	$to-n: math.div($to, 1px);
+	$slope: math.div($max-n - $min-n, $to-n - $from-n);
+	$vw: math.div(math.round($slope * 100 * 100), 100);
+	$intercept-n: math.div(math.round(($min-n - $slope * $from-n) * 100), 100);
+
+	$result: null;
+	@if $rem {
+		// rem-based: respects user font-size settings & browser zoom
+		$rfs: math.div($root-font-size, 1px);
+		$min-r: math.div(math.round(math.div($min-n, $rfs) * 1000), 1000);
+		$max-r: math.div(math.round(math.div($max-n, $rfs) * 1000), 1000);
+		$int-r: math.div(math.round(math.div($intercept-n, $rfs) * 1000), 1000);
+		$result: clamp(#{$min-r}rem, #{$int-r}rem + #{$vw}vw, #{$max-r}rem);
+	} @else {
+		$result: clamp(#{$min-n * 1px}, #{$intercept-n * 1px} + #{$vw}vw, #{$max-n * 1px});
+	}
+
+	@if $neg {
+		@return calc(#{$result} * -1);
+	}
+	@return $result;
+}
+
+// shorthand for typography — always rem-based
+@function fluid-type($max, $min: null) {
+	@return fluid($max, $min, $rem: true);
+}
+
+// kept for backwards compatibility — gaps now just call fluid()
+@function fluid-gap($px) {
+	@if not $grid-gap-fluid or $px == 0 {
+		@return if($px == 0, 0px, $px);
+	}
+	@return fluid($px);
+}
+
 $grid-gaps: (
 	"0": 0,
-	"12": 12px,
-	"24": 24px,
-	"32": 32px,
-	"36": 36px,
-	"40": 40px,
-	"44": 44px,
-	"48": 48px,
-	"60": 60px,
-	"72": 72px,
-	"84": 84px,
-	"96": 96px,
+	"12": fluid-gap(12px),
+	"24": fluid-gap(24px),
+	"32": fluid-gap(32px),
+	"36": fluid-gap(36px),
+	"40": fluid-gap(40px),
+	"44": fluid-gap(44px),
+	"48": fluid-gap(48px),
+	"60": fluid-gap(60px),
+	"72": fluid-gap(72px),
+	"84": fluid-gap(84px),
+	"96": fluid-gap(96px),
 ) !default;
 
 /* We can have extra column sizes */
@@ -100,14 +177,37 @@ $breakpoints: (
 	/* Fonts: self-hosted in /assets/public/fonts/ - @font-face rules in /assets/public/css/fonts/fonts.css */
 	--main-font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif; /* Body & UI - Regular 400 */
 	--heading-font-family: 'Literata', Georgia, 'Times New Roman', serif; /* Headings - SemiBold 600 / Bold 700 */
-	--main-font-size: #{$root-font-size};
+	--main-font-size: #{fluid-type(17px, 15px)}; /* rem-based: zoom/a11y safe */
 	--main-font-color: #000;
 	--body-background: #fff;
 	--hover-color: #f4692e;
 
+	/* typography scale (fluid, rem-based) — use on h1-h6 etc. */
+	--fs-h1: #{fluid-type(56px, 32px)};
+	--fs-h2: #{fluid-type(42px, 28px)};
+	--fs-h3: #{fluid-type(32px, 24px)};
+	--fs-h4: #{fluid-type(24px, 20px)};
+	--fs-h5: #{fluid-type(20px, 18px)};
+	--fs-h6: #{fluid-type(18px, 16px)};
+	--fs-small: #{fluid-type(14px, 13px)};
+
+	/* fluid spacing tokens — for paddings/margins in partials */
+	--sp-1: #{fluid(8px)};
+	--sp-2: #{fluid(16px)};
+	--sp-3: #{fluid(24px)};
+	--sp-4: #{fluid(40px)};
+	--sp-5: #{fluid(64px)};
+	--sp-6: #{fluid(96px)};
+	--sp-7: #{fluid(140px)};
+
+	/* radius (fluid) */
+	--radius-sm: #{fluid(6px, 4px)};
+	--radius-md: #{fluid(12px, 8px)};
+	--radius-lg: #{fluid(24px, 14px)};
+
 	/* layout */
 	--container-width: 1740px;
-	--container-pad: min(8vw, 100px);
+	--container-pad: #{fluid(100px, 20px)}; /* replaces min(8vw,100px) + the MQ override */
 
 	/*--> Place custom settings here <--*/
 }
@@ -116,8 +216,4 @@ $breakpoints: (
    Media Queries
    ========================================================================== */
 
-@media only screen and (max-width: $max-xl) {
-	:root {
-		--container-pad: 20px;
-	}
-}
+/* container-pad is now fluid — no MQ override needed */

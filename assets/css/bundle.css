@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* ==========================================================================
    PSDGator SCSS Styles [VARIABLES]
    Theme Settings
@@ -7,6 +8,20 @@
 /* ========================================================== */
 /* ========================================================== */
 /* 			            02. grid                                  */
+/* ========================================================== */
+/* ========================================================== */
+/*                UNIVERSAL FLUID FUNCTION                    */
+/*  Use for ANY px value: font-size, padding, margin, radius, */
+/*  gaps. Linear interpolation between the two viewports.     */
+/*                                                            */
+/*  fluid(24px)              -> clamp(14px, ...vw, 24px)      */
+/*  fluid(24px, 18px)        -> explicit min                  */
+/*  fluid(32px, $rem: true)  -> rem-based clamp. USE FOR      */
+/*     FONTS: keeps user zoom / font-size prefs working (a11y)*/
+/*  fluid-type(32px)         -> shorthand for the above       */
+/*                                                            */
+/*  Values <= $fluid-static-under stay static: a 1-2px border */
+/*  must never shrink to sub-pixel.                           */
 /* ========================================================== */
 /* We can have extra column sizes */
 /* ========================================================== */
@@ -21,26 +36,42 @@
 :root {
   /* html|body */
   /* Fonts: self-hosted in /assets/public/fonts/ - @font-face rules in /assets/public/css/fonts/fonts.css */
-  --main-font-family: "Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif; /* Body & UI - Regular 400 */
-  --heading-font-family: "Literata", Georgia, "Times New Roman", serif; /* Headings - SemiBold 600 / Bold 700 */
-  --main-font-size: 16px;
+  --main-font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif; /* Body & UI - Regular 400 */
+  --heading-font-family: 'Literata', Georgia, 'Times New Roman', serif; /* Headings - SemiBold 600 / Bold 700 */
+  --main-font-size: clamp(0.938rem, 0.894rem + 0.14vw, 1.063rem); /* rem-based: zoom/a11y safe */
   --main-font-color: #000;
   --body-background: #fff;
   --hover-color: #f4692e;
+  /* typography scale (fluid, rem-based) — use on h1-h6 etc. */
+  --fs-h1: clamp(2rem, 1.472rem + 1.69vw, 3.5rem);
+  --fs-h2: clamp(1.75rem, 1.442rem + 0.99vw, 2.625rem);
+  --fs-h3: clamp(1.5rem, 1.324rem + 0.56vw, 2rem);
+  --fs-h4: clamp(1.25rem, 1.162rem + 0.28vw, 1.5rem);
+  --fs-h5: clamp(1.125rem, 1.081rem + 0.14vw, 1.25rem);
+  --fs-h6: clamp(1rem, 0.956rem + 0.14vw, 1.125rem);
+  --fs-small: clamp(0.813rem, 0.791rem + 0.07vw, 0.875rem);
+  /* fluid spacing tokens — for paddings/margins in partials */
+  --sp-1: clamp(5px, 3.94px + 0.21vw, 8px);
+  --sp-2: clamp(10px, 7.89px + 0.42vw, 16px);
+  --sp-3: clamp(14px, 10.48px + 0.7vw, 24px);
+  --sp-4: clamp(24px, 18.37px + 1.13vw, 40px);
+  --sp-5: clamp(38px, 28.85px + 1.83vw, 64px);
+  --sp-6: clamp(58px, 44.62px + 2.68vw, 96px);
+  --sp-7: clamp(84px, 64.28px + 3.94vw, 140px);
+  /* radius (fluid) */
+  --radius-sm: clamp(4px, 3.3px + 0.14vw, 6px);
+  --radius-md: clamp(8px, 6.59px + 0.28vw, 12px);
+  --radius-lg: clamp(14px, 10.48px + 0.7vw, 24px);
   /* layout */
   --container-width: 1740px;
-  --container-pad: min(8vw, 100px);
+  --container-pad: clamp(20px, -8.17px + 5.63vw, 100px); /* replaces min(8vw,100px) + the MQ override */
   /*--> Place custom settings here <--*/
 }
 
 /* ==========================================================================
    Media Queries
    ========================================================================== */
-@media only screen and (max-width: 1366px) {
-  :root {
-    --container-pad: 20px;
-  }
-}
+/* container-pad is now fluid — no MQ override needed */
 /* ==========================================================================
    PSDGator SCSS FUNCTIONS [TYPES]
 
@@ -416,11 +447,35 @@
   }
 }
 /* ==========================================================================
-   PSDGator SCSS Styles [GRID]
+   PSDGator SCSS Styles [GRID] — v2 (flex + real gap)
+
+   Same public API as v1: .col-6, .col-md-6, .col-20, .off-3, .gap-24,
+   .gap-md-24-x, .reset-md — but powered by real flex `gap` instead of
+   negative margins + child padding.
+
+   How it works:
+   - Each .gap-* class only sets two CSS custom properties (--g / --gy).
+   - .row reads them: gap: var(--gy) var(--g).
+   - Column widths account for the gap with one calc formula:
+       width = (100% + g) * (n / columns) - g
+     (verify: n=12 -> 100%; n=6 -> 50% - g/2; two cols + one gap = 100%)
+   - Offsets shift by whole slots (slot = column width + its gap):
+       margin-left = (100% + g) * (n / columns)
+
+   Wins vs v1:
+   - ~60% smaller compiled output (gap classes are 2 declarations, not 4 rules)
+   - No negative-margin overflow bugs, no child padding side-effects
+   - Cols have their real width: backgrounds/borders apply directly
    ========================================================================== */
 .row {
+  /* Reset here so nested .rows don't inherit the parent's gap — the
+     .gap-* classes are generated later in the source, so on the same
+     element (.row.gap-24) they win. */
+  --g: 0px;
+  --gy: 0px;
   display: flex;
   flex-wrap: wrap;
+  gap: var(--gy, 0px) var(--g, 0px); /* row-gap column-gap */
 }
 .row--hcenter {
   justify-content: center;
@@ -430,15 +485,18 @@
 }
 
 /**
- * A small hack so we don't have to include max-width
- * with the appropriate percentage everywhere (less file size)
- *
- * Generally it works but it seems to fail when a col is
- * alone in its row (it will expand to 100%)
+ * min-width:0 lets flex children shrink below their content size
+ * (long words / images inside cols). Safe now that widths are real.
  */
+[class^=col],
+[class*=" col"] {
+  min-width: 0;
+}
+
 /**
  * Builders
  */
+/* col/off width formulas — single source of truth */
 /**
  * Generate everything
  */
@@ -448,341 +506,277 @@
 }
 
 .col-auto {
-  flex: auto;
-  max-width: 100%;
+  flex: 0 0 auto;
   width: auto;
+  max-width: 100%;
 }
 
 /* Generate all column/offset classes */
 .col-1 {
-  flex: 8.3333333333%;
-  max-width: 8.3333333333%;
+  flex: 0 0 calc((100% + var(--g, 0px)) * 0.0833333333 - var(--g, 0px));
+  max-width: calc((100% + var(--g, 0px)) * 0.0833333333 - var(--g, 0px));
 }
 
 .off-1 {
-  margin-left: 8.3333333333%;
+  margin-left: calc((100% + var(--g, 0px)) * 0.0833333333);
 }
 
 .col-2 {
-  flex: 16.6666666667%;
-  max-width: 16.6666666667%;
+  flex: 0 0 calc((100% + var(--g, 0px)) * 0.1666666667 - var(--g, 0px));
+  max-width: calc((100% + var(--g, 0px)) * 0.1666666667 - var(--g, 0px));
 }
 
 .off-2 {
-  margin-left: 16.6666666667%;
+  margin-left: calc((100% + var(--g, 0px)) * 0.1666666667);
 }
 
 .col-3 {
-  flex: 25%;
-  max-width: 25%;
+  flex: 0 0 calc((100% + var(--g, 0px)) * 0.25 - var(--g, 0px));
+  max-width: calc((100% + var(--g, 0px)) * 0.25 - var(--g, 0px));
 }
 
 .off-3 {
-  margin-left: 25%;
+  margin-left: calc((100% + var(--g, 0px)) * 0.25);
 }
 
 .col-4 {
-  flex: 33.3333333333%;
-  max-width: 33.3333333333%;
+  flex: 0 0 calc((100% + var(--g, 0px)) * 0.3333333333 - var(--g, 0px));
+  max-width: calc((100% + var(--g, 0px)) * 0.3333333333 - var(--g, 0px));
 }
 
 .off-4 {
-  margin-left: 33.3333333333%;
+  margin-left: calc((100% + var(--g, 0px)) * 0.3333333333);
 }
 
 .col-5 {
-  flex: 41.6666666667%;
-  max-width: 41.6666666667%;
+  flex: 0 0 calc((100% + var(--g, 0px)) * 0.4166666667 - var(--g, 0px));
+  max-width: calc((100% + var(--g, 0px)) * 0.4166666667 - var(--g, 0px));
 }
 
 .off-5 {
-  margin-left: 41.6666666667%;
+  margin-left: calc((100% + var(--g, 0px)) * 0.4166666667);
 }
 
 .col-6 {
-  flex: 50%;
-  max-width: 50%;
+  flex: 0 0 calc((100% + var(--g, 0px)) * 0.5 - var(--g, 0px));
+  max-width: calc((100% + var(--g, 0px)) * 0.5 - var(--g, 0px));
 }
 
 .off-6 {
-  margin-left: 50%;
+  margin-left: calc((100% + var(--g, 0px)) * 0.5);
 }
 
 .col-7 {
-  flex: 58.3333333333%;
-  max-width: 58.3333333333%;
+  flex: 0 0 calc((100% + var(--g, 0px)) * 0.5833333333 - var(--g, 0px));
+  max-width: calc((100% + var(--g, 0px)) * 0.5833333333 - var(--g, 0px));
 }
 
 .off-7 {
-  margin-left: 58.3333333333%;
+  margin-left: calc((100% + var(--g, 0px)) * 0.5833333333);
 }
 
 .col-8 {
-  flex: 66.6666666667%;
-  max-width: 66.6666666667%;
+  flex: 0 0 calc((100% + var(--g, 0px)) * 0.6666666667 - var(--g, 0px));
+  max-width: calc((100% + var(--g, 0px)) * 0.6666666667 - var(--g, 0px));
 }
 
 .off-8 {
-  margin-left: 66.6666666667%;
+  margin-left: calc((100% + var(--g, 0px)) * 0.6666666667);
 }
 
 .col-9 {
-  flex: 75%;
-  max-width: 75%;
+  flex: 0 0 calc((100% + var(--g, 0px)) * 0.75 - var(--g, 0px));
+  max-width: calc((100% + var(--g, 0px)) * 0.75 - var(--g, 0px));
 }
 
 .off-9 {
-  margin-left: 75%;
+  margin-left: calc((100% + var(--g, 0px)) * 0.75);
 }
 
 .col-10 {
-  flex: 83.3333333333%;
-  max-width: 83.3333333333%;
+  flex: 0 0 calc((100% + var(--g, 0px)) * 0.8333333333 - var(--g, 0px));
+  max-width: calc((100% + var(--g, 0px)) * 0.8333333333 - var(--g, 0px));
 }
 
 .off-10 {
-  margin-left: 83.3333333333%;
+  margin-left: calc((100% + var(--g, 0px)) * 0.8333333333);
 }
 
 .col-11 {
-  flex: 91.6666666667%;
-  max-width: 91.6666666667%;
+  flex: 0 0 calc((100% + var(--g, 0px)) * 0.9166666667 - var(--g, 0px));
+  max-width: calc((100% + var(--g, 0px)) * 0.9166666667 - var(--g, 0px));
 }
 
 .off-11 {
-  margin-left: 91.6666666667%;
+  margin-left: calc((100% + var(--g, 0px)) * 0.9166666667);
 }
 
 .col-12 {
-  flex: 100%;
-  max-width: 100%;
+  flex: 0 0 calc((100% + var(--g, 0px)) * 1 - var(--g, 0px));
+  max-width: calc((100% + var(--g, 0px)) * 1 - var(--g, 0px));
 }
 
-.off-12 {
-  margin-left: 100%;
-}
-
-/* Generate the extra classes */
+/* Generate the extra classes (e.g. .col-20 => 20%) */
 .col-20 {
-  flex: 20%;
-  max-width: 20%;
+  flex: 0 0 calc((100% + var(--g, 0px)) * 0.2 - var(--g, 0px));
+  max-width: calc((100% + var(--g, 0px)) * 0.2 - var(--g, 0px));
 }
 
-/* Generate all gap classes */
-.gap-0,
+/* Each gap class = two custom properties. That's the whole trick. */
+.gap-0 {
+  --g: 0;
+  --gy: 0;
+}
+
 .gap-0-x {
-  margin-left: 0;
-}
-.gap-0 > *,
-.gap-0-x > * {
-  padding-left: 0;
+  --g: 0;
 }
 
-.gap-0,
 .gap-0-y {
-  margin-top: 0;
-}
-.gap-0 > *,
-.gap-0-y > * {
-  padding-top: 0;
+  --gy: 0;
 }
 
-.gap-12,
+.gap-12 {
+  --g: clamp(7px, 5.24px + 0.35vw, 12px);
+  --gy: clamp(7px, 5.24px + 0.35vw, 12px);
+}
+
 .gap-12-x {
-  margin-left: -12px;
-}
-.gap-12 > *,
-.gap-12-x > * {
-  padding-left: 12px;
+  --g: clamp(7px, 5.24px + 0.35vw, 12px);
 }
 
-.gap-12,
 .gap-12-y {
-  margin-top: -12px;
-}
-.gap-12 > *,
-.gap-12-y > * {
-  padding-top: 12px;
+  --gy: clamp(7px, 5.24px + 0.35vw, 12px);
 }
 
-.gap-24,
+.gap-24 {
+  --g: clamp(14px, 10.48px + 0.7vw, 24px);
+  --gy: clamp(14px, 10.48px + 0.7vw, 24px);
+}
+
 .gap-24-x {
-  margin-left: -24px;
-}
-.gap-24 > *,
-.gap-24-x > * {
-  padding-left: 24px;
+  --g: clamp(14px, 10.48px + 0.7vw, 24px);
 }
 
-.gap-24,
 .gap-24-y {
-  margin-top: -24px;
-}
-.gap-24 > *,
-.gap-24-y > * {
-  padding-top: 24px;
+  --gy: clamp(14px, 10.48px + 0.7vw, 24px);
 }
 
-.gap-32,
+.gap-32 {
+  --g: clamp(19px, 14.42px + 0.92vw, 32px);
+  --gy: clamp(19px, 14.42px + 0.92vw, 32px);
+}
+
 .gap-32-x {
-  margin-left: -32px;
-}
-.gap-32 > *,
-.gap-32-x > * {
-  padding-left: 32px;
+  --g: clamp(19px, 14.42px + 0.92vw, 32px);
 }
 
-.gap-32,
 .gap-32-y {
-  margin-top: -32px;
-}
-.gap-32 > *,
-.gap-32-y > * {
-  padding-top: 32px;
+  --gy: clamp(19px, 14.42px + 0.92vw, 32px);
 }
 
-.gap-36,
+.gap-36 {
+  --g: clamp(22px, 17.07px + 0.99vw, 36px);
+  --gy: clamp(22px, 17.07px + 0.99vw, 36px);
+}
+
 .gap-36-x {
-  margin-left: -36px;
-}
-.gap-36 > *,
-.gap-36-x > * {
-  padding-left: 36px;
+  --g: clamp(22px, 17.07px + 0.99vw, 36px);
 }
 
-.gap-36,
 .gap-36-y {
-  margin-top: -36px;
-}
-.gap-36 > *,
-.gap-36-y > * {
-  padding-top: 36px;
+  --gy: clamp(22px, 17.07px + 0.99vw, 36px);
 }
 
-.gap-40,
+.gap-40 {
+  --g: clamp(24px, 18.37px + 1.13vw, 40px);
+  --gy: clamp(24px, 18.37px + 1.13vw, 40px);
+}
+
 .gap-40-x {
-  margin-left: -40px;
-}
-.gap-40 > *,
-.gap-40-x > * {
-  padding-left: 40px;
+  --g: clamp(24px, 18.37px + 1.13vw, 40px);
 }
 
-.gap-40,
 .gap-40-y {
-  margin-top: -40px;
-}
-.gap-40 > *,
-.gap-40-y > * {
-  padding-top: 40px;
+  --gy: clamp(24px, 18.37px + 1.13vw, 40px);
 }
 
-.gap-44,
+.gap-44 {
+  --g: clamp(26px, 19.66px + 1.27vw, 44px);
+  --gy: clamp(26px, 19.66px + 1.27vw, 44px);
+}
+
 .gap-44-x {
-  margin-left: -44px;
-}
-.gap-44 > *,
-.gap-44-x > * {
-  padding-left: 44px;
+  --g: clamp(26px, 19.66px + 1.27vw, 44px);
 }
 
-.gap-44,
 .gap-44-y {
-  margin-top: -44px;
-}
-.gap-44 > *,
-.gap-44-y > * {
-  padding-top: 44px;
+  --gy: clamp(26px, 19.66px + 1.27vw, 44px);
 }
 
-.gap-48,
+.gap-48 {
+  --g: clamp(29px, 22.31px + 1.34vw, 48px);
+  --gy: clamp(29px, 22.31px + 1.34vw, 48px);
+}
+
 .gap-48-x {
-  margin-left: -48px;
-}
-.gap-48 > *,
-.gap-48-x > * {
-  padding-left: 48px;
+  --g: clamp(29px, 22.31px + 1.34vw, 48px);
 }
 
-.gap-48,
 .gap-48-y {
-  margin-top: -48px;
-}
-.gap-48 > *,
-.gap-48-y > * {
-  padding-top: 48px;
+  --gy: clamp(29px, 22.31px + 1.34vw, 48px);
 }
 
-.gap-60,
+.gap-60 {
+  --g: clamp(36px, 27.55px + 1.69vw, 60px);
+  --gy: clamp(36px, 27.55px + 1.69vw, 60px);
+}
+
 .gap-60-x {
-  margin-left: -60px;
-}
-.gap-60 > *,
-.gap-60-x > * {
-  padding-left: 60px;
+  --g: clamp(36px, 27.55px + 1.69vw, 60px);
 }
 
-.gap-60,
 .gap-60-y {
-  margin-top: -60px;
-}
-.gap-60 > *,
-.gap-60-y > * {
-  padding-top: 60px;
+  --gy: clamp(36px, 27.55px + 1.69vw, 60px);
 }
 
-.gap-72,
+.gap-72 {
+  --g: clamp(43px, 32.79px + 2.04vw, 72px);
+  --gy: clamp(43px, 32.79px + 2.04vw, 72px);
+}
+
 .gap-72-x {
-  margin-left: -72px;
-}
-.gap-72 > *,
-.gap-72-x > * {
-  padding-left: 72px;
+  --g: clamp(43px, 32.79px + 2.04vw, 72px);
 }
 
-.gap-72,
 .gap-72-y {
-  margin-top: -72px;
-}
-.gap-72 > *,
-.gap-72-y > * {
-  padding-top: 72px;
+  --gy: clamp(43px, 32.79px + 2.04vw, 72px);
 }
 
-.gap-84,
+.gap-84 {
+  --g: clamp(50px, 38.03px + 2.39vw, 84px);
+  --gy: clamp(50px, 38.03px + 2.39vw, 84px);
+}
+
 .gap-84-x {
-  margin-left: -84px;
-}
-.gap-84 > *,
-.gap-84-x > * {
-  padding-left: 84px;
+  --g: clamp(50px, 38.03px + 2.39vw, 84px);
 }
 
-.gap-84,
 .gap-84-y {
-  margin-top: -84px;
-}
-.gap-84 > *,
-.gap-84-y > * {
-  padding-top: 84px;
+  --gy: clamp(50px, 38.03px + 2.39vw, 84px);
 }
 
-.gap-96,
+.gap-96 {
+  --g: clamp(58px, 44.62px + 2.68vw, 96px);
+  --gy: clamp(58px, 44.62px + 2.68vw, 96px);
+}
+
 .gap-96-x {
-  margin-left: -96px;
-}
-.gap-96 > *,
-.gap-96-x > * {
-  padding-left: 96px;
+  --g: clamp(58px, 44.62px + 2.68vw, 96px);
 }
 
-.gap-96,
 .gap-96-y {
-  margin-top: -96px;
-}
-.gap-96 > *,
-.gap-96-y > * {
-  padding-top: 96px;
+  --gy: clamp(58px, 44.62px + 2.68vw, 96px);
 }
 
 /* Generate all responsive steps */
@@ -792,292 +786,217 @@
     max-width: 100%;
   }
   .col-xl-auto {
-    flex: auto;
-    max-width: 100%;
+    flex: 0 0 auto;
     width: auto;
+    max-width: 100%;
   }
   /* Generate all column/offset classes */
   .col-xl-1 {
-    flex: 8.3333333333%;
-    max-width: 8.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.0833333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.0833333333 - var(--g, 0px));
   }
   .off-xl-1 {
-    margin-left: 8.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.0833333333);
   }
   .col-xl-2 {
-    flex: 16.6666666667%;
-    max-width: 16.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.1666666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.1666666667 - var(--g, 0px));
   }
   .off-xl-2 {
-    margin-left: 16.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.1666666667);
   }
   .col-xl-3 {
-    flex: 25%;
-    max-width: 25%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.25 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.25 - var(--g, 0px));
   }
   .off-xl-3 {
-    margin-left: 25%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.25);
   }
   .col-xl-4 {
-    flex: 33.3333333333%;
-    max-width: 33.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.3333333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.3333333333 - var(--g, 0px));
   }
   .off-xl-4 {
-    margin-left: 33.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.3333333333);
   }
   .col-xl-5 {
-    flex: 41.6666666667%;
-    max-width: 41.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.4166666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.4166666667 - var(--g, 0px));
   }
   .off-xl-5 {
-    margin-left: 41.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.4166666667);
   }
   .col-xl-6 {
-    flex: 50%;
-    max-width: 50%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.5 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.5 - var(--g, 0px));
   }
   .off-xl-6 {
-    margin-left: 50%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.5);
   }
   .col-xl-7 {
-    flex: 58.3333333333%;
-    max-width: 58.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.5833333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.5833333333 - var(--g, 0px));
   }
   .off-xl-7 {
-    margin-left: 58.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.5833333333);
   }
   .col-xl-8 {
-    flex: 66.6666666667%;
-    max-width: 66.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.6666666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.6666666667 - var(--g, 0px));
   }
   .off-xl-8 {
-    margin-left: 66.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.6666666667);
   }
   .col-xl-9 {
-    flex: 75%;
-    max-width: 75%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.75 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.75 - var(--g, 0px));
   }
   .off-xl-9 {
-    margin-left: 75%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.75);
   }
   .col-xl-10 {
-    flex: 83.3333333333%;
-    max-width: 83.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.8333333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.8333333333 - var(--g, 0px));
   }
   .off-xl-10 {
-    margin-left: 83.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.8333333333);
   }
   .col-xl-11 {
-    flex: 91.6666666667%;
-    max-width: 91.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.9166666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.9166666667 - var(--g, 0px));
   }
   .off-xl-11 {
-    margin-left: 91.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.9166666667);
   }
   .col-xl-12 {
-    flex: 100%;
-    max-width: 100%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 1 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 1 - var(--g, 0px));
   }
-  .off-xl-12 {
-    margin-left: 100%;
-  }
-  /* Generate the extra classes */
+  /* Generate the extra classes (e.g. .col-20 => 20%) */
   .col-xl-20 {
-    flex: 20%;
-    max-width: 20%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.2 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.2 - var(--g, 0px));
   }
-  /* Generate all gap classes */
-  .gap-xl-0,
+  /* Each gap class = two custom properties. That's the whole trick. */
+  .gap-xl-0 {
+    --g: 0;
+    --gy: 0;
+  }
   .gap-xl-0-x {
-    margin-left: 0;
+    --g: 0;
   }
-  .gap-xl-0 > *,
-  .gap-xl-0-x > * {
-    padding-left: 0;
-  }
-  .gap-xl-0,
   .gap-xl-0-y {
-    margin-top: 0;
+    --gy: 0;
   }
-  .gap-xl-0 > *,
-  .gap-xl-0-y > * {
-    padding-top: 0;
+  .gap-xl-12 {
+    --g: clamp(7px, 5.24px + 0.35vw, 12px);
+    --gy: clamp(7px, 5.24px + 0.35vw, 12px);
   }
-  .gap-xl-12,
   .gap-xl-12-x {
-    margin-left: -12px;
+    --g: clamp(7px, 5.24px + 0.35vw, 12px);
   }
-  .gap-xl-12 > *,
-  .gap-xl-12-x > * {
-    padding-left: 12px;
-  }
-  .gap-xl-12,
   .gap-xl-12-y {
-    margin-top: -12px;
+    --gy: clamp(7px, 5.24px + 0.35vw, 12px);
   }
-  .gap-xl-12 > *,
-  .gap-xl-12-y > * {
-    padding-top: 12px;
+  .gap-xl-24 {
+    --g: clamp(14px, 10.48px + 0.7vw, 24px);
+    --gy: clamp(14px, 10.48px + 0.7vw, 24px);
   }
-  .gap-xl-24,
   .gap-xl-24-x {
-    margin-left: -24px;
+    --g: clamp(14px, 10.48px + 0.7vw, 24px);
   }
-  .gap-xl-24 > *,
-  .gap-xl-24-x > * {
-    padding-left: 24px;
-  }
-  .gap-xl-24,
   .gap-xl-24-y {
-    margin-top: -24px;
+    --gy: clamp(14px, 10.48px + 0.7vw, 24px);
   }
-  .gap-xl-24 > *,
-  .gap-xl-24-y > * {
-    padding-top: 24px;
+  .gap-xl-32 {
+    --g: clamp(19px, 14.42px + 0.92vw, 32px);
+    --gy: clamp(19px, 14.42px + 0.92vw, 32px);
   }
-  .gap-xl-32,
   .gap-xl-32-x {
-    margin-left: -32px;
+    --g: clamp(19px, 14.42px + 0.92vw, 32px);
   }
-  .gap-xl-32 > *,
-  .gap-xl-32-x > * {
-    padding-left: 32px;
-  }
-  .gap-xl-32,
   .gap-xl-32-y {
-    margin-top: -32px;
+    --gy: clamp(19px, 14.42px + 0.92vw, 32px);
   }
-  .gap-xl-32 > *,
-  .gap-xl-32-y > * {
-    padding-top: 32px;
+  .gap-xl-36 {
+    --g: clamp(22px, 17.07px + 0.99vw, 36px);
+    --gy: clamp(22px, 17.07px + 0.99vw, 36px);
   }
-  .gap-xl-36,
   .gap-xl-36-x {
-    margin-left: -36px;
+    --g: clamp(22px, 17.07px + 0.99vw, 36px);
   }
-  .gap-xl-36 > *,
-  .gap-xl-36-x > * {
-    padding-left: 36px;
-  }
-  .gap-xl-36,
   .gap-xl-36-y {
-    margin-top: -36px;
+    --gy: clamp(22px, 17.07px + 0.99vw, 36px);
   }
-  .gap-xl-36 > *,
-  .gap-xl-36-y > * {
-    padding-top: 36px;
+  .gap-xl-40 {
+    --g: clamp(24px, 18.37px + 1.13vw, 40px);
+    --gy: clamp(24px, 18.37px + 1.13vw, 40px);
   }
-  .gap-xl-40,
   .gap-xl-40-x {
-    margin-left: -40px;
+    --g: clamp(24px, 18.37px + 1.13vw, 40px);
   }
-  .gap-xl-40 > *,
-  .gap-xl-40-x > * {
-    padding-left: 40px;
-  }
-  .gap-xl-40,
   .gap-xl-40-y {
-    margin-top: -40px;
+    --gy: clamp(24px, 18.37px + 1.13vw, 40px);
   }
-  .gap-xl-40 > *,
-  .gap-xl-40-y > * {
-    padding-top: 40px;
+  .gap-xl-44 {
+    --g: clamp(26px, 19.66px + 1.27vw, 44px);
+    --gy: clamp(26px, 19.66px + 1.27vw, 44px);
   }
-  .gap-xl-44,
   .gap-xl-44-x {
-    margin-left: -44px;
+    --g: clamp(26px, 19.66px + 1.27vw, 44px);
   }
-  .gap-xl-44 > *,
-  .gap-xl-44-x > * {
-    padding-left: 44px;
-  }
-  .gap-xl-44,
   .gap-xl-44-y {
-    margin-top: -44px;
+    --gy: clamp(26px, 19.66px + 1.27vw, 44px);
   }
-  .gap-xl-44 > *,
-  .gap-xl-44-y > * {
-    padding-top: 44px;
+  .gap-xl-48 {
+    --g: clamp(29px, 22.31px + 1.34vw, 48px);
+    --gy: clamp(29px, 22.31px + 1.34vw, 48px);
   }
-  .gap-xl-48,
   .gap-xl-48-x {
-    margin-left: -48px;
+    --g: clamp(29px, 22.31px + 1.34vw, 48px);
   }
-  .gap-xl-48 > *,
-  .gap-xl-48-x > * {
-    padding-left: 48px;
-  }
-  .gap-xl-48,
   .gap-xl-48-y {
-    margin-top: -48px;
+    --gy: clamp(29px, 22.31px + 1.34vw, 48px);
   }
-  .gap-xl-48 > *,
-  .gap-xl-48-y > * {
-    padding-top: 48px;
+  .gap-xl-60 {
+    --g: clamp(36px, 27.55px + 1.69vw, 60px);
+    --gy: clamp(36px, 27.55px + 1.69vw, 60px);
   }
-  .gap-xl-60,
   .gap-xl-60-x {
-    margin-left: -60px;
+    --g: clamp(36px, 27.55px + 1.69vw, 60px);
   }
-  .gap-xl-60 > *,
-  .gap-xl-60-x > * {
-    padding-left: 60px;
-  }
-  .gap-xl-60,
   .gap-xl-60-y {
-    margin-top: -60px;
+    --gy: clamp(36px, 27.55px + 1.69vw, 60px);
   }
-  .gap-xl-60 > *,
-  .gap-xl-60-y > * {
-    padding-top: 60px;
+  .gap-xl-72 {
+    --g: clamp(43px, 32.79px + 2.04vw, 72px);
+    --gy: clamp(43px, 32.79px + 2.04vw, 72px);
   }
-  .gap-xl-72,
   .gap-xl-72-x {
-    margin-left: -72px;
+    --g: clamp(43px, 32.79px + 2.04vw, 72px);
   }
-  .gap-xl-72 > *,
-  .gap-xl-72-x > * {
-    padding-left: 72px;
-  }
-  .gap-xl-72,
   .gap-xl-72-y {
-    margin-top: -72px;
+    --gy: clamp(43px, 32.79px + 2.04vw, 72px);
   }
-  .gap-xl-72 > *,
-  .gap-xl-72-y > * {
-    padding-top: 72px;
+  .gap-xl-84 {
+    --g: clamp(50px, 38.03px + 2.39vw, 84px);
+    --gy: clamp(50px, 38.03px + 2.39vw, 84px);
   }
-  .gap-xl-84,
   .gap-xl-84-x {
-    margin-left: -84px;
+    --g: clamp(50px, 38.03px + 2.39vw, 84px);
   }
-  .gap-xl-84 > *,
-  .gap-xl-84-x > * {
-    padding-left: 84px;
-  }
-  .gap-xl-84,
   .gap-xl-84-y {
-    margin-top: -84px;
+    --gy: clamp(50px, 38.03px + 2.39vw, 84px);
   }
-  .gap-xl-84 > *,
-  .gap-xl-84-y > * {
-    padding-top: 84px;
+  .gap-xl-96 {
+    --g: clamp(58px, 44.62px + 2.68vw, 96px);
+    --gy: clamp(58px, 44.62px + 2.68vw, 96px);
   }
-  .gap-xl-96,
   .gap-xl-96-x {
-    margin-left: -96px;
+    --g: clamp(58px, 44.62px + 2.68vw, 96px);
   }
-  .gap-xl-96 > *,
-  .gap-xl-96-x > * {
-    padding-left: 96px;
-  }
-  .gap-xl-96,
   .gap-xl-96-y {
-    margin-top: -96px;
-  }
-  .gap-xl-96 > *,
-  .gap-xl-96-y > * {
-    padding-top: 96px;
+    --gy: clamp(58px, 44.62px + 2.68vw, 96px);
   }
   .reset-xl {
     margin-left: 0;
@@ -1089,292 +1008,217 @@
     max-width: 100%;
   }
   .col-lg-auto {
-    flex: auto;
-    max-width: 100%;
+    flex: 0 0 auto;
     width: auto;
+    max-width: 100%;
   }
   /* Generate all column/offset classes */
   .col-lg-1 {
-    flex: 8.3333333333%;
-    max-width: 8.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.0833333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.0833333333 - var(--g, 0px));
   }
   .off-lg-1 {
-    margin-left: 8.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.0833333333);
   }
   .col-lg-2 {
-    flex: 16.6666666667%;
-    max-width: 16.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.1666666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.1666666667 - var(--g, 0px));
   }
   .off-lg-2 {
-    margin-left: 16.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.1666666667);
   }
   .col-lg-3 {
-    flex: 25%;
-    max-width: 25%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.25 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.25 - var(--g, 0px));
   }
   .off-lg-3 {
-    margin-left: 25%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.25);
   }
   .col-lg-4 {
-    flex: 33.3333333333%;
-    max-width: 33.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.3333333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.3333333333 - var(--g, 0px));
   }
   .off-lg-4 {
-    margin-left: 33.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.3333333333);
   }
   .col-lg-5 {
-    flex: 41.6666666667%;
-    max-width: 41.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.4166666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.4166666667 - var(--g, 0px));
   }
   .off-lg-5 {
-    margin-left: 41.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.4166666667);
   }
   .col-lg-6 {
-    flex: 50%;
-    max-width: 50%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.5 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.5 - var(--g, 0px));
   }
   .off-lg-6 {
-    margin-left: 50%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.5);
   }
   .col-lg-7 {
-    flex: 58.3333333333%;
-    max-width: 58.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.5833333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.5833333333 - var(--g, 0px));
   }
   .off-lg-7 {
-    margin-left: 58.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.5833333333);
   }
   .col-lg-8 {
-    flex: 66.6666666667%;
-    max-width: 66.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.6666666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.6666666667 - var(--g, 0px));
   }
   .off-lg-8 {
-    margin-left: 66.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.6666666667);
   }
   .col-lg-9 {
-    flex: 75%;
-    max-width: 75%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.75 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.75 - var(--g, 0px));
   }
   .off-lg-9 {
-    margin-left: 75%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.75);
   }
   .col-lg-10 {
-    flex: 83.3333333333%;
-    max-width: 83.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.8333333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.8333333333 - var(--g, 0px));
   }
   .off-lg-10 {
-    margin-left: 83.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.8333333333);
   }
   .col-lg-11 {
-    flex: 91.6666666667%;
-    max-width: 91.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.9166666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.9166666667 - var(--g, 0px));
   }
   .off-lg-11 {
-    margin-left: 91.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.9166666667);
   }
   .col-lg-12 {
-    flex: 100%;
-    max-width: 100%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 1 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 1 - var(--g, 0px));
   }
-  .off-lg-12 {
-    margin-left: 100%;
-  }
-  /* Generate the extra classes */
+  /* Generate the extra classes (e.g. .col-20 => 20%) */
   .col-lg-20 {
-    flex: 20%;
-    max-width: 20%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.2 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.2 - var(--g, 0px));
   }
-  /* Generate all gap classes */
-  .gap-lg-0,
+  /* Each gap class = two custom properties. That's the whole trick. */
+  .gap-lg-0 {
+    --g: 0;
+    --gy: 0;
+  }
   .gap-lg-0-x {
-    margin-left: 0;
+    --g: 0;
   }
-  .gap-lg-0 > *,
-  .gap-lg-0-x > * {
-    padding-left: 0;
-  }
-  .gap-lg-0,
   .gap-lg-0-y {
-    margin-top: 0;
+    --gy: 0;
   }
-  .gap-lg-0 > *,
-  .gap-lg-0-y > * {
-    padding-top: 0;
+  .gap-lg-12 {
+    --g: clamp(7px, 5.24px + 0.35vw, 12px);
+    --gy: clamp(7px, 5.24px + 0.35vw, 12px);
   }
-  .gap-lg-12,
   .gap-lg-12-x {
-    margin-left: -12px;
+    --g: clamp(7px, 5.24px + 0.35vw, 12px);
   }
-  .gap-lg-12 > *,
-  .gap-lg-12-x > * {
-    padding-left: 12px;
-  }
-  .gap-lg-12,
   .gap-lg-12-y {
-    margin-top: -12px;
+    --gy: clamp(7px, 5.24px + 0.35vw, 12px);
   }
-  .gap-lg-12 > *,
-  .gap-lg-12-y > * {
-    padding-top: 12px;
+  .gap-lg-24 {
+    --g: clamp(14px, 10.48px + 0.7vw, 24px);
+    --gy: clamp(14px, 10.48px + 0.7vw, 24px);
   }
-  .gap-lg-24,
   .gap-lg-24-x {
-    margin-left: -24px;
+    --g: clamp(14px, 10.48px + 0.7vw, 24px);
   }
-  .gap-lg-24 > *,
-  .gap-lg-24-x > * {
-    padding-left: 24px;
-  }
-  .gap-lg-24,
   .gap-lg-24-y {
-    margin-top: -24px;
+    --gy: clamp(14px, 10.48px + 0.7vw, 24px);
   }
-  .gap-lg-24 > *,
-  .gap-lg-24-y > * {
-    padding-top: 24px;
+  .gap-lg-32 {
+    --g: clamp(19px, 14.42px + 0.92vw, 32px);
+    --gy: clamp(19px, 14.42px + 0.92vw, 32px);
   }
-  .gap-lg-32,
   .gap-lg-32-x {
-    margin-left: -32px;
+    --g: clamp(19px, 14.42px + 0.92vw, 32px);
   }
-  .gap-lg-32 > *,
-  .gap-lg-32-x > * {
-    padding-left: 32px;
-  }
-  .gap-lg-32,
   .gap-lg-32-y {
-    margin-top: -32px;
+    --gy: clamp(19px, 14.42px + 0.92vw, 32px);
   }
-  .gap-lg-32 > *,
-  .gap-lg-32-y > * {
-    padding-top: 32px;
+  .gap-lg-36 {
+    --g: clamp(22px, 17.07px + 0.99vw, 36px);
+    --gy: clamp(22px, 17.07px + 0.99vw, 36px);
   }
-  .gap-lg-36,
   .gap-lg-36-x {
-    margin-left: -36px;
+    --g: clamp(22px, 17.07px + 0.99vw, 36px);
   }
-  .gap-lg-36 > *,
-  .gap-lg-36-x > * {
-    padding-left: 36px;
-  }
-  .gap-lg-36,
   .gap-lg-36-y {
-    margin-top: -36px;
+    --gy: clamp(22px, 17.07px + 0.99vw, 36px);
   }
-  .gap-lg-36 > *,
-  .gap-lg-36-y > * {
-    padding-top: 36px;
+  .gap-lg-40 {
+    --g: clamp(24px, 18.37px + 1.13vw, 40px);
+    --gy: clamp(24px, 18.37px + 1.13vw, 40px);
   }
-  .gap-lg-40,
   .gap-lg-40-x {
-    margin-left: -40px;
+    --g: clamp(24px, 18.37px + 1.13vw, 40px);
   }
-  .gap-lg-40 > *,
-  .gap-lg-40-x > * {
-    padding-left: 40px;
-  }
-  .gap-lg-40,
   .gap-lg-40-y {
-    margin-top: -40px;
+    --gy: clamp(24px, 18.37px + 1.13vw, 40px);
   }
-  .gap-lg-40 > *,
-  .gap-lg-40-y > * {
-    padding-top: 40px;
+  .gap-lg-44 {
+    --g: clamp(26px, 19.66px + 1.27vw, 44px);
+    --gy: clamp(26px, 19.66px + 1.27vw, 44px);
   }
-  .gap-lg-44,
   .gap-lg-44-x {
-    margin-left: -44px;
+    --g: clamp(26px, 19.66px + 1.27vw, 44px);
   }
-  .gap-lg-44 > *,
-  .gap-lg-44-x > * {
-    padding-left: 44px;
-  }
-  .gap-lg-44,
   .gap-lg-44-y {
-    margin-top: -44px;
+    --gy: clamp(26px, 19.66px + 1.27vw, 44px);
   }
-  .gap-lg-44 > *,
-  .gap-lg-44-y > * {
-    padding-top: 44px;
+  .gap-lg-48 {
+    --g: clamp(29px, 22.31px + 1.34vw, 48px);
+    --gy: clamp(29px, 22.31px + 1.34vw, 48px);
   }
-  .gap-lg-48,
   .gap-lg-48-x {
-    margin-left: -48px;
+    --g: clamp(29px, 22.31px + 1.34vw, 48px);
   }
-  .gap-lg-48 > *,
-  .gap-lg-48-x > * {
-    padding-left: 48px;
-  }
-  .gap-lg-48,
   .gap-lg-48-y {
-    margin-top: -48px;
+    --gy: clamp(29px, 22.31px + 1.34vw, 48px);
   }
-  .gap-lg-48 > *,
-  .gap-lg-48-y > * {
-    padding-top: 48px;
+  .gap-lg-60 {
+    --g: clamp(36px, 27.55px + 1.69vw, 60px);
+    --gy: clamp(36px, 27.55px + 1.69vw, 60px);
   }
-  .gap-lg-60,
   .gap-lg-60-x {
-    margin-left: -60px;
+    --g: clamp(36px, 27.55px + 1.69vw, 60px);
   }
-  .gap-lg-60 > *,
-  .gap-lg-60-x > * {
-    padding-left: 60px;
-  }
-  .gap-lg-60,
   .gap-lg-60-y {
-    margin-top: -60px;
+    --gy: clamp(36px, 27.55px + 1.69vw, 60px);
   }
-  .gap-lg-60 > *,
-  .gap-lg-60-y > * {
-    padding-top: 60px;
+  .gap-lg-72 {
+    --g: clamp(43px, 32.79px + 2.04vw, 72px);
+    --gy: clamp(43px, 32.79px + 2.04vw, 72px);
   }
-  .gap-lg-72,
   .gap-lg-72-x {
-    margin-left: -72px;
+    --g: clamp(43px, 32.79px + 2.04vw, 72px);
   }
-  .gap-lg-72 > *,
-  .gap-lg-72-x > * {
-    padding-left: 72px;
-  }
-  .gap-lg-72,
   .gap-lg-72-y {
-    margin-top: -72px;
+    --gy: clamp(43px, 32.79px + 2.04vw, 72px);
   }
-  .gap-lg-72 > *,
-  .gap-lg-72-y > * {
-    padding-top: 72px;
+  .gap-lg-84 {
+    --g: clamp(50px, 38.03px + 2.39vw, 84px);
+    --gy: clamp(50px, 38.03px + 2.39vw, 84px);
   }
-  .gap-lg-84,
   .gap-lg-84-x {
-    margin-left: -84px;
+    --g: clamp(50px, 38.03px + 2.39vw, 84px);
   }
-  .gap-lg-84 > *,
-  .gap-lg-84-x > * {
-    padding-left: 84px;
-  }
-  .gap-lg-84,
   .gap-lg-84-y {
-    margin-top: -84px;
+    --gy: clamp(50px, 38.03px + 2.39vw, 84px);
   }
-  .gap-lg-84 > *,
-  .gap-lg-84-y > * {
-    padding-top: 84px;
+  .gap-lg-96 {
+    --g: clamp(58px, 44.62px + 2.68vw, 96px);
+    --gy: clamp(58px, 44.62px + 2.68vw, 96px);
   }
-  .gap-lg-96,
   .gap-lg-96-x {
-    margin-left: -96px;
+    --g: clamp(58px, 44.62px + 2.68vw, 96px);
   }
-  .gap-lg-96 > *,
-  .gap-lg-96-x > * {
-    padding-left: 96px;
-  }
-  .gap-lg-96,
   .gap-lg-96-y {
-    margin-top: -96px;
-  }
-  .gap-lg-96 > *,
-  .gap-lg-96-y > * {
-    padding-top: 96px;
+    --gy: clamp(58px, 44.62px + 2.68vw, 96px);
   }
   .reset-lg {
     margin-left: 0;
@@ -1386,292 +1230,217 @@
     max-width: 100%;
   }
   .col-md-auto {
-    flex: auto;
-    max-width: 100%;
+    flex: 0 0 auto;
     width: auto;
+    max-width: 100%;
   }
   /* Generate all column/offset classes */
   .col-md-1 {
-    flex: 8.3333333333%;
-    max-width: 8.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.0833333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.0833333333 - var(--g, 0px));
   }
   .off-md-1 {
-    margin-left: 8.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.0833333333);
   }
   .col-md-2 {
-    flex: 16.6666666667%;
-    max-width: 16.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.1666666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.1666666667 - var(--g, 0px));
   }
   .off-md-2 {
-    margin-left: 16.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.1666666667);
   }
   .col-md-3 {
-    flex: 25%;
-    max-width: 25%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.25 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.25 - var(--g, 0px));
   }
   .off-md-3 {
-    margin-left: 25%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.25);
   }
   .col-md-4 {
-    flex: 33.3333333333%;
-    max-width: 33.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.3333333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.3333333333 - var(--g, 0px));
   }
   .off-md-4 {
-    margin-left: 33.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.3333333333);
   }
   .col-md-5 {
-    flex: 41.6666666667%;
-    max-width: 41.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.4166666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.4166666667 - var(--g, 0px));
   }
   .off-md-5 {
-    margin-left: 41.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.4166666667);
   }
   .col-md-6 {
-    flex: 50%;
-    max-width: 50%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.5 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.5 - var(--g, 0px));
   }
   .off-md-6 {
-    margin-left: 50%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.5);
   }
   .col-md-7 {
-    flex: 58.3333333333%;
-    max-width: 58.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.5833333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.5833333333 - var(--g, 0px));
   }
   .off-md-7 {
-    margin-left: 58.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.5833333333);
   }
   .col-md-8 {
-    flex: 66.6666666667%;
-    max-width: 66.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.6666666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.6666666667 - var(--g, 0px));
   }
   .off-md-8 {
-    margin-left: 66.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.6666666667);
   }
   .col-md-9 {
-    flex: 75%;
-    max-width: 75%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.75 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.75 - var(--g, 0px));
   }
   .off-md-9 {
-    margin-left: 75%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.75);
   }
   .col-md-10 {
-    flex: 83.3333333333%;
-    max-width: 83.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.8333333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.8333333333 - var(--g, 0px));
   }
   .off-md-10 {
-    margin-left: 83.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.8333333333);
   }
   .col-md-11 {
-    flex: 91.6666666667%;
-    max-width: 91.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.9166666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.9166666667 - var(--g, 0px));
   }
   .off-md-11 {
-    margin-left: 91.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.9166666667);
   }
   .col-md-12 {
-    flex: 100%;
-    max-width: 100%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 1 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 1 - var(--g, 0px));
   }
-  .off-md-12 {
-    margin-left: 100%;
-  }
-  /* Generate the extra classes */
+  /* Generate the extra classes (e.g. .col-20 => 20%) */
   .col-md-20 {
-    flex: 20%;
-    max-width: 20%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.2 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.2 - var(--g, 0px));
   }
-  /* Generate all gap classes */
-  .gap-md-0,
+  /* Each gap class = two custom properties. That's the whole trick. */
+  .gap-md-0 {
+    --g: 0;
+    --gy: 0;
+  }
   .gap-md-0-x {
-    margin-left: 0;
+    --g: 0;
   }
-  .gap-md-0 > *,
-  .gap-md-0-x > * {
-    padding-left: 0;
-  }
-  .gap-md-0,
   .gap-md-0-y {
-    margin-top: 0;
+    --gy: 0;
   }
-  .gap-md-0 > *,
-  .gap-md-0-y > * {
-    padding-top: 0;
+  .gap-md-12 {
+    --g: clamp(7px, 5.24px + 0.35vw, 12px);
+    --gy: clamp(7px, 5.24px + 0.35vw, 12px);
   }
-  .gap-md-12,
   .gap-md-12-x {
-    margin-left: -12px;
+    --g: clamp(7px, 5.24px + 0.35vw, 12px);
   }
-  .gap-md-12 > *,
-  .gap-md-12-x > * {
-    padding-left: 12px;
-  }
-  .gap-md-12,
   .gap-md-12-y {
-    margin-top: -12px;
+    --gy: clamp(7px, 5.24px + 0.35vw, 12px);
   }
-  .gap-md-12 > *,
-  .gap-md-12-y > * {
-    padding-top: 12px;
+  .gap-md-24 {
+    --g: clamp(14px, 10.48px + 0.7vw, 24px);
+    --gy: clamp(14px, 10.48px + 0.7vw, 24px);
   }
-  .gap-md-24,
   .gap-md-24-x {
-    margin-left: -24px;
+    --g: clamp(14px, 10.48px + 0.7vw, 24px);
   }
-  .gap-md-24 > *,
-  .gap-md-24-x > * {
-    padding-left: 24px;
-  }
-  .gap-md-24,
   .gap-md-24-y {
-    margin-top: -24px;
+    --gy: clamp(14px, 10.48px + 0.7vw, 24px);
   }
-  .gap-md-24 > *,
-  .gap-md-24-y > * {
-    padding-top: 24px;
+  .gap-md-32 {
+    --g: clamp(19px, 14.42px + 0.92vw, 32px);
+    --gy: clamp(19px, 14.42px + 0.92vw, 32px);
   }
-  .gap-md-32,
   .gap-md-32-x {
-    margin-left: -32px;
+    --g: clamp(19px, 14.42px + 0.92vw, 32px);
   }
-  .gap-md-32 > *,
-  .gap-md-32-x > * {
-    padding-left: 32px;
-  }
-  .gap-md-32,
   .gap-md-32-y {
-    margin-top: -32px;
+    --gy: clamp(19px, 14.42px + 0.92vw, 32px);
   }
-  .gap-md-32 > *,
-  .gap-md-32-y > * {
-    padding-top: 32px;
+  .gap-md-36 {
+    --g: clamp(22px, 17.07px + 0.99vw, 36px);
+    --gy: clamp(22px, 17.07px + 0.99vw, 36px);
   }
-  .gap-md-36,
   .gap-md-36-x {
-    margin-left: -36px;
+    --g: clamp(22px, 17.07px + 0.99vw, 36px);
   }
-  .gap-md-36 > *,
-  .gap-md-36-x > * {
-    padding-left: 36px;
-  }
-  .gap-md-36,
   .gap-md-36-y {
-    margin-top: -36px;
+    --gy: clamp(22px, 17.07px + 0.99vw, 36px);
   }
-  .gap-md-36 > *,
-  .gap-md-36-y > * {
-    padding-top: 36px;
+  .gap-md-40 {
+    --g: clamp(24px, 18.37px + 1.13vw, 40px);
+    --gy: clamp(24px, 18.37px + 1.13vw, 40px);
   }
-  .gap-md-40,
   .gap-md-40-x {
-    margin-left: -40px;
+    --g: clamp(24px, 18.37px + 1.13vw, 40px);
   }
-  .gap-md-40 > *,
-  .gap-md-40-x > * {
-    padding-left: 40px;
-  }
-  .gap-md-40,
   .gap-md-40-y {
-    margin-top: -40px;
+    --gy: clamp(24px, 18.37px + 1.13vw, 40px);
   }
-  .gap-md-40 > *,
-  .gap-md-40-y > * {
-    padding-top: 40px;
+  .gap-md-44 {
+    --g: clamp(26px, 19.66px + 1.27vw, 44px);
+    --gy: clamp(26px, 19.66px + 1.27vw, 44px);
   }
-  .gap-md-44,
   .gap-md-44-x {
-    margin-left: -44px;
+    --g: clamp(26px, 19.66px + 1.27vw, 44px);
   }
-  .gap-md-44 > *,
-  .gap-md-44-x > * {
-    padding-left: 44px;
-  }
-  .gap-md-44,
   .gap-md-44-y {
-    margin-top: -44px;
+    --gy: clamp(26px, 19.66px + 1.27vw, 44px);
   }
-  .gap-md-44 > *,
-  .gap-md-44-y > * {
-    padding-top: 44px;
+  .gap-md-48 {
+    --g: clamp(29px, 22.31px + 1.34vw, 48px);
+    --gy: clamp(29px, 22.31px + 1.34vw, 48px);
   }
-  .gap-md-48,
   .gap-md-48-x {
-    margin-left: -48px;
+    --g: clamp(29px, 22.31px + 1.34vw, 48px);
   }
-  .gap-md-48 > *,
-  .gap-md-48-x > * {
-    padding-left: 48px;
-  }
-  .gap-md-48,
   .gap-md-48-y {
-    margin-top: -48px;
+    --gy: clamp(29px, 22.31px + 1.34vw, 48px);
   }
-  .gap-md-48 > *,
-  .gap-md-48-y > * {
-    padding-top: 48px;
+  .gap-md-60 {
+    --g: clamp(36px, 27.55px + 1.69vw, 60px);
+    --gy: clamp(36px, 27.55px + 1.69vw, 60px);
   }
-  .gap-md-60,
   .gap-md-60-x {
-    margin-left: -60px;
+    --g: clamp(36px, 27.55px + 1.69vw, 60px);
   }
-  .gap-md-60 > *,
-  .gap-md-60-x > * {
-    padding-left: 60px;
-  }
-  .gap-md-60,
   .gap-md-60-y {
-    margin-top: -60px;
+    --gy: clamp(36px, 27.55px + 1.69vw, 60px);
   }
-  .gap-md-60 > *,
-  .gap-md-60-y > * {
-    padding-top: 60px;
+  .gap-md-72 {
+    --g: clamp(43px, 32.79px + 2.04vw, 72px);
+    --gy: clamp(43px, 32.79px + 2.04vw, 72px);
   }
-  .gap-md-72,
   .gap-md-72-x {
-    margin-left: -72px;
+    --g: clamp(43px, 32.79px + 2.04vw, 72px);
   }
-  .gap-md-72 > *,
-  .gap-md-72-x > * {
-    padding-left: 72px;
-  }
-  .gap-md-72,
   .gap-md-72-y {
-    margin-top: -72px;
+    --gy: clamp(43px, 32.79px + 2.04vw, 72px);
   }
-  .gap-md-72 > *,
-  .gap-md-72-y > * {
-    padding-top: 72px;
+  .gap-md-84 {
+    --g: clamp(50px, 38.03px + 2.39vw, 84px);
+    --gy: clamp(50px, 38.03px + 2.39vw, 84px);
   }
-  .gap-md-84,
   .gap-md-84-x {
-    margin-left: -84px;
+    --g: clamp(50px, 38.03px + 2.39vw, 84px);
   }
-  .gap-md-84 > *,
-  .gap-md-84-x > * {
-    padding-left: 84px;
-  }
-  .gap-md-84,
   .gap-md-84-y {
-    margin-top: -84px;
+    --gy: clamp(50px, 38.03px + 2.39vw, 84px);
   }
-  .gap-md-84 > *,
-  .gap-md-84-y > * {
-    padding-top: 84px;
+  .gap-md-96 {
+    --g: clamp(58px, 44.62px + 2.68vw, 96px);
+    --gy: clamp(58px, 44.62px + 2.68vw, 96px);
   }
-  .gap-md-96,
   .gap-md-96-x {
-    margin-left: -96px;
+    --g: clamp(58px, 44.62px + 2.68vw, 96px);
   }
-  .gap-md-96 > *,
-  .gap-md-96-x > * {
-    padding-left: 96px;
-  }
-  .gap-md-96,
   .gap-md-96-y {
-    margin-top: -96px;
-  }
-  .gap-md-96 > *,
-  .gap-md-96-y > * {
-    padding-top: 96px;
+    --gy: clamp(58px, 44.62px + 2.68vw, 96px);
   }
   .reset-md {
     margin-left: 0;
@@ -1683,292 +1452,217 @@
     max-width: 100%;
   }
   .col-sm-auto {
-    flex: auto;
-    max-width: 100%;
+    flex: 0 0 auto;
     width: auto;
+    max-width: 100%;
   }
   /* Generate all column/offset classes */
   .col-sm-1 {
-    flex: 8.3333333333%;
-    max-width: 8.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.0833333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.0833333333 - var(--g, 0px));
   }
   .off-sm-1 {
-    margin-left: 8.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.0833333333);
   }
   .col-sm-2 {
-    flex: 16.6666666667%;
-    max-width: 16.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.1666666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.1666666667 - var(--g, 0px));
   }
   .off-sm-2 {
-    margin-left: 16.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.1666666667);
   }
   .col-sm-3 {
-    flex: 25%;
-    max-width: 25%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.25 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.25 - var(--g, 0px));
   }
   .off-sm-3 {
-    margin-left: 25%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.25);
   }
   .col-sm-4 {
-    flex: 33.3333333333%;
-    max-width: 33.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.3333333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.3333333333 - var(--g, 0px));
   }
   .off-sm-4 {
-    margin-left: 33.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.3333333333);
   }
   .col-sm-5 {
-    flex: 41.6666666667%;
-    max-width: 41.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.4166666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.4166666667 - var(--g, 0px));
   }
   .off-sm-5 {
-    margin-left: 41.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.4166666667);
   }
   .col-sm-6 {
-    flex: 50%;
-    max-width: 50%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.5 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.5 - var(--g, 0px));
   }
   .off-sm-6 {
-    margin-left: 50%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.5);
   }
   .col-sm-7 {
-    flex: 58.3333333333%;
-    max-width: 58.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.5833333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.5833333333 - var(--g, 0px));
   }
   .off-sm-7 {
-    margin-left: 58.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.5833333333);
   }
   .col-sm-8 {
-    flex: 66.6666666667%;
-    max-width: 66.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.6666666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.6666666667 - var(--g, 0px));
   }
   .off-sm-8 {
-    margin-left: 66.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.6666666667);
   }
   .col-sm-9 {
-    flex: 75%;
-    max-width: 75%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.75 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.75 - var(--g, 0px));
   }
   .off-sm-9 {
-    margin-left: 75%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.75);
   }
   .col-sm-10 {
-    flex: 83.3333333333%;
-    max-width: 83.3333333333%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.8333333333 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.8333333333 - var(--g, 0px));
   }
   .off-sm-10 {
-    margin-left: 83.3333333333%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.8333333333);
   }
   .col-sm-11 {
-    flex: 91.6666666667%;
-    max-width: 91.6666666667%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.9166666667 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.9166666667 - var(--g, 0px));
   }
   .off-sm-11 {
-    margin-left: 91.6666666667%;
+    margin-left: calc((100% + var(--g, 0px)) * 0.9166666667);
   }
   .col-sm-12 {
-    flex: 100%;
-    max-width: 100%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 1 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 1 - var(--g, 0px));
   }
-  .off-sm-12 {
-    margin-left: 100%;
-  }
-  /* Generate the extra classes */
+  /* Generate the extra classes (e.g. .col-20 => 20%) */
   .col-sm-20 {
-    flex: 20%;
-    max-width: 20%;
+    flex: 0 0 calc((100% + var(--g, 0px)) * 0.2 - var(--g, 0px));
+    max-width: calc((100% + var(--g, 0px)) * 0.2 - var(--g, 0px));
   }
-  /* Generate all gap classes */
-  .gap-sm-0,
+  /* Each gap class = two custom properties. That's the whole trick. */
+  .gap-sm-0 {
+    --g: 0;
+    --gy: 0;
+  }
   .gap-sm-0-x {
-    margin-left: 0;
+    --g: 0;
   }
-  .gap-sm-0 > *,
-  .gap-sm-0-x > * {
-    padding-left: 0;
-  }
-  .gap-sm-0,
   .gap-sm-0-y {
-    margin-top: 0;
+    --gy: 0;
   }
-  .gap-sm-0 > *,
-  .gap-sm-0-y > * {
-    padding-top: 0;
+  .gap-sm-12 {
+    --g: clamp(7px, 5.24px + 0.35vw, 12px);
+    --gy: clamp(7px, 5.24px + 0.35vw, 12px);
   }
-  .gap-sm-12,
   .gap-sm-12-x {
-    margin-left: -12px;
+    --g: clamp(7px, 5.24px + 0.35vw, 12px);
   }
-  .gap-sm-12 > *,
-  .gap-sm-12-x > * {
-    padding-left: 12px;
-  }
-  .gap-sm-12,
   .gap-sm-12-y {
-    margin-top: -12px;
+    --gy: clamp(7px, 5.24px + 0.35vw, 12px);
   }
-  .gap-sm-12 > *,
-  .gap-sm-12-y > * {
-    padding-top: 12px;
+  .gap-sm-24 {
+    --g: clamp(14px, 10.48px + 0.7vw, 24px);
+    --gy: clamp(14px, 10.48px + 0.7vw, 24px);
   }
-  .gap-sm-24,
   .gap-sm-24-x {
-    margin-left: -24px;
+    --g: clamp(14px, 10.48px + 0.7vw, 24px);
   }
-  .gap-sm-24 > *,
-  .gap-sm-24-x > * {
-    padding-left: 24px;
-  }
-  .gap-sm-24,
   .gap-sm-24-y {
-    margin-top: -24px;
+    --gy: clamp(14px, 10.48px + 0.7vw, 24px);
   }
-  .gap-sm-24 > *,
-  .gap-sm-24-y > * {
-    padding-top: 24px;
+  .gap-sm-32 {
+    --g: clamp(19px, 14.42px + 0.92vw, 32px);
+    --gy: clamp(19px, 14.42px + 0.92vw, 32px);
   }
-  .gap-sm-32,
   .gap-sm-32-x {
-    margin-left: -32px;
+    --g: clamp(19px, 14.42px + 0.92vw, 32px);
   }
-  .gap-sm-32 > *,
-  .gap-sm-32-x > * {
-    padding-left: 32px;
-  }
-  .gap-sm-32,
   .gap-sm-32-y {
-    margin-top: -32px;
+    --gy: clamp(19px, 14.42px + 0.92vw, 32px);
   }
-  .gap-sm-32 > *,
-  .gap-sm-32-y > * {
-    padding-top: 32px;
+  .gap-sm-36 {
+    --g: clamp(22px, 17.07px + 0.99vw, 36px);
+    --gy: clamp(22px, 17.07px + 0.99vw, 36px);
   }
-  .gap-sm-36,
   .gap-sm-36-x {
-    margin-left: -36px;
+    --g: clamp(22px, 17.07px + 0.99vw, 36px);
   }
-  .gap-sm-36 > *,
-  .gap-sm-36-x > * {
-    padding-left: 36px;
-  }
-  .gap-sm-36,
   .gap-sm-36-y {
-    margin-top: -36px;
+    --gy: clamp(22px, 17.07px + 0.99vw, 36px);
   }
-  .gap-sm-36 > *,
-  .gap-sm-36-y > * {
-    padding-top: 36px;
+  .gap-sm-40 {
+    --g: clamp(24px, 18.37px + 1.13vw, 40px);
+    --gy: clamp(24px, 18.37px + 1.13vw, 40px);
   }
-  .gap-sm-40,
   .gap-sm-40-x {
-    margin-left: -40px;
+    --g: clamp(24px, 18.37px + 1.13vw, 40px);
   }
-  .gap-sm-40 > *,
-  .gap-sm-40-x > * {
-    padding-left: 40px;
-  }
-  .gap-sm-40,
   .gap-sm-40-y {
-    margin-top: -40px;
+    --gy: clamp(24px, 18.37px + 1.13vw, 40px);
   }
-  .gap-sm-40 > *,
-  .gap-sm-40-y > * {
-    padding-top: 40px;
+  .gap-sm-44 {
+    --g: clamp(26px, 19.66px + 1.27vw, 44px);
+    --gy: clamp(26px, 19.66px + 1.27vw, 44px);
   }
-  .gap-sm-44,
   .gap-sm-44-x {
-    margin-left: -44px;
+    --g: clamp(26px, 19.66px + 1.27vw, 44px);
   }
-  .gap-sm-44 > *,
-  .gap-sm-44-x > * {
-    padding-left: 44px;
-  }
-  .gap-sm-44,
   .gap-sm-44-y {
-    margin-top: -44px;
+    --gy: clamp(26px, 19.66px + 1.27vw, 44px);
   }
-  .gap-sm-44 > *,
-  .gap-sm-44-y > * {
-    padding-top: 44px;
+  .gap-sm-48 {
+    --g: clamp(29px, 22.31px + 1.34vw, 48px);
+    --gy: clamp(29px, 22.31px + 1.34vw, 48px);
   }
-  .gap-sm-48,
   .gap-sm-48-x {
-    margin-left: -48px;
+    --g: clamp(29px, 22.31px + 1.34vw, 48px);
   }
-  .gap-sm-48 > *,
-  .gap-sm-48-x > * {
-    padding-left: 48px;
-  }
-  .gap-sm-48,
   .gap-sm-48-y {
-    margin-top: -48px;
+    --gy: clamp(29px, 22.31px + 1.34vw, 48px);
   }
-  .gap-sm-48 > *,
-  .gap-sm-48-y > * {
-    padding-top: 48px;
+  .gap-sm-60 {
+    --g: clamp(36px, 27.55px + 1.69vw, 60px);
+    --gy: clamp(36px, 27.55px + 1.69vw, 60px);
   }
-  .gap-sm-60,
   .gap-sm-60-x {
-    margin-left: -60px;
+    --g: clamp(36px, 27.55px + 1.69vw, 60px);
   }
-  .gap-sm-60 > *,
-  .gap-sm-60-x > * {
-    padding-left: 60px;
-  }
-  .gap-sm-60,
   .gap-sm-60-y {
-    margin-top: -60px;
+    --gy: clamp(36px, 27.55px + 1.69vw, 60px);
   }
-  .gap-sm-60 > *,
-  .gap-sm-60-y > * {
-    padding-top: 60px;
+  .gap-sm-72 {
+    --g: clamp(43px, 32.79px + 2.04vw, 72px);
+    --gy: clamp(43px, 32.79px + 2.04vw, 72px);
   }
-  .gap-sm-72,
   .gap-sm-72-x {
-    margin-left: -72px;
+    --g: clamp(43px, 32.79px + 2.04vw, 72px);
   }
-  .gap-sm-72 > *,
-  .gap-sm-72-x > * {
-    padding-left: 72px;
-  }
-  .gap-sm-72,
   .gap-sm-72-y {
-    margin-top: -72px;
+    --gy: clamp(43px, 32.79px + 2.04vw, 72px);
   }
-  .gap-sm-72 > *,
-  .gap-sm-72-y > * {
-    padding-top: 72px;
+  .gap-sm-84 {
+    --g: clamp(50px, 38.03px + 2.39vw, 84px);
+    --gy: clamp(50px, 38.03px + 2.39vw, 84px);
   }
-  .gap-sm-84,
   .gap-sm-84-x {
-    margin-left: -84px;
+    --g: clamp(50px, 38.03px + 2.39vw, 84px);
   }
-  .gap-sm-84 > *,
-  .gap-sm-84-x > * {
-    padding-left: 84px;
-  }
-  .gap-sm-84,
   .gap-sm-84-y {
-    margin-top: -84px;
+    --gy: clamp(50px, 38.03px + 2.39vw, 84px);
   }
-  .gap-sm-84 > *,
-  .gap-sm-84-y > * {
-    padding-top: 84px;
+  .gap-sm-96 {
+    --g: clamp(58px, 44.62px + 2.68vw, 96px);
+    --gy: clamp(58px, 44.62px + 2.68vw, 96px);
   }
-  .gap-sm-96,
   .gap-sm-96-x {
-    margin-left: -96px;
+    --g: clamp(58px, 44.62px + 2.68vw, 96px);
   }
-  .gap-sm-96 > *,
-  .gap-sm-96-x > * {
-    padding-left: 96px;
-  }
-  .gap-sm-96,
   .gap-sm-96-y {
-    margin-top: -96px;
-  }
-  .gap-sm-96 > *,
-  .gap-sm-96-y > * {
-    padding-top: 96px;
+    --gy: clamp(58px, 44.62px + 2.68vw, 96px);
   }
   .reset-sm {
     margin-left: 0;
@@ -2184,32 +1878,6 @@ pre {
   padding: clamp(2rem, 1.5rem + 3vw, 4rem) 0 !important;
   padding-block: clamp(2rem, 1.5rem + 3vw, 4rem) !important;
   position: relative;
-}
-
-.slider-example {
-  margin-bottom: 60px;
-}
-.slider-example .slick-slide {
-  padding: 240px 60px;
-  font-size: 30px;
-  text-align: center;
-  background: #fff;
-  border: 1px solid rgba(35, 35, 35, 0.1);
-  border-radius: 3px;
-}
-
-.slick-prev::before, .slick-next::before {
-  color: #000;
-}
-
-.slick-next {
-  right: 25px;
-  z-index: 1;
-}
-
-.slick-prev {
-  left: 25px;
-  z-index: 1;
 }
 
 /* ==========================================================================

@@ -74,28 +74,6 @@ module.exports = function (grunt) {
 				src: `${CSS_DIST}/bundle.css`
 			}
 		},
-		image: {
-			dynamic: {
-				files: [
-					{
-						expand: true,
-						cwd: `${PUBLIC_PATH}/img/`,
-						src: ["**/*.{png,jpg}"],
-						dest: `${PUBLIC_PATH}/img/`
-					}
-				]
-			}
-		},
-		unused: {
-			options: {
-				reference: './public/',
-				directory: ['**/*.html', '**/*.js', '**/*.scss', '**/*.css'],
-				days: 30,
-				remove: false, // set to true to delete unused files from project
-				reportOutput:'unused.json', // set to false to disable file output
-				fail: false // set to true to make the task fail when unused files are found
-			}
-		},
 		watch: {
 			css: {
 				files: `${SOURCE_PATH}/**/*.css`,
@@ -122,22 +100,11 @@ module.exports = function (grunt) {
 
 	grunt.loadNpmTasks("grunt-contrib-cssmin");
 	grunt.loadNpmTasks("grunt-contrib-sass");
-	grunt.loadNpmTasks("grunt-contrib-clean");
-	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-contrib-watch");
-	grunt.loadNpmTasks("grunt-contrib-copy");
 	grunt.loadNpmTasks("grunt-concat-css");
-	grunt.loadNpmTasks("grunt-postcss");
 	grunt.loadNpmTasks('@lodder/grunt-postcss');
-	grunt.loadNpmTasks("grunt-babel");
-	grunt.loadNpmTasks("grunt-browserify");
-	grunt.loadNpmTasks("grunt-eslint");
-	grunt.loadNpmTasks('grunt-include-replace');
-	grunt.loadNpmTasks('grunt-unused');
 	grunt.registerTask("default", ["watch"]);
 
-	// Scripts pipeline (copy/eslint/babel/browserify/uglify/clean) removed with
-	// the JS boilerplate — re-add the task configs before wiring it back in.
 	grunt.registerTask("prod", "Production Builder", function (styles = "css") {
 		// Styles
 		if (styles === "css") {
