@@ -198,12 +198,12 @@
                 "id": ""
             },
             "choices": [],
-            "default_value": false,
+            "default_value": [],
             "return_format": "value",
-            "multiple": 0,
+            "multiple": 1,
             "allow_null": 0,
             "allow_in_bindings": 0,
-            "ui": 0,
+            "ui": 1,
             "ajax": 0,
             "placeholder": ""
         },
@@ -395,5 +395,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1784370198
+    "modified": 1784370600
 }

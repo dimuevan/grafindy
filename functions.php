@@ -24,10 +24,9 @@ function dimu_child_enqueue_style(): void {
 }
 add_action( 'wp_enqueue_scripts', 'dimu_child_enqueue_style', 20 );
 
-/**
- * Child scripts, after the parent's global assets.
- */
+// Site templates system: CPT, ACF options, resolver/render, admin preview.
 require_once get_stylesheet_directory() . '/inc/cpt/templates.php';
+require_once get_stylesheet_directory() . '/inc/theme-options.php';
 require_once get_stylesheet_directory() . '/inc/template-render.php';
 require_once get_stylesheet_directory() . '/inc/template-preview.php';
 

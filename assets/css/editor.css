@@ -1,0 +1,10 @@
+/* Editor styles — mirror the front-end token feel inside Gutenberg. */
+.editor-styles-wrapper {
+	--dimu-radius: 12px;
+}
+.editor-styles-wrapper .wp-block-group.is-style-dimu-card {
+	border-radius: var(--dimu-radius);
+}
+.editor-styles-wrapper .wp-block-image.is-style-dimu-rounded img {
+	border-radius: var(--dimu-radius);
+}

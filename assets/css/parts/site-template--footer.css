@@ -1,0 +1,38 @@
+/* Footer site-template part. Colors come from the template's Styles tab
+   (CSS vars set inline on .footer). Inlined at render by Asset_Loader. */
+
+.footer{background:var(--footer-bg,#f2f1f3);color:var(--footer-text,#111);padding:3rem 1.5rem 0;font-size:.9375rem;line-height:1.6}
+.footer a{color:inherit}
+
+.footer__cta{max-width:72rem;margin:0 auto 3rem;display:flex;flex-wrap:wrap;align-items:center;gap:1rem 2rem;padding-bottom:2.5rem;border-bottom:1px solid color-mix(in srgb,currentColor 15%,transparent)}
+.footer__cta-title{margin:0;font-size:1.75rem;line-height:1.2}
+.footer__cta-text{flex:1 1 20rem;margin:0}
+.footer__cta-text p{margin:0}
+.footer__cta-button{display:inline-block;padding:.75rem 1.5rem;background:var(--footer-text,#111);color:var(--footer-bg,#f2f1f3);text-decoration:none;border-radius:.25rem;white-space:nowrap}
+.footer__cta-button:hover{opacity:.85}
+
+.footer__main{max-width:72rem;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:2.5rem;padding-bottom:2.5rem}
+
+.footer__logo{max-width:10rem;height:auto;display:block;margin-bottom:1rem}
+.footer__about-text p{margin:0 0 .75em}
+.footer__about-text p:last-child{margin-bottom:0}
+
+.footer__nav-title{margin:0 0 .75rem;font-size:1rem}
+.footer__nav ul{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.footer__nav a{text-decoration:none}
+.footer__nav a:hover{text-decoration:underline}
+
+.footer__socials{list-style:none;display:flex;flex-wrap:wrap;gap:.75rem;margin:0 0 1.5rem;padding:0}
+.footer__socials li:last-child{margin-right:0}
+.footer__socials a{display:block}
+.footer__social-icon{width:1.5rem;height:1.5rem;object-fit:contain;display:block}
+
+.footer__form{background:var(--footer-form-bg,#000);padding:1.25rem;border-radius:.375rem}
+
+.footer__bottom{max-width:72rem;margin:0 auto;padding:1.25rem 0 1.75rem;border-top:1px solid color-mix(in srgb,currentColor 15%,transparent);font-size:.8125rem}
+
+/* Landing style: single centered column. */
+.footer--two .footer__cta{flex-direction:column;text-align:center;justify-content:center}
+.footer--two .footer__main{grid-template-columns:1fr;justify-items:center;text-align:center}
+.footer--two .footer__socials{justify-content:center}
+.footer--two .footer__bottom{text-align:center}

@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * "Templates" CPT: reusable site parts (footer, header, ...) built with the block editor.
+ * "Templates" CPT: reusable site parts (footer, header, ...) built with ACF fields only.
  * Fully private on the front end — rendered only via the theme's resolver.
  */
 function dimu_child_register_templates_cpt(): void {
@@ -16,7 +16,7 @@ function dimu_child_register_templates_cpt(): void {
 		'public'              => false,
 		'show_ui'             => true,
 		'show_in_menu'        => true,
-		'show_in_rest'        => false, // Block editor.
+		'show_in_rest'        => false, // Classic edit screen: title + ACF fields only.
 		'menu_position'       => 58,
 		'menu_icon'           => 'dashicons-layout',
 		'supports'            => array( 'title', 'revisions' ),
