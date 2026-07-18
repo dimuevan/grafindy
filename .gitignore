@@ -53,7 +53,9 @@ dist
 .cache
 .sass-cache/
 
-# Build byproducts (bundle/vendor css ARE committed; maps are not)
+# Build byproducts (bundle/vendor css ARE committed; maps/min are not —
+# the parent Asset_Optimizer minifies at runtime)
 assets/css/maps/
 assets/css/*.map
+assets/css/*.min.css
 unused.json

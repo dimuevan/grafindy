@@ -1,7 +1,7 @@
 {
-  "name": "grafindy",
+  "name": "dimuone-framework",
   "version": "1.0.0",
-  "description": "GRAPHINDY site styles (DimuOne child theme)",
+  "description": "DIMUOne Framework — DimuOne child theme build pipeline",
   "private": true,
   "scripts": {
     "lint:css": "stylelint **/*.scss",
