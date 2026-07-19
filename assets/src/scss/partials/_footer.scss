@@ -52,12 +52,17 @@
 			color: var(--hover-color);
 		}
 
+		/* Arrow svg as a mask so it follows the link color (incl. hover). */
 		a.is-external::after {
-			content: "\2197";
+			content: "";
 			display: inline-block;
+			width: 13px;
+			height: 13px;
 			margin-left: 0.35em;
-			font-size: 0.75em;
-			opacity: 0.65;
+			vertical-align: middle;
+			background-color: currentColor;
+			-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 13 13' fill='none'%3E%3Cpath d='M9.12389 8.7687L7.88846 8.77473L7.88846 5.05639L3.37162 9.57324L2.47367 8.67529L6.99052 4.15845L3.27519 4.16146L3.27821 2.92302H9.12389L9.12389 8.7687Z' fill='%23111111'/%3E%3C/svg%3E") no-repeat center / contain;
+			mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 13 13' fill='none'%3E%3Cpath d='M9.12389 8.7687L7.88846 8.77473L7.88846 5.05639L3.37162 9.57324L2.47367 8.67529L6.99052 4.15845L3.27519 4.16146L3.27821 2.92302H9.12389L9.12389 8.7687Z' fill='%23111111'/%3E%3C/svg%3E") no-repeat center / contain;
 		}
 	}
 
