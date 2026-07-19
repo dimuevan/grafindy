@@ -104,6 +104,7 @@ $dimu_child_flag_external = static function ( $atts ) {
 							'class'   => 'footer__social-icon',
 							'loading' => 'lazy',
 							'alt'     => $label,
+							'title'   => $label,
 						) );
 						?>
 					</a>
@@ -114,7 +115,11 @@ $dimu_child_flag_external = static function ( $atts ) {
 
 			<div class="footer__meta">
 				<?php if ( $copyright ) : ?>
-				<p class="footer__copyright"><?php echo wp_kses_post( nl2br( $copyright ) ); ?></p>
+				<p class="footer__copyright">
+					<?php echo esc_html( date( 'Y' ) ); ?> &copy;
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_html( get_bloginfo( 'name' ) ); ?>"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></a>.
+					<?php echo wp_kses_post( nl2br( $copyright ) ); ?>
+				</p>
 				<?php endif; ?>
 				<p class="footer__credit">
 					<?php esc_html_e( 'Designed & Developed by', 'dimuone-child' ); ?>

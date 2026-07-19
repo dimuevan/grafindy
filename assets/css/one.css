@@ -49,6 +49,7 @@
   --fs-h4: clamp(1.25rem, 1.162rem + 0.28vw, 1.5rem);
   --fs-h5: clamp(1.125rem, 1.081rem + 0.14vw, 1.25rem);
   --fs-h6: clamp(1rem, 0.956rem + 0.14vw, 1.125rem);
+  --fs-normal: clamp(0.875rem, 0.831rem + 0.14vw, 1rem);
   --fs-small: clamp(0.813rem, 0.791rem + 0.07vw, 0.875rem);
   /* fluid spacing tokens — for paddings/margins in partials */
   --sp-1: clamp(5px, 3.94px + 0.21vw, 8px);
@@ -58,12 +59,14 @@
   --sp-5: clamp(38px, 28.85px + 1.83vw, 64px);
   --sp-6: clamp(58px, 44.62px + 2.68vw, 96px);
   --sp-7: clamp(84px, 64.28px + 3.94vw, 140px);
+  --sp-8: clamp(115px, 87.89px + 5.42vw, 192px);
+  --sp-9: clamp(80px, 30.7px + 9.86vw, 220px); /* 220px at design width, 60px at small viewport */
   /* radius (fluid) */
   --radius-sm: clamp(4px, 3.3px + 0.14vw, 6px);
   --radius-md: clamp(8px, 6.59px + 0.28vw, 12px);
   --radius-lg: clamp(14px, 10.48px + 0.7vw, 24px);
   /* layout */
-  --container-width: 1740px;
+  --container-width: 1495px;
   --container-pad: clamp(20px, -8.17px + 5.63vw, 100px); /* replaces min(8vw,100px) + the MQ override */
   /*--> Place custom settings here <--*/
 }
@@ -1888,6 +1891,10 @@ pre {
    else uses the framework's fluid tokens.
    ========================================================================== */
 .site-footer {
+  background: var(--footer-bg, #f2f1f3);
+  /*.footer {
+  	background: var(--footer-form-bg, #000);
+  }*/
   /* Light top section: rounded bottom corners over the subscribe band;
      overflow clips the brand mark bleeding past the edge. */
   /* Nav sections: menu name + link grid; off-site links get the arrow. */
@@ -1898,31 +1905,33 @@ pre {
   /* Subscribe band. */
   /* Continue .site-footer bellow */
 }
-.site-footer .footer {
-  background: var(--footer-form-bg, #000);
-}
 .site-footer .footer__top {
   background: var(--footer-bg, #f2f1f3);
   color: var(--footer-text, #111);
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   overflow: hidden;
-  padding-top: var(--sp-6);
+  padding-top: var(--sp-9);
 }
 .site-footer .footer__nav {
   margin-bottom: var(--sp-5);
 }
 .site-footer .footer__nav .footer__nav-title {
-  margin-bottom: var(--sp-3);
-  font-size: var(--fs-h6);
+  margin-bottom: var(--sp-4);
+  margin-top: 0;
+  font-size: var(--fs-h5);
   font-weight: 600;
 }
 .site-footer .footer__nav ul {
   margin: 0;
   list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(clamp(110px, 99.44px + 2.11vw, 140px), 1fr));
-  gap: clamp(12px, 9.18px + 0.56vw, 20px) clamp(14px, 10.48px + 0.7vw, 24px);
-  font-size: var(--fs-small);
+  gap: clamp(12px, 9.18px + 0.56vw, 20px) clamp(20px, 20px + 2.7vw, 60px);
+  font-size: var(--fs-normal);
+  display: flex;
+  flex-wrap: wrap;
+  color: #111;
+}
+.site-footer .footer__nav a {
+  color: #111;
 }
 .site-footer .footer__nav a:hover {
   color: var(--hover-color);
@@ -1938,18 +1947,19 @@ pre {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: clamp(12px, 9.18px + 0.56vw, 20px);
-  margin: var(--sp-5) 0;
+  gap: 20px 45px;
+  margin: var(--sp-9) 0;
 }
 .site-footer .footer__socials a {
   display: block;
+  transition: transform 0.3s ease;
 }
 .site-footer .footer__socials a:hover {
-  opacity: 0.55;
+  transform: scale(1.4);
 }
 .site-footer .footer__socials .footer__social-icon {
-  width: clamp(22px, 19.89px + 0.42vw, 28px);
-  height: clamp(22px, 19.89px + 0.42vw, 28px);
+  width: clamp(24px, 19.77px + 0.85vw, 36px);
+  height: clamp(24px, 19.77px + 0.85vw, 36px);
   object-fit: contain;
   display: block;
 }
@@ -1970,10 +1980,22 @@ pre {
 .site-footer .footer__meta .footer__credit a:hover {
   color: var(--hover-color);
 }
+.site-footer .footer__copyright,
+.site-footer .footer__credit {
+  margin: 0;
+  font-size: var(--fs-small);
+}
+.site-footer .footer__copyright a,
+.site-footer .footer__credit a {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: #000;
+}
 .site-footer .footer__about {
-  font-size: clamp(0.688rem, 0.666rem + 0.07vw, 0.75rem);
+  font-size: clamp(0.688rem, 0.644rem + 0.14vw, 0.813rem);
   line-height: 1.6;
-  opacity: 0.75;
+  color: #111;
+  margin-top: clamp(32px, 22.14px + 1.97vw, 60px);
 }
 .site-footer .footer__about p {
   margin: 0 0 0.5em;
@@ -1984,13 +2006,12 @@ pre {
 .site-footer .footer__brand {
   display: flex;
   justify-content: center;
-  margin-top: var(--sp-5);
+  margin-top: var(--sp-9);
 }
 .site-footer .footer__brand .footer__brand-mark {
-  width: min(24rem, 70%);
+  width: min(35rem, 70%);
   height: auto;
   display: block;
-  margin-bottom: -10%;
 }
 .site-footer .footer__subscribe {
   background: var(--footer-form-bg, #000);

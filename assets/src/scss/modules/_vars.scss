@@ -189,6 +189,7 @@ $breakpoints: (
 	--fs-h4: #{fluid-type(24px, 20px)};
 	--fs-h5: #{fluid-type(20px, 18px)};
 	--fs-h6: #{fluid-type(18px, 16px)};
+	--fs-normal: #{fluid-type(16px, 14px)};
 	--fs-small: #{fluid-type(14px, 13px)};
 
 	/* fluid spacing tokens — for paddings/margins in partials */
@@ -199,6 +200,8 @@ $breakpoints: (
 	--sp-5: #{fluid(64px)};
 	--sp-6: #{fluid(96px)};
 	--sp-7: #{fluid(140px)};
+	--sp-8: #{fluid(192px)};
+	--sp-9: #{fluid(220px, 80px)}; /* 220px at design width, 60px at small viewport */
 
 	/* radius (fluid) */
 	--radius-sm: #{fluid(6px, 4px)};
@@ -206,7 +209,7 @@ $breakpoints: (
 	--radius-lg: #{fluid(24px, 14px)};
 
 	/* layout */
-	--container-width: 1740px;
+	--container-width: 1495px;
 	--container-pad: #{fluid(100px, 20px)}; /* replaces min(8vw,100px) + the MQ override */
 
 	/*--> Place custom settings here <--*/
