@@ -36,8 +36,8 @@
 :root {
   /* html|body */
   /* Fonts: self-hosted in /assets/public/fonts/ - @font-face rules in /assets/public/css/fonts/fonts.css */
-  --main-font-family: "Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif; /* Body & UI - Regular 400 */
-  --heading-font-family: "Literata", Georgia, "Times New Roman", serif; /* Headings - SemiBold 600 / Bold 700 */
+  --main-font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif; /* Main: all text */
+  --heading-font-family: "Libre Caslon Text", Georgia, "Times New Roman", serif; /* Secondary: headings (except footer) - 400/700 + 400 italic only */
   --main-font-size: clamp(0.938rem, 0.894rem + 0.14vw, 1.063rem); /* rem-based: zoom/a11y safe */
   --main-font-color: #000;
   --body-background: #fff;
@@ -1856,6 +1856,33 @@ pre {
   font-size: 0.9rem;
   line-height: 1.5;
   overflow: auto;
+}
+
+/* ==========================================================================
+   PSDGator SCSS Styles [PARTIALS:ELEMENTS]
+   ========================================================================== */
+/* Headings: secondary (serif) font everywhere except the footer.
+   The footer's subscribe title opts back in explicitly in _footer.scss. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--heading-font-family);
+}
+
+.site-footer h1,
+.site-footer h2,
+.site-footer h3,
+.site-footer h4,
+.site-footer h5,
+.site-footer h6 {
+  font-family: var(--main-font-family);
+}
+
+.btn {
+  display: inline-block;
 }
 
 /* ==========================================================================

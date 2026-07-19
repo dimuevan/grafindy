@@ -175,8 +175,8 @@ $breakpoints: (
 :root {
 	/* html|body */
 	/* Fonts: self-hosted in /assets/public/fonts/ - @font-face rules in /assets/public/css/fonts/fonts.css */
-	--main-font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif; /* Body & UI - Regular 400 */
-	--heading-font-family: 'Literata', Georgia, 'Times New Roman', serif; /* Headings - SemiBold 600 / Bold 700 */
+	--main-font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif; /* Main: all text */
+	--heading-font-family: 'Libre Caslon Text', Georgia, 'Times New Roman', serif; /* Secondary: headings (except footer) - 400/700 + 400 italic only */
 	--main-font-size: #{fluid-type(17px, 15px)}; /* rem-based: zoom/a11y safe */
 	--main-font-color: #000;
 	--body-background: #fff;

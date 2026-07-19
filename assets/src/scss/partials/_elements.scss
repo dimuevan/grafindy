@@ -2,6 +2,28 @@
    PSDGator SCSS Styles [PARTIALS:ELEMENTS]
    ========================================================================== */
 
+/* Headings: secondary (serif) font everywhere except the footer.
+   The footer's subscribe title opts back in explicitly in _footer.scss. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--heading-font-family);
+}
+
+.site-footer {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--main-font-family);
+  }
+}
+
 .btn {
   display: inline-block;
 }
