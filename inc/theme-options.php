@@ -39,6 +39,7 @@ function dimu_child_populate_nav_menu_choices( array $field ): array {
 	return $field;
 }
 add_filter( 'acf/load_field/name=navigations', 'dimu_child_populate_nav_menu_choices' );
+add_filter( 'acf/load_field/name=navigation', 'dimu_child_populate_nav_menu_choices' );
 
 /**
  * Populate "Choose Socials" with the rows of the global Social Icons repeater.

@@ -1,8 +1,121 @@
 /* ==========================================================================
    PSDGator SCSS Styles [PARTIALS:HEADER]
+
+   GRAPHINDY transparent header — overlays the page hero (absolute, no
+   background). Style one: logo + menu + pill CTA. Style two: centered logo.
    ========================================================================== */
 
 .site-header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 100;
+	background: transparent;
+	padding: fluid(28px, 14px) 0;
+
+	.header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--sp-3);
+	}
+
+	.header__logo {
+		display: block;
+
+		.header__logo-img {
+			display: block;
+			width: auto;
+			height: fluid(52px, 38px);
+		}
+	}
+
+	.header__end {
+		display: flex;
+		align-items: center;
+		gap: fluid(48px, 20px);
+	}
+
+	.header__nav {
+		ul {
+			margin: 0;
+			list-style: none;
+			display: flex;
+			align-items: center;
+			gap: fluid(44px, 18px);
+			font-size: var(--fs-small);
+			font-weight: 600;
+		}
+
+		a:hover {
+			color: var(--hover-color);
+		}
+
+		/* Parent items get a "+"; submenu drops on hover/focus. */
+		li {
+			position: relative;
+		}
+
+		.menu-item-has-children {
+			> a::after {
+				content: "+";
+				margin-left: 0.35em;
+				opacity: 0.9;
+			}
+
+			.sub-menu {
+				position: absolute;
+				top: 100%;
+				left: 50%;
+				transform: translateX(-50%);
+				min-width: 11rem;
+				padding: fluid(14px, 10px);
+				display: none;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: fluid(10px, 8px);
+				background: #fff;
+				border-radius: var(--radius-md);
+				box-shadow: 0 12px 32px rgb(0 0 0 / 12%);
+				font-weight: 500;
+			}
+
+			&:hover .sub-menu,
+			&:focus-within .sub-menu {
+				display: flex;
+			}
+		}
+	}
+
+	.header__cta {
+		display: inline-block;
+		background: #111;
+		color: #fff;
+		border-radius: 999px;
+		padding: fluid(14px, 11px) fluid(28px, 20px);
+		font-size: var(--fs-small);
+		font-weight: 600;
+		white-space: nowrap;
+		transition: background 0.3s ease;
+
+		&:hover {
+			background: var(--hover-color);
+			color: #fff;
+		}
+	}
+
+	/* Landing: centered logo only. */
+	.header--two {
+		justify-content: center;
+	}
+
+	/* No mobile menu design yet: keep logo + CTA, hide the nav links. */
+	@include media("<=lg") {
+		.header__nav {
+			display: none;
+		}
+	}
 
 	/* Continue .site-header bellow */
 

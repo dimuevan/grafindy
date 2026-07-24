@@ -1887,9 +1887,105 @@ h6 {
 
 /* ==========================================================================
    PSDGator SCSS Styles [PARTIALS:HEADER]
+
+   GRAPHINDY transparent header — overlays the page hero (absolute, no
+   background). Style one: logo + menu + pill CTA. Style two: centered logo.
    ========================================================================== */
 .site-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: transparent;
+  padding: clamp(14px, 9.07px + 0.99vw, 28px) 0;
+  /* Landing: centered logo only. */
+  /* No mobile menu design yet: keep logo + CTA, hide the nav links. */
   /* Continue .site-header bellow */
+}
+.site-header .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+.site-header .header__logo {
+  display: block;
+}
+.site-header .header__logo .header__logo-img {
+  display: block;
+  width: auto;
+  height: clamp(38px, 33.07px + 0.99vw, 52px);
+}
+.site-header .header__end {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 10.14px + 1.97vw, 48px);
+}
+.site-header .header__nav {
+  /* Parent items get a "+"; submenu drops on hover/focus. */
+}
+.site-header .header__nav ul {
+  margin: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 8.85px + 1.83vw, 44px);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+.site-header .header__nav a:hover {
+  color: var(--hover-color);
+}
+.site-header .header__nav li {
+  position: relative;
+}
+.site-header .header__nav .menu-item-has-children > a::after {
+  content: "+";
+  margin-left: 0.35em;
+  opacity: 0.9;
+}
+.site-header .header__nav .menu-item-has-children .sub-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 11rem;
+  padding: clamp(10px, 8.59px + 0.28vw, 14px);
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(8px, 7.3px + 0.14vw, 10px);
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  font-weight: 500;
+}
+.site-header .header__nav .menu-item-has-children:hover .sub-menu, .site-header .header__nav .menu-item-has-children:focus-within .sub-menu {
+  display: flex;
+}
+.site-header .header__cta {
+  display: inline-block;
+  background: #111;
+  color: #fff;
+  border-radius: 999px;
+  padding: clamp(11px, 9.94px + 0.21vw, 14px) clamp(20px, 17.18px + 0.56vw, 28px);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.3s ease;
+}
+.site-header .header__cta:hover {
+  background: var(--hover-color);
+  color: #fff;
+}
+.site-header .header--two {
+  justify-content: center;
+}
+@media (max-width: 1024px) {
+  .site-header .header__nav {
+    display: none;
+  }
 }
 
 /* ==========================================================================
